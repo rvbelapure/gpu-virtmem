@@ -1,0 +1,44 @@
+"""@file SConstruct
+   @author Magdalena Slawinska magg@gatech.edu
+   @date 2011-02-22
+   @brief Building the network stuff
+"""
+
+import os
+
+Import('CUDA_ROOT', 'INIPARSER')
+
+envGlobalSched = Environment(
+  LIBS=['pthread', 
+        'rt', 
+        'dl', 
+        'cudart', 
+        'iniparser', 
+        'glib-2.0' ],
+  LIBPATH=[CUDA_ROOT + 'lib64', INIPARSER, '/home/dipanjans/install_glib/lib'],
+  #CC = ['gcc4.4.4'],
+  CPPPATH=['.',
+  '../remote',
+  '../include',
+  '../interposer',
+  '../Global_Sched',
+  CUDA_ROOT + 'include',
+  INIPARSER + 'src',
+  '/home/dipanjans/install_glib/include/glib-2.0',
+  '/home/dipanjans/install_glib/include/glib-2.0/glib',
+  '/home/dipanjans/install_glib/lib/glib-2.0/include'
+  #'/usr/include/glib-2.0',
+  #'/usr/lib64/glib-2.0/include'],
+  #'/usr/lib/glib-2.0/include'
+  ],
+  CCFLAGS='-g -Wall -Wextra')
+			 
+envGlobalSched.Program('global_sched', [
+			#'/home/dipanjans/memcpy_glibc/memcpy.c',
+			'global_sched.c',
+			'../backend/libl2scheduler.o',
+			'../interposer/libciutils.o',
+			'../remote/connection.o',
+			'../remote/remote_packet.o',
+			'../remote/remote_api_wrapper.o'])
+

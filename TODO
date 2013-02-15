@@ -1,0 +1,12 @@
+- 2011-05-03
+  add GLIB variable in the build system; right now it is hard coded
+  
+- 2011-04-12; 2011-05-02 done
+  remove double INIPARSER from the build systems
+
+    You need to update two SConstruct files:
+    
+    @todo this must be a smarter way to do that
+    interposer/SConstruct
+    backend/SConstruct
+    

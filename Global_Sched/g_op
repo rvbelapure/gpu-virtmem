@@ -1,0 +1,25 @@
+**************************************
+backend_thread.178: hey, here server thread!
+**************************************
+<4> conn_localbind[199]: Queried for hostname: ifrit.cc.gt.atl.ga.us
+<4> conn_accept[292]: Got new incoming connection
+ACCEPTED A CONN***********
+DEBUG <5> handle_req[46]: ------------------New RPC--------------------
+DEBUG <5> handle_req[61]:  received request header. Expecting  1 packets. And extra request buffer of data size 0
+INFO <4> handle_req[78]: Received 1 packets, each of size of (136) bytes
+INFO <4> handle_req[81]: Received method cudaGetDevice (method_id 11) from Thr_id: 140693313644896.
+DEBUG <5> pkt_execute[195]: 	calling function cudaGetDevice, id=11
+
+
+
+
+nvbackCudaGetDevice_srv: GOT DEV:0********
+
+
+
+DEBUG <5> nvbackCudaGetDevice_srv[750]: Current assigned device id = 0
+DEBUG <5> nvbackCudaGetDevice_srv[752]: CUDA_ERROR=0 for method id=11 after calling method
+DEBUG <5> handle_req[117]: pConn->response_data_size 0
+DEBUG <5> conn_sendCudaPktHdr[46]: Header sent: pkt_num 1, extra buffer size: 0.
+INFO <4> handle_req[128]: Response packet sent.
+DEBUG <5> handle_req[46]: ------------------New RPC--------------------

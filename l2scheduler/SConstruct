@@ -1,0 +1,40 @@
+"""@file SConstruct
+   @author Magdalena Slawinska magg@gatech.edu
+   @date 2011-02-22
+   @brief Building the network stuff
+"""
+
+import os
+
+Import('CUDA_ROOT', 'INIPARSER')
+
+envCFSched = Environment(
+  LIBS=['pthread', 
+        'rt', 
+        'dl', 
+        'cudart', 
+        'iniparser', 
+        'glib-2.0' ],
+  LIBPATH=[CUDA_ROOT + 'lib64', INIPARSER, '/home/dipanjans/install_glib/lib'],
+  #CC = ['gcc4.4.4'],
+  CPPPATH=['.',
+  '../remote',
+  '../include',
+  '../interposer',
+  '../backend',
+  '../l2scheduler',
+  CUDA_ROOT + 'include',
+  INIPARSER + 'src',
+  '/home/dipanjans/install_glib/include/glib-2.0',
+  '/home/dipanjans/install_glib/include/glib-2.0/glib',
+  '/home/dipanjans/install_glib/lib/glib-2.0/include',
+  #'/usr/include/glib-2.0',
+  #'/usr/lib64/glib-2.0/include'],
+  #'/usr/lib/glib-2.0/include'
+  ],
+  CCFLAGS='-g -Wall -Wextra')
+			 
+envCFSched.Program('l2scheduler', ['l2scheduler.c',
+				'fair_share_sched.c',
+				'las_scheduler.c',
+				'sched_commons.c'])

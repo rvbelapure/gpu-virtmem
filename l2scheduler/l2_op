@@ -1,0 +1,10 @@
+In main :: listener ID : 139729373243136, controller ID : 139729362753280
+In main :: listener ID : 139729352263424, controller ID : 139729341773568
+LASSCHED starting listener
+LASSCHED Inside control thread
+LASSCHED Inside control thread
+LASSCHED starting listener
+LASSCHED ADD_Q pid: 16520, gpu: 0
+LASSCHED process 16520 registered with scheduler, gpuid : 0
+CFSCHED REM_Q pid: 16520
+LASSCHED Removing semaphore and exiting

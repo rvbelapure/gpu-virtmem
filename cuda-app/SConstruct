@@ -1,0 +1,24 @@
+"""@file SConstruct
+   @author Magdalena Slawinska magg@gatech.edu
+   @date 2011-02-04
+   @brief Building t34 project
+"""
+
+# LIBS - A list of one or more libraries that will be linked with 
+# any executable programs created by this environment.
+# LIBPATH - The list of directories that will be searched for libraries.
+# CPPPATH  - The $CPPPATH value tells SCons to look in the current 
+#   directory ('.') for any files included by C source files (.c or .h files)
+
+
+# create the construction environment for building those
+import os
+
+Import( 'CUDA_ROOT' )                                     
+
+nvccEnv = Environment(CC = CUDA_ROOT + 'bin/nvcc',
+                      CCFLAGS = '-g -pthread')	  
+nvccEnv.Program('app1', 'app1.cu')
+
+nvccEnv.Program('app2', 'app2.cu');
+ 

@@ -1,0 +1,466 @@
+/**
+ * @file README.txt
+ * @brief 
+ *
+ * @date Apr 12, 2011
+ * @author Magda Slawinska (Magic MS), magg __at_ gatech __dot_ edu
+ */
+ 
+ 00. Contributors
+ 
+ This piece of software has been 'compiled' by Magic eMeS (Magda Slawinska), 
+ as part of the non-virtualized Keeneland standard software. 
+ The software has been developed based on the software for the virtualized case
+ Pegasus and Shadowfax for which credits go to:
+ 
+ Vishakha Gupta
+ Alex Merritt
+ Abhishek Verma
+ 
+ Magic MS ported the virtualized-based software to a non-virtualized case.
+ 
+ 0. Tested configurations:
+ 
+ 2011-05-05
+ - Keeneland nodes
+ 
+ ************> uname -a
+Linux kid018.nics.utk.edu 2.6.18-194.el5.perfctr #1 SMP Wed Feb 9 18:13:07 EST 2011 x86_64 x86_64 x86_64 GNU/Linux
+************> nvidia-smi -q | head
+
+==============NVSMI LOG==============
+
+Timestamp                       : Thu May  5 13:57:27 2011
+
+Driver Version                  : 270.41.06
+
+Attached GPUs                   : 3
+
+GPU 0:6:0
+Product Name                : Tesla M2070
+
+************> cat /etc/redhat-release
+CentOS release 5.5 (Final)
+************> gcc -v
+Using built-in specs.
+Target: x86_64-redhat-linux
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-libgcj-multifile --enable-languages=c,c++,objc,obj-c++,java,fortran,ada --enable-java-awt=gtk --disable-dssi --enable-plugin --with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre --with-cpu=generic --host=x86_64-redhat-linux
+Thread model: posix
+gcc version 4.1.2 20080704 (Red Hat 4.1.2-48)
+************>  hostname
+kid018.nics.utk.edu
+************>  cat /proc/cpuinfo | head
+processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 44
+model name      : Intel(R) Xeon(R) CPU           X5660  @ 2.80GHz
+stepping        : 2
+cpu MHz         : 2800.189
+cache size      : 12288 KB
+physical id     : 0
+siblings        : 6
+ 
+ 
+ 
+ 2011-04-28
+ - upgraded Nvidia Driver to a beta driver from 270.40 (CUDA 4.0 RC2)
+ - CUDA Toolkit 3.2 and SDK 3.2
+ 
+ 
+ - CentOS release 5.5 (Final),  
+ - 2.6.18-194.32.1.el5 #1 SMP Wed Jan 5 17:52:25 EST 2011 x86_64 x86_64 x86_64 GNU/Linux
+ - gcc (GCC) 4.1.2 20080704 (Red Hat 4.1.2-48)
+ - scons --version
+        script: v2.0.1.r5134, 2010/08/16 23:02:40, by bdeegan on cooldog
+        engine: v2.0.1.r5134, 2010/08/16 23:02:40, by bdeegan on cooldog
+ - Cuda compilation tools, release 3.2, V0.2.1221 (nvcc --version)
+ - nvidia-settings:  version 260.19.14 (nvidia-smi -q or nvidia-settings -v)
+ - Hardware:
+  
+   -- Fermi: There is 1 device supporting CUDA
+       Device 0: "Tesla C2050"
+   -- GeForce: There are 2 devices supporting CUDA 
+     Device 0: "GeForce 9800 GX2"     
+     Device 1: "GeForce 9800 GX2"
+   
+ 
+ 1. DEPENDENCIES
+ 
+ a. Scons - the build system
+ 
+ b. Installed CUDA Toolkit for
+    - libcudart.a (or something)
+    - some includes cuda_runtime_api.h, __cuda_format.h
+    - nvcc compiler 
+ 
+ c. cunit212 - for tests
+    http://cunit.sourceforge.net/
+ 
+ d. iniparser to parse the config file (kidron.ini)
+ 
+    http://ndevilla.free.fr/iniparser/
+        
+    This affects two SConstruct files.     
+
+    interposer/SConstruct
+    backend/SConstruct 
+
+	But you need to setup only variables in the main SConstruct.
+
+ e. glib 
+ 
+ 	- glib 2.0 - currently used (you need a devel package and a lib package)
+ 	  -- includes: -I/usr/include/glib-2.0
+				   -I/usr/lib64/glib-2.0/include
+	  -- path to libraries 
+	      -L /lib64 (likely it is set by default)
+ 	  -- link with -lglib-2.0
+    - it shouldn't be issues with glib 1.2 (I also used glib-1.2 in early
+      stages and it worked).
+      -- for options to set in build files run
+      glib-config --cflags 
+      -- for the linker you need to link with -lglib
+      
+ 
+ 2. BUILDING
+ 
+ 
+ a. unpack sources
+ b. run scons -Q (quiet - doesn't show scons information)
+ 
+ c. You should get
+ interposer/libci.so    # the interposer library
+ interposer/testLibci   # tests for libci      
+ interposer/testLibciutils # tests for libcutils
+ backend/backend		# which is the remote part
+ cuda-app/app1			# the simple cuda app that uses a few CUDA calls
+ cuda-app/app2
+ 
+ 
+ To clean the build
+ 
+ a. scons -c
+ 
+ 
+ 3. RUNNING EXAMPLES
+ 
+ First you need to configure the environment by providing the correct
+ values to the configuration file. The name of the configuration file
+ is hard-coded in 
+ 
+ include/config.h
+
+#ifndef KIDRON_INI
+#	define KIDRON_INI "kidron.ini"
+#endif
+
+The file is called kidron.ini and should be present in the current directory.
+
+The kidron.ini with example values is as presented below:
+
+# ---------- start of kidron.ini -------------- 
+# The configuration file for the kidron system
+#
+
+[network]
+
+# tells where the backend is running
+remote  = cuda2 ;
+
+
+[interposer]
+
+# tells if the functions should be called locally or not
+local   = no ;
+ 
+#
+# --------- end of kidron.ini -----------------
+#
+ 
+The file is required to be present on the local side and it tells the 
+interposer library where the backend runs.
+
+You have to tell the interposer library where the backend runs. 
+If your backend is running somewhere else, you need to change it to where
+the backend is running; you do not need to configure anything on the server
+side. Just the client, i.e., the interposer library (libci.c).
+ 
+ a. included example 
+ 
+ on one machine let's say cuda2 run backend:
+ 
+ cuda2$ /home/magg/proj/kidron-utils-remote-cuda-exec-2/backend/backend
+ 
+ on the second machine run the app:
+ 
+ prost:kidron$  LD_PRELOAD=/home/magg/kidron/interposer/libci.so cuda-app/add
+ 
+ b. you can run the examples from NVIDIA_SDK. I tested the 
+   - matrixMul
+   - BlackSholes 
+   - binomialOptions (2011-04-29)
+   - MonteCarlo (2011-04-29)
+ 
+ cuda2$ /home/magg/proj/kidron-utils-remote-cuda-exec-2/backend/backend
+ 
+ prost$  LD_PRELOAD=/home/magg/kidron/interposer/libci.so \
+       /home/magg/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/matrixMul
+ 
+ or 
+ 
+ cuda2$ /home/magg/proj/kidron-utils-remote-cuda-exec-2/backend/backend
+ 
+ prost$  LD_PRELOAD=/home/magg/kidron/interposer/libci.so \
+       /home/magg/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/BlackScholes
+       
+ 
+4. RUNNING TESTS
+
+ 
+ * standalone
+ # go to the main directory
+ 
+ export LD_LIBRARY_PATH=/opt/cunit212/lib/:$LD_LIBRARY_PATH
+ 
+ [smagg@kidlogin1 kidron-utils-remote-cuda-exec-2]$ interposer/testLibci
+ [smagg@kidlogin1 kidron-utils-remote-cuda-exec-2]$ interposer/testLibciutils
+
+ * with Valgrind
+ 
+ # you might need to setup the cunit lib:
+ # export LD_LIBRARY_PATH=/opt/cunit212/lib/:$LD_LIBRARY_PATH
+ [magg@prost interposer]$ 
+   valgrind --leak-check=yes --track-origins=yes ./testLibciutils
+  
+   
+5. KNOWN ISSUES
+
+
+* Function g_vars_find my hang if you provide non-existing address as 
+  a symbol; since it first assumes it is a pointer, then it is a string 
+
+* Right now it doesn't support CUDA 4.0 (you can have a newer driver, but
+  the support is for CUDA Tookit 3.2 and SDK 3.2).
+  
+  
+
+6. INSTALLATION ON KEENELAND
+
+
+* Be aware what compiler is used and check if gcc
+  
+  module unload intel/2011.3.174
+  module unload PE-intel   # unload programming environment intel
+  module load PE-gnu       # load programming environment gnu
+  module load gcc/4.1.2    # developed on that compiler
+
+* Open SConstruct and edit variables to the location of cuda, iniparser, 
+  and cunit212
+ 
+  CUDA_ROOT = '/sw/keeneland/cuda/3.2/linux_binary/'
+  INIPARSER = '/nics/d/home/smagg/src/iniparser/'
+  CUNIT212 = '/nics/d/home/smagg/opt/cunit212'
+  
+* If scons is missing
+  
+  wget -c http://prdownloads.sourceforge.net/scons/scons-2.0.1.tar.gz
+  module load python/2.7
+  tar xfvz scons-2.0.1.tar.gz
+  cd scons-2.0.1
+  # this installs to the directory you specify
+  python setup.py install --prefix=~/opt/scons
+  export PATH=~/opt/scons/bin/:$PATH
+  
+* if driver_types.h and vector_types.h are not found
+  
+  You need to change path to for CUDA in the following files:
+  
+  /sw/keeneland/cuda/3.2/linux_binary/
+  
+  (Set variable CUDA_ROOT in main SConstruct file)
+  
+* If your iniparser is missing
+
+   wget -c http://ndevilla.free.fr/iniparser/iniparser-3.0.tar.gz
+   tar xfvz iniparser-3.0.tar.gz
+   cd iniparser
+   make
+ 
+   Change INIPARSER value in main SConstruct to point to the iniparser installation
+   directory:
+   
+   INIPARSER = '/nics/d/home/smagg/src/iniparser/'
+ 	
+ * if you cunit is missing:
+ 
+    wget -c http://sourceforge.net/projects/cunit/files/CUnit/2.1-2/CUnit-2.1-2-src.tar.bz2/download
+    bunzip2 CUnit-2.1-2-src.tar.bz2
+    tar xf CUnit-2.1-2-src.tar 
+    cd CUnit-2.1.2
+
+    ./configure --prefix=/nics/d/home/smagg/opt/cunit212
+    
+	# if you have some troubles you might tried this         
+     ./configure CC=/usr/bin/gcc CPP=/usr/bin/cpp --prefix=/nics/d/home/smagg/opt/cunit212
+    
+     make -j7
+     make install
+     
+     Now, you need to update CUNIT212 in main SConstruct
+     
+     CUNIT212 = '/nics/d/home/smagg/opt/cunit212'
+     
+7. RUNNING EXAMPLES ON KEENELAND
+
+* allocate the node in the interactive mode
+
+[smagg@kidlogin1 kidron-utils-remote-cuda-exec-2]$ qlogin -I -l nodes=1:ppn=1
+
+* allocate the second node in the interactive mode
+
+[smagg@kidlogin2 kidron-utils-remote-cuda-exec-2]$ qlogin -I -l nodes=1:ppn=1
+
+* edit kidron.ini
+
+[network]
+
+#remote = cuda2.cc.gt.atl.ga.us ;
+remote = kid117.nics.utk.edu
+
+[interposer]
+
+local   = no ;
+
+* run backend
+
+[smagg@kid117 kidron-utils-remote-cuda-exec-2]$ ./backend/backend
+
+* run example
+
+LD_PRELOAD=/nics/d/home/smagg/proj/kidron-utils-remote-cuda-exec-2/interposer/libci.so cuda-app/app1
+
+[smagg@kid043 kidron-utils-remote-cuda-exec-2]$ \
+ LD_PRELOAD=/nics/d/home/smagg/proj/kidron-utils-remote-cuda-exec-2/interposer/libci.so ~/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/BlackScholes
+ 
+ 
+ 7a. OTHER TESTED EXAMPLES
+ 
+ - ~/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/matricMul
+ - ~/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/BlackScholes
+ - ~/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/MonteCarlo
+ - ~/NVIDIA_GPU_Computing_SDK/C/bin/linux/release/binomialOptions  
+ 
+ 8. HISTORY 
+ 
+* 2011-05-05 First realease: 0.0.1 -- Kidron utils remote CUDA exec
+ Description:
+ 
+ The software allows to remotely execute CUDA calls. It consists of two main 
+ logical components:
+ 
+ - the interposer library
+ - the backend
+ 
+ The interposer library allows to interpose a subset of CUDA calls. The interposed
+ CUDA calls are sent over the network (currently via TCP/IP) to the remote node
+ that has attached graphic accelerators (GPUs). On the remote node the running
+ backend listens on a predefined port for incoming requests, deserialize them
+ and executes received execution requests on the local GPU. After completion,
+ the backend returns the results (if any) to the interposer library, which
+ returns the execution flow to the original CUDA application.
+ 
+ In this release, the backend is a process, running on a remote node. The backend
+ process spawns a single thread that listens for incoming requests from clients 
+ (i.e., interposer library).
+ 
+ This release has been tested on:
+
+ - Tested configuration:
+  
+   a. Keeneland machine
+    Linux kid018 2.6.18-194.el5.perfctr #1 
+    SMP Wed Feb 9 18:13:07 EST 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+	Timestamp                       : Thu May  5 13:57:27 2011
+	Driver Version                  : 270.41.06
+    Attached GPUs                   : 3
+	Product Name                    : Tesla M2070
+	
+	CentOS release 5.5 (Final)
+    gcc version 4.1.2 20080704 (Red Hat 4.1.2-48)
+    kid018.nics.utk.edu
+    model name      : Intel(R) Xeon(R) CPU           X5660  @ 2.80GHz
+
+   b. local machines:
+   Linux cuda2 2.6.18-238.9.1.el5 #1 SMP Tue Apr 12 18:10:13 EDT 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+   Timestamp                       : Thu May  5 14:59:08 2011
+   Driver Version                  : 270.40
+   Attached GPUs                   : 2
+   GPU 0:8:0
+   Product Name                : GeForce 9800 GX2   
+
+   CentOS release 5.6 (Final)
+   
+   Target: x86_64-redhat-linux
+   gcc version 4.1.2 20080704 (Red Hat 4.1.2-50)
+   
+   Machine name: cuda2
+
+   model name      : Intel(R) Core(TM)2 Quad  CPU   Q8200  @ 2.33GHz
+   
+   -----------
+   Linux prost 2.6.18-238.9.1.el5.centos.plus 
+   #1 SMP Tue Apr 12 20:34:33 EDT 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+   Timestamp                       : Thu May  5 15:08:19 2011
+   Driver Version                  : 270.40
+   Attached GPUs                   : 1 
+   GPU 0:7:0
+   Product Name                : Tesla C2050
+
+   CentOS release 5.6 (Final)
+
+   gcc version 4.1.2 20080704 (Red Hat 4.1.2-48)
+
+   Machine name: prost
+
+   model name      : Intel(R) Xeon(R) CPU           X5365  @ 3.00GHz
+   
+ - Dependencies:
+   a. Scons - scons -v       
+        script: v2.0.1.r5134, 2010/08/16 23:02:40, by bdeegan on cooldog
+        engine: v2.0.1.r5134, 2010/08/16 23:02:40, by bdeegan on cooldog
+   b. CUDA 
+      - driver 270.41.06, and 270.40
+      - toolkit 3.2
+      - NVIDIA SDK 3.2
+ 
+	c. CUnit-2.1-2 for tests
+      http://cunit.sourceforge.net/
+ 
+    d. iniparser v. 3.0. 
+    http://ndevilla.free.fr/iniparser/iniparser-3.0.tar.gz	
+
+ 	e. glib 2.0 (recommended)  
+ 
+ 	- glib 2.0 - currently used (you need a devel package and a lib package)
+ 	  -- includes: -I/usr/include/glib-2.0
+				   -I/usr/lib64/glib-2.0/include
+	  -- path to libraries 
+	      -L /lib64 (likely it is set by default)
+ 	  -- link with -lglib-2.0
+    
+    - it shouldn't be issues with glib 1.2 (I also used glib-1.2 in early
+      stages and it worked).
+      -- for options to set in build files run
+      glib-config --cflags 
+      -- for the linker you need to link with -lglib
+  
+ - NVIDIA SDK examples tested
+ 	- NVIDIA SDK matrixMul
+ 	- NVIDIA SDK BlackScholes
+ 	- NVIDIA SDK MonteCarlo
+ 	- NVIDIA SDK binomialOptions
+ 

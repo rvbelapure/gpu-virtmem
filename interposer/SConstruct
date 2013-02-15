@@ -1,0 +1,75 @@
+"""@file SConstruct
+   @author Magdalena Slawinska magg@gatech.edu
+   @date 2011-02-15
+   @brief Building the interposer
+"""
+
+# LIBS - A list of one or more libraries that will be linked with 
+# any executable programs created by this environment.
+# LIBPATH - The list of directories that will be searched for libraries.
+# CPPPATH  - The $CPPPATH value tells SCons to look in the current 
+#   directory ('.') for any files included by C source files (.c or .h files)
+
+import os
+
+Import( 'CUDA_ROOT', 'INIPARSER', 'CUNIT212' )
+
+# for glib options run: glib-config --cflags  for glib1.2 
+# glib2 lacks this thing
+
+interposerEnv = Environment(
+ LIBS = ['rt', 'dl', 'iniparser', 'glib-2.0'],
+ LIBPATH = [CUDA_ROOT + 'lib64', 
+   INIPARSER, 
+   '/lib64',
+   '/home/dipanjans/install_glib/lib'],
+ #CC = ['gcc4.4.4'],
+ CPPPATH = [
+    '.',
+    CUDA_ROOT + 'include', 
+    '../include', 
+    '../remote',
+    '../backend',
+    INIPARSER + 'src',
+#    '/usr/include/glib-2.0',
+#	'/usr/lib64/glib-2.0/include'],
+#    '/usr/lib/glib-2.0/include'
+    '/home/dipanjans/install_glib/include/glib-2.0',
+    '/home/dipanjans/install_glib/include/glib-2.0/glib',
+    '/home/dipanjans/install_glib/lib/glib-2.0/include'
+],                                
+ CCFLAGS = ['-fPIC', '-g', '-Wall', '-Wextra']) #, '-std=gnu99'] )
+
+# create a shared library                                         
+interposerEnv.SharedLibrary('libci.so', 
+    [
+      'libci.c',
+      'libciutils.c', 
+      '../backend/libtruefairshare.c',
+      '../remote/remote_api_wrapper.c', 
+      '../remote/connection.c',               
+      '../remote/remote_packet.c']) 
+                                                                        
+# building tests
+envTest = Environment(
+  LIBS = ['cunit', 'ncurses', 'pthread', 'glib-2.0'],
+  LIBPATH= [CUNIT212 + 'lib', '.', '/lib64'],
+# CC = ['gcc4.4.4'],
+  CPPPATH= [CUNIT212 + 'include',
+            CUDA_ROOT + 'include',
+            '../include',
+            '../remote', 
+            '../backend',
+#           '/usr/include/glib-2.0',
+#           '/usr/lib64/glib-2.0/include' ],
+#	    '/usr/lib/glib-2.0/include'
+            '/home/dipanjans/install_glib/include/glib-2.0',
+            '/home/dipanjans/install_glib/include/glib-2.0/glib'
+],
+  CCFLAGS = ['-Wall', '-Wextra', '-g']) #, '-std=gnu99'] )
+
+# libci and libciutils should be compiled earlier
+#envTest.Program('testLibci', ['testLibci.c', 'libci.so' ])
+                                                        
+#envTest.Program('testLibciutils', ['testLibciutils.c', 'libci.so' ])
+       
