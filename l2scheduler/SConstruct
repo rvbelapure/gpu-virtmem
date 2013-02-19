@@ -23,6 +23,7 @@ envCFSched = Environment(
   '../interposer',
   '../backend',
   '../l2scheduler',
+  '../virtmem',
   CUDA_ROOT + 'include',
   INIPARSER + 'src',
   '/home/dipanjans/install_glib/include/glib-2.0',

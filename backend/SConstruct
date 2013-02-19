@@ -23,6 +23,7 @@ envBackend = Environment(
   '../interposer',
   '../backend',
   '../l2scheduler',
+  '../virtmem',
   CUDA_ROOT + 'include',
   INIPARSER + 'src',
   '/home/dipanjans/install_glib/include/glib-2.0',
@@ -42,4 +43,5 @@ envBackend.Program('backend', [
 			'../interposer/libciutils.c',
 			'../remote/connection.c',
 			'../remote/remote_packet.c',
-			'../remote/remote_api_wrapper.c'])
+			'../remote/remote_api_wrapper.c',
+			'../virtmem/cuda_vmem.c'])
