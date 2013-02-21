@@ -40,5 +40,6 @@ envGlobalSched.Program('global_sched', [
 			'../interposer/libciutils.o',
 			'../remote/connection.o',
 			'../remote/remote_packet.o',
-			'../remote/remote_api_wrapper.o'])
+			'../remote/remote_api_wrapper.o',
+			'../virtmem/cuda_vmem.o'])
 

@@ -24,6 +24,7 @@
 #include "../l2scheduler/fair_share_sched.h"
 #include "../l2scheduler/las_scheduler.h"
 #include "../include/method_id.h"
+#include "../virtmem/cuda_vmem.h"
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -73,6 +74,9 @@ void * backend_thread(){
        signal_block_all(); 
     if((childpid2 = fork()) == 0)
     {    
+	struct mem_map * vmap_table;
+	mem_map_init(&vmap_table);
+
 	#ifdef SCHED_FAIR_SHARE
 	printf("CFSCHED process pid %d getting added to queue\n",getpid());
 	signal_block_all();
@@ -257,10 +261,14 @@ void * backend_thread(){
 		}
 
 		#endif
+		
+		rpkts[0].vmmap = &vmap_table;		// allow vmem system to interact with packet execution
 
 		gettimeofday(&before,NULL);
-		pkt_execute(&rpkts[0], pConn);			// XXX - packet execution
+		pkt_execute(&rpkts[0], pConn);		// XXX XXX XXX- packet execution
 		gettimeofday(&after,NULL);
+
+		rpkts[0].vmmap = NULL;			// we dont want vmap_table ptr to be sent back to frontend via packet for security
 
 		struct timeval temp;
 		timersub(&after,&before,&temp);

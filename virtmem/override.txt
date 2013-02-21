@@ -1,0 +1,9 @@
+http://docs.nvidia.com/cuda/cuda-runtime-api/index.html#group__CUDART__MEMORY
+
+cudaFree	- delete the entry
+cudaFreeHost	- ??
+cudaHostAlloc	- ??
+cudaMalloc	- create a new entry with devptr and size.
+cudaMallocHost	- ??
+cudaMemcpy	- 
+cudaMemcpyAsync

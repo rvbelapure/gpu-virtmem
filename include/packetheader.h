@@ -206,6 +206,9 @@ typedef struct cuda_packet {
 	float total_ex_time, sys_time, usr_time;
 	long cuda_kernel_launches;
 	struct timeval kernel_time, non_kernel_time;
+
+	// vitual mem map
+	void **vmmap;
 } cuda_packet_t;
 
 

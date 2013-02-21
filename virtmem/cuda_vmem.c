@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "cuda_vmem.h"
 
@@ -10,11 +11,13 @@ void mem_map_init(struct mem_map ** table)
 void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size)
 {
 	struct mem_map *new_node = (struct mem_map *) malloc(sizeof(struct mem_map));
-	new_node->devptr = devptr;
-	new_node->hostptr = NULL;
-	new_node->status = VMEM_READY;
+	new_node->devptr = (void **) malloc(sizeof(void *));
+	new_node->actual_devptr = (void **) malloc(sizeof(void *));
+	*(new_node->devptr) = *devptr;
+	*(new_node->actual_devptr) = *devptr;
+	new_node->swap = (void *) malloc(size);
+	new_node->status = D_INIT;
 	new_node->size = size;
-	new_node->handle = 0;
 	new_node->next = NULL;
 
 	if(*table == NULL)
@@ -28,20 +31,20 @@ void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size)
 	}
 }
 
-void mem_map_update_hostptr(struct mem_map ** table, void ** devptr, void **hostptr)
+int mem_map_get_status(struct mem_map ** table, void ** devptr)
 {
 	if(*table == NULL)
-		return;
+		return -1;
 	struct mem_map * iter = *table;
 	while(iter)
 	{
-		if(iter->devptr == devptr)
+		if(*(iter->devptr) == *devptr)
 		{
-			iter->hostptr = hostptr;
-			break;
+			return iter->status;
 		}
 		iter = iter->next;
 	}
+	return -1;
 }
 
 void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status)
@@ -51,7 +54,7 @@ void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_st
 	struct mem_map * iter = *table;
 	while(iter)
 	{
-		if(iter->devptr == devptr)
+		if(*(iter->devptr) == *devptr)
 		{
 			iter->status = status;
 			break;
@@ -60,34 +63,35 @@ void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_st
 	}
 }
 
-unsigned int mem_map_gethandle(struct mem_map ** table, void ** devptr)
-{
-	if(*table == NULL)
-		return 0;
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		if(iter->devptr == devptr)
-			return iter->handle;
-		iter = iter->next;
-	}
-	return 0;
-}
-
-void mem_map_sethandle(struct mem_map ** table, void ** devptr, unsigned int handle)
+void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size)
 {
 	if(*table == NULL)
 		return;
 	struct mem_map * iter = *table;
 	while(iter)
 	{
-		if(iter->devptr == devptr)
+		if(*(iter->devptr) == *devptr)
 		{
-			iter->handle = handle;
+			memcpy(iter->swap, src, size);
 			break;
 		}
 		iter = iter->next;
 	}
+
+}
+
+void ** mem_map_get_actual_devptr(struct mem_map ** table, void ** devptr)
+{
+	if(*table == NULL)
+		return;
+	struct mem_map * iter = *table;
+	while(iter)
+	{
+		if(*(iter->devptr) == *devptr)
+			return iter->actual_devptr;
+		iter = iter->next;
+	}
+	return NULL;
 }
 
 void mem_map_delete(struct mem_map ** table, void **devptr)
@@ -99,12 +103,16 @@ void mem_map_delete(struct mem_map ** table, void **devptr)
 
 	while(iter)
 	{
-		if(iter->devptr == devptr)
+		if(*(iter->devptr) == *devptr)
 		{
 			if(iter == *table)
 				*table = iter->next;
 			else
 				prev->next = iter->next;
+
+			free(iter->devptr);
+			free(iter->actual_devptr);
+			free(iter->swap);
 			free(iter);
 			break;
 		}
@@ -112,3 +120,24 @@ void mem_map_delete(struct mem_map ** table, void **devptr)
 		iter = iter->next;
 	}
 }
+
+struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)
+{
+	if(*table == NULL)
+		return NULL;
+	
+	struct mem_map * iter = *table;
+
+	while(iter)
+	{
+		if(*(iter->devptr) == *devptr)
+			return iter;
+		iter = iter->next;
+	}
+	return NULL;
+}
+
+
+/* ===================================================================================*/
+
+

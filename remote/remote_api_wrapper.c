@@ -23,6 +23,7 @@
 #include "remote_packet.h"
 #include "../l2scheduler/fair_share_sched.h"
 #include "../l2scheduler/las_scheduler.h"
+#include "../virtmem/cuda_vmem.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1094,6 +1095,9 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	p_debug( "CUDA_ERROR=%d for method id=%d after execution\n",
 			packet->ret_ex_val.err, packet->method_id);
 
+	if(packet->ret_ex_val.err == cudaSuccess)
+		mem_map_creat(packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);
+
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
 
@@ -1101,6 +1105,8 @@ int nvbackCudaFree_srv(cuda_packet_t *packet, conn_t *pConn) {
 	p_debug("devPtr is %p\n",packet->args[0].argp);
 	packet->ret_ex_val.err = cudaFree(packet->args[0].argp);
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
+	if(packet->ret_ex_val.err == 0)
+		mem_map_delete(packet->vmmap,&(packet->args[0].argp));
 	return (packet->ret_ex_val.err == 0) ? OK : ERROR;
 }
 
@@ -1235,6 +1241,16 @@ int nvbackCudaMemcpy_srv(cuda_packet_t *packet, conn_t * pConn) {
 
 	p_info( "CUDA_ERROR=%d (%s) for method id=%d\n", packet->ret_ex_val.err,
 			cudaGetErrorString(packet->ret_ex_val.err), packet->method_id);
+	
+	switch(packet->method_id)
+	{
+		case CUDA_MEMCPY_H2D:
+			int status = mem_map_get_status(packet->vmmap,(void **) &(packet->args[0].argui));
+			mem_map_update_data(packet->vmmap,(void **) &(packet->args[0].argui), (void *) packet->args[1].argui,
+			packet->args[2].argi);
+			mem_map_update_status(packet->vmmap, (void **) &(packet->args[0].argui), D_READY);
+			break;
+	}
 
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
