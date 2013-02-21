@@ -1245,7 +1245,6 @@ int nvbackCudaMemcpy_srv(cuda_packet_t *packet, conn_t * pConn) {
 	switch(packet->method_id)
 	{
 		case CUDA_MEMCPY_H2D:
-			int status = mem_map_get_status(packet->vmmap,(void **) &(packet->args[0].argui));
 			mem_map_update_data(packet->vmmap,(void **) &(packet->args[0].argui), (void *) packet->args[1].argui,
 			packet->args[2].argi);
 			mem_map_update_status(packet->vmmap, (void **) &(packet->args[0].argui), D_READY);

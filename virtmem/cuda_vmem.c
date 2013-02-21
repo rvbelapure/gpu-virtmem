@@ -83,7 +83,7 @@ void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size
 void ** mem_map_get_actual_devptr(struct mem_map ** table, void ** devptr)
 {
 	if(*table == NULL)
-		return;
+		return NULL;
 	struct mem_map * iter = *table;
 	while(iter)
 	{
@@ -140,4 +140,97 @@ struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)
 
 /* ===================================================================================*/
 
+int kindex, top, bottom;
 
+struct kmap * kmap_creat()
+{
+	struct kmap * table = (struct kmap *) malloc(MAX_KERNELS * sizeof(struct kmap));
+	int i;
+	for(i = 0 ; i < MAX_KERNELS ; i++)
+	{
+		table[i].valid = 0;
+		table[i].launch_pending = 0;	
+		table[i].arg_list.head = NULL;
+		table[i].arg_list.tail = NULL;
+	}
+	kindex = 0;
+	top = 0;
+	bottom = 0;
+	return table;
+}
+
+void kmap_add_config(struct kmap *table, dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream)
+{
+	table[kindex].gridDim = gridDim;
+	table[kindex].blockDim = blockDim;
+	table[kindex].sharedMem = sharedMem;
+	table[kindex].stream = stream;
+}
+
+void kmap_add_arg(struct kmap *table,void *arg, size_t size, size_t offset, struct mem_map ** vmem_table)
+{
+	struct kernel_arg_node * node = (struct kernel_arg_node *) malloc(sizeof(struct kernel_arg_node));
+	node->arg = arg;
+	node->size = size;
+	node->offset = offset;
+	node->vmem_ptr = mem_map_get_entry(vmem_table,&arg);
+	node->next = NULL;
+	if((table[kindex].arg_list.head == NULL) && (table[kindex].arg_list.tail == NULL))
+		table[kindex].arg_list.head = node;
+	else
+		(table[kindex].arg_list.tail)->next = node;
+	table[kindex].arg_list.tail = node;
+}
+
+void kmap_add_kernel(struct kmap *table, char * kfun)
+{
+	table[kindex].func = kfun;
+	table[kindex].valid = 1;
+	table[kindex].launch_pending = 1;
+	kindex++;
+	top++;
+}
+
+void kmap_launch(struct kmap * table, int idx)
+{
+	if(idx < 0)
+	{
+		table[bottom].launch_pending = 0;
+		bottom++;
+	}
+	else
+		table[idx].launch_pending = 1;
+}
+
+void kmap_clear(struct kmap *table)
+{
+	int i;
+	for(i = 0 ; i < MAX_KERNELS ; i++)
+	{
+		while(table[i].arg_list.head)
+		{
+			struct kernel_arg_node * temp = table[i].arg_list.head;
+			table[i].arg_list.head = temp->next;
+			free(temp);
+		}
+		table[i].arg_list.head = NULL;
+		table[i].arg_list.tail = NULL;
+		table[i].valid = 0;
+		table[i].launch_pending = 0;
+	}
+}
+
+void kmap_delete(struct kmap *table)
+{
+	int i;
+	for(i = 0 ; i < MAX_KERNELS ; i++)
+	{
+		while(table[i].arg_list.head)
+		{
+			struct kernel_arg_node * temp = table[i].arg_list.head;
+			table[i].arg_list.head = temp->next;
+			free(temp);
+		}
+	}
+	free(table);
+}
