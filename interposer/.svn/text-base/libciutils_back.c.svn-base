@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include "debug.h"
 #include <assert.h>
-#include <pthread.h>
 
 #include "method_id.h"   // for method identifiers
 #include "config.h"		 // for the KIDRON_INI
@@ -22,17 +21,8 @@
 
 #define HOSTNAME_STRLEN 256
 #define MAX_BACKEND_NODES 100
-#define MAX_BACKEND_DEVICES 1000 
 int BACKEND_NODES=0;
-int BACKEND_DEVICES=0;
-char BACKEND_LIST[MAX_BACKEND_NODES+1][HOSTNAME_STRLEN];
-int DEV_TO_INDEX[MAX_BACKEND_DEVICES];
-int DEV_TO_LOCALDEV[MAX_BACKEND_DEVICES];
-
-int DONE;
-int first_node;
-extern pthread_key_t tlsKey;
-pthread_key_t tlsKey2 = 1;
+char BACKEND_LIST[MAX_BACKEND_NODES][HOSTNAME_STRLEN];
 
 
 /**
@@ -73,10 +63,6 @@ inline char * freeBuffer(char * pBuffer){
  */
 inline int l_getLocalFromConfig(void){
 
-    if(DONE>0)
-        return 1;
-        
-        
 	dictionary * d;
 	int b, index=0;
     char * s;
@@ -93,42 +79,14 @@ inline int l_getLocalFromConfig(void){
         sprintf(key, "%s%d\0", "network:remote", index);
         s = iniparser_getstring(d, key, NULL);
         if(s!=NULL)
-		{
-			strcpy(BACKEND_LIST[BACKEND_NODES], s); 
-			if(strcmp(s, "localhost")==0)
-				first_node = BACKEND_NODES;
-			BACKEND_NODES++; 
-			index++;
-		}
+        {strcpy(BACKEND_LIST[BACKEND_NODES], s); BACKEND_NODES++; index++;}
         else
         {break;}
-
     }
-   
-    fprintf(stderr, "\ncompleted all nodes but sched node\n"); 
-    sprintf(key, "%s", "scheduler:sched", index);
-    s = iniparser_getstring(d, key, NULL);
-    strcpy(BACKEND_LIST[MAX_BACKEND_NODES], s);
+        
+        
 
-    /*index = 0;
-    while(1)
-    {
-	    sprintf(key, "%s%d\0", "gpu_weight:device", index);
-	    s = iniparser_getstring(d, key, NULL);
-	    if(s!=NULL)
-	    {
-		    gpu_weight[index++] = atoi(s);
-	    }
-	    else
-	    {break;}
-
-    }*/
-
-    iniparser_freedict(d);
-    
-    DONE=1;
-    pthread_key_create(&tlsKey, NULL);
-    pthread_key_create(&tlsKey2, NULL);
+	iniparser_freedict(d);
     return 1;
 	
 }
@@ -496,53 +454,6 @@ int l_getFatRecPktSize(const __cudaFatCudaBinary *pFatCubin, cache_num_entries_t
 	return size;
 }
 
-/* Finding the size of the rpc packet for the cubin version 4.0, with the new binary format
-**/
-
-int l_getFatRecPktSize_4(const __cudaFatCudaBinary2 *pFatCubin, cache_num_entries_t * pEntriesCache){
-
-	int size = 0;
-
-	// so here is the story with the sizeof operator: sizeof(__cudaFatCudaBinary)
-	// might not equal the sum of its members, counted individually
-	// it might be greater because it may include internal and trailing
-	// padding used to align the members of the structure or union on memory boundaries.
-	// that's why I will not take sizeof(__cudaFatCudaBinary), besides I do not
-	// want to send pointers, but the data there, so I need to prepare the structure
-	// for containing the data not pointers to the data (since they are
-	// meaningless on the remote machine)
-	// 32bit vs. 64bit should not be a concern since I am sending a message
-	// to the remote machine, and I need appropriate amount of space available
-	// counting size algorithm to some extent determines the serialization
-	// algorithm
-
-	// first pack numbers (longs and ints), we will pack it as
-
-
-	size += sizeof(pFatCubin->magic);
-	size += sizeof(pFatCubin->version);
-
-        //now the header
-        const __cudaFatCudaBinary2Header * header = (const __cudaFatCudaBinary2Header *)(pFatCubin->fatbinData);
-        size += sizeof(header->magic);
-        size += sizeof(header->version);
-        size += sizeof(header->length);
-
-        //now the binary
-        const char * base = (const char *)(header + 1);
-        unsigned long long int binary_len = header->length;
-        size += binary_len;
-	// now deal with strings;strlen() doesn't include NULL terminator
-	// we will store those characters as the size as returned by strlen
-	// then the string terminated plus NULL included (it will make simpler
-	// deserializing by strcpy
-
-	//size of string 
-	size += l_getStringPktSize(pFatCubin->f);
-
-	return size;
-}
-
 int getFatRecPktSize(const __cudaFatCudaBinary *pFatCubin, cache_num_entries_t * pEntriesCache){
 	int size = 0;
 	// clear cache - this is again cleaned in particular l_getSize__cudaFat...
@@ -561,23 +472,6 @@ int getFatRecPktSize(const __cudaFatCudaBinary *pFatCubin, cache_num_entries_t *
 	return size;
 }
 
-int getFatRecPktSize_4(const __cudaFatCudaBinary *pFatCubin, cache_num_entries_t * pEntriesCache){
-	int size = 0;
-	// clear cache - this is again cleaned in particular l_getSize__cudaFat...
-	// functions
-	pEntriesCache->ncubs = 0;
-	pEntriesCache->ndebs = 0;
-	pEntriesCache->ndeps = 0;
-	pEntriesCache->nelves = 0;
-	pEntriesCache->nexps = 0;
-	pEntriesCache->nimps = 0;
-	pEntriesCache->nptxs = 0;
-
-	size = l_getFatRecPktSize_4(pFatCubin, pEntriesCache);
-	//size += l_getSize__cudaFatBinaryEntry(pFatCubin->dependends, pEntriesCache);
-
-	return size;
-}
 /**
  * allocates the cuda packet
  *
@@ -1603,19 +1497,6 @@ int packFatBinary(char * pFatPack, __cudaFatCudaBinary * const pSrcFatC,
 	return pFatPack - pFatPackOrig;
 }
 
-int packFatBinary_4(char * pFatPack, __cudaFatCudaBinary2 * const pSrcFatC,
-		cache_num_entries_t * const pEntriesCache){
-	// to enabling counting the offset
-	char * pFatPackOrig = pFatPack;
-	int offset = 0;
-
-	// pack everything apart from dependends
-	offset = l_packFatBinary_4(pFatPack, pSrcFatC, pEntriesCache);
-	if ( ERROR == offset ) return ERROR; else pFatPack += offset;
-
-	return pFatPack - pFatPackOrig;
-}
-
 int l_packFatBinary(char * pFatPack, __cudaFatCudaBinary * const pSrcFatC,
 		cache_num_entries_t * const pEntriesCache){
 
@@ -1674,72 +1555,6 @@ int l_packFatBinary(char * pFatPack, __cudaFatCudaBinary * const pSrcFatC,
 	return pFatPack - pFatPackOrig;
 }
 
-int l_packEntries_4(char * pFatPack, __cudaFatCudaBinary2Entry * entry)
-{
-	memcpy(pFatPack, (unsigned int *)&entry->type, sizeof(entry->type));
-	pFatPack += sizeof(entry->type);
-	memcpy(pFatPack, (unsigned int*)&entry->binary, sizeof(entry->binary));
-	pFatPack += sizeof(entry->binary);
-	memcpy(pFatPack, (unsigned int*)&entry->binarySize, sizeof(entry->binarySize));
-	pFatPack += sizeof(entry->binarySize);
-	memcpy(pFatPack, (unsigned int*)&entry->unknown2, sizeof(entry->unknown2));
-	pFatPack += sizeof(entry->unknown2);
-	memcpy(pFatPack, (unsigned int*)&entry->kindOffset, sizeof(entry->kindOffset));
-	pFatPack += sizeof(entry->kindOffset);
-	memcpy(pFatPack, (unsigned int*)&entry->unknown3, sizeof(entry->unknown3));
-	pFatPack += sizeof(entry->unknown3);
-	memcpy(pFatPack, (unsigned int*)&entry->unknown4, sizeof(entry->unknown4));
-	pFatPack += sizeof(entry->unknown4);
-	memcpy(pFatPack, (unsigned int*)&entry->unknown5, sizeof(entry->unknown5));
-	pFatPack += sizeof(entry->unknown5);
-	memcpy(pFatPack, (unsigned int*)&entry->name, sizeof(entry->name));
-	pFatPack += sizeof(entry->name);
-	memcpy(pFatPack, (unsigned int*)&entry->nameSize, sizeof(entry->nameSize));
-	pFatPack += sizeof(entry->nameSize);
-	memcpy(pFatPack, (unsigned long long int*)&entry->unknown6, sizeof(entry->unknown6));
-	pFatPack += sizeof(entry->unknown6);
-	memcpy(pFatPack, (unsigned long long int*)&entry->unknown7, sizeof(entry->unknown7));
-	pFatPack += sizeof(entry->unknown7);
-}
-
-int l_packFatBinary_4(char * pFatPack, __cudaFatCudaBinary2 * const pSrcFatC,
-		cache_num_entries_t * const pEntriesCache){
-
-	// to enabling counting the offset
-	char * pFatPackOrig = pFatPack;
-	
-	int offset = 0;
-
-	memcpy(pFatPack, (int *)&pSrcFatC->magic, sizeof(pSrcFatC->magic));
-	pFatPack += sizeof(pSrcFatC->magic);
-	memcpy(pFatPack, (int *)&pSrcFatC->version, sizeof(pSrcFatC->version));
-	pFatPack += sizeof(pSrcFatC->version);
-
-	//now the header
-	const __cudaFatCudaBinary2Header * header = (const __cudaFatCudaBinary2Header *)(pSrcFatC->fatbinData);
-	memcpy(pFatPack, (unsigned int *)&header->magic, sizeof(header->magic));
-	pFatPack += sizeof(header->magic);
-	memcpy(pFatPack, (unsigned int *)&header->version, sizeof(header->version));
-	pFatPack += sizeof(header->version);
-	memcpy(pFatPack, (unsigned long long int *)&header->length, sizeof(header->length));
-	pFatPack += sizeof(header->length);
-	unsigned long long int * read_pointer = pFatPack - sizeof(unsigned long long int);
-	printf("\nBinary length:%x\n", *read_pointer);
-
-	//now the binary
-        const char * base = (const char *)(header + 1);
-	unsigned long long int binary_len = header->length;
-	memcpy(pFatPack, (const char *)base, binary_len); 
-	pFatPack += binary_len;
-
-	// now the string
-	offset = l_packStr(pFatPack, pSrcFatC->f);
-	if ( ERROR == offset ) return ERROR; else pFatPack += offset;
-
-	fprintf(stderr, "packed the binary\n");   
- 
-	return pFatPack - pFatPackOrig;
-}
 /**
  * Unpacks the binary
  * @param pFatC the destination
@@ -1801,47 +1616,6 @@ int unpackFatBinary(__cudaFatCudaBinary *pFatC, char * pFatPack){
 
 	pFatC->dependends = l_unpackDep(pFatPack, &offset);
 	if( ERROR == offset ) return ERROR; else pFatPack += offset;
-
-	return pFatPack - pFatPackOrig;
-}
-
-int unpackFatBinary_4(__cudaFatCudaBinary2 *pFatC, char * pFatPack){
-	// to remember how many bytes we have read
-	char * pFatPackOrig = pFatPack;
-	
-	// how many bytes we have read
-	int offset;
-	printf("\nInitial magic pointer:%x\n", *(int *)pFatPack);
-	memcpy(&pFatC->magic, (int *)pFatPack, sizeof(pFatC->magic));
-	pFatPack += sizeof(pFatC->magic);
-	memcpy(&pFatC->version, (int *) pFatPack, sizeof(pFatC->version));
-	pFatPack += sizeof(pFatC->version);
-   
-        const __cudaFatCudaBinary2Header * header_base = (const __cudaFatCudaBinary2Header *)(pFatPack); 
-	pFatC->fatbinData = malloc(sizeof(__cudaFatCudaBinary2Header) + header_base->length);
-
-	fprintf(stderr, "start unpacking header\n");
-	//now unpacking header
-	__cudaFatCudaBinary2Header * header = (__cudaFatCudaBinary2Header *)(pFatC->fatbinData);
-	memcpy(&header->magic, (unsigned int *)pFatPack, sizeof(header->magic));
-	pFatPack += sizeof(header->magic);
-	memcpy(&header->version, (unsigned int *)pFatPack, sizeof(header->version));
-	pFatPack += sizeof(header->version);
-	memcpy(&header->length, (unsigned long long int *)pFatPack, sizeof(header->length));
-	pFatPack += sizeof(header->length);
-	unsigned long long int * read_pointer = pFatPack - sizeof(unsigned long long int);
-	printf("\nBinary length:%x\n", *read_pointer);
-
-	fprintf(stderr, "start unpacking binary\n");
-	//now the binary
-        const char * base = (const char *)(header + 1);
-	unsigned long long int binary_len = header->length;
-	memcpy((char *)base, (const char *)pFatPack, binary_len); 
-	pFatPack += binary_len;
-
-	// now unpack strings
-	pFatC->f = l_unpackStr(pFatPack, &offset); 
-	if ( ERROR == offset ) return ERROR; else pFatPack += offset;
 
 	return pFatPack - pFatPackOrig;
 }

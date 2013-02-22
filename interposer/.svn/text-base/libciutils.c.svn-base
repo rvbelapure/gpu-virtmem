@@ -1811,7 +1811,7 @@ int unpackFatBinary_4(__cudaFatCudaBinary2 *pFatC, char * pFatPack){
 	
 	// how many bytes we have read
 	int offset;
-	printf("\nInitial magic pointer:%x\n", *(int *)pFatPack);
+	//printf("\nInitial magic pointer:%x\n", *(int *)pFatPack);
 	memcpy(&pFatC->magic, (int *)pFatPack, sizeof(pFatC->magic));
 	pFatPack += sizeof(pFatC->magic);
 	memcpy(&pFatC->version, (int *) pFatPack, sizeof(pFatC->version));

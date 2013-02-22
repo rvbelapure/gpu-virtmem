@@ -33,7 +33,7 @@ struct kernel_arg_node
 	size_t size;
 	size_t offset;
 	struct mem_map * vmem_ptr;
-	struct kernel_args *next;
+	struct kernel_arg_node *next;
 };
 
 struct kernel_args

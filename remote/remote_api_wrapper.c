@@ -1016,8 +1016,8 @@ int nvbackCudaGetDevice_srv(cuda_packet_t *packet, conn_t * pConn) {
 	//*DEVICE_ASSIGNED = packet->args[0].argi = get_next_weighted_device_async_memcpy_feedback(packet->args[2].argi);
 	//*DEVICE_ASSIGNED = packet->args[0].argi = get_next_weighted_device_execution_time_feedback(packet->args[2].argi);
 	//*DEVICE_ASSIGNED = packet->args[0].argi = get_next_device();
-	//*DEVICE_ASSIGNED = packet->args[0].argi = get_next_device_RR();
-	*DEVICE_ASSIGNED = packet->args[0].argi = 0;
+	*DEVICE_ASSIGNED = packet->args[0].argi = get_next_device_RR();
+	//*DEVICE_ASSIGNED = packet->args[0].argi = 1;
 	printf("\n\n\n\nnvbackCudaGetDevice_srv: GOT DEV:%d********\n\n\n\n", packet->args[0].argi);
 
 	p_debug( "Current assigned device id = %ld\n", packet->args[0].argi );
@@ -1096,7 +1096,7 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 			packet->ret_ex_val.err, packet->method_id);
 
 	if(packet->ret_ex_val.err == cudaSuccess)
-		mem_map_creat(packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);
+		mem_map_creat((struct mem_map **) packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);
 
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
@@ -1106,7 +1106,7 @@ int nvbackCudaFree_srv(cuda_packet_t *packet, conn_t *pConn) {
 	packet->ret_ex_val.err = cudaFree(packet->args[0].argp);
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 	if(packet->ret_ex_val.err == 0)
-		mem_map_delete(packet->vmmap,&(packet->args[0].argp));
+		mem_map_delete((struct mem_map **) packet->vmmap,&(packet->args[0].argp));
 	return (packet->ret_ex_val.err == 0) ? OK : ERROR;
 }
 
@@ -1245,9 +1245,8 @@ int nvbackCudaMemcpy_srv(cuda_packet_t *packet, conn_t * pConn) {
 	switch(packet->method_id)
 	{
 		case CUDA_MEMCPY_H2D:
-			mem_map_update_data(packet->vmmap,(void **) &(packet->args[0].argui), (void *) packet->args[1].argui,
-			packet->args[2].argi);
-			mem_map_update_status(packet->vmmap, (void **) &(packet->args[0].argui), D_READY);
+			mem_map_update_data((struct mem_map **) packet->vmmap,(void **) &(packet->args[0].argui), (void *) packet->args[1].argui,packet->args[2].argi);
+			mem_map_update_status((struct mem_map **) packet->vmmap, (void **) &(packet->args[0].argui), D_READY);
 			break;
 	}
 
@@ -1452,6 +1451,54 @@ int __nvback_cudaRegisterFatBinary_srv(cuda_packet_t *packet, conn_t * myconn) {
 	return OK;
 }
 
+//new register backend
+int __nvback_cudaRegisterFatBinary2_srv(cuda_packet_t *packet, conn_t * myconn) {
+
+	// this will held the new structure for fatcubin_info_srv
+	fatcubin_info_t * pFatCInfo = NULL;
+
+	// NULL value indicates that we need to create an array of cudaRegisterFatBinaries
+	// it is because each .cu file has a register fat binary
+	if (NULL == fatCInfoArr)
+		// NULL value indicates that this is the first fat binary to be registered
+		// clear all values to 0
+		fatCInfoArr = g_array_new(FALSE, TRUE, sizeof(fatcubin_info_t));
+
+	// clear all values to 0
+	pFatCInfo = (fatcubin_info_t*) calloc(1, sizeof(fatcubin_info_t));
+
+	nullExitChkptMalloc(pFatCInfo, (char*) __FUNCTION__);
+
+	pFatCInfo->fatCubin = (__cudaFatCudaBinary2 *) malloc(
+			sizeof(__cudaFatCudaBinary2 ));
+
+	if (mallocCheck(pFatCInfo->fatCubin, __FUNCTION__, NULL) == ERROR)
+		exit(ERROR);
+
+	if (unpackFatBinary_4(pFatCInfo->fatCubin, myconn->pReqBuffer) == ERROR) {
+		p_error("Problems with unpacking fat binary. Exiting ... \n");
+	} else {
+		p_debug( "__OK__ No problem with unpacking fat binary\n");
+		//l_printFatBinary(pFatCInfo->fatCubin);
+	}
+
+	// start to build the structure
+	pFatCInfo->fatCubinHandle = __cudaRegisterFatBinary(pFatCInfo->fatCubin);
+
+	// remember, this macro requires appending value (not a pointer to a value)
+	// the second thing you need to remember, it looks that the place
+	// where you put this call can make a difference, since it looks as
+	// it makes a copy of that value, so if you do not have the right thing
+	// you are
+	g_array_append_val(fatCInfoArr, *pFatCInfo);
+
+	packet->args[1].argp = pFatCInfo->fatCubin;
+	packet->ret_ex_val.handle = pFatCInfo->fatCubinHandle;
+
+	p_debug( "FATCUBIN HANDLE: registered %p\n", pFatCInfo->fatCubinHandle);
+	p_debug( "FATCUBIN: registered %p\n", pFatCInfo->fatCubin);
+	return OK;
+}
 int __nvback_cudaRegisterFunction_srv(cuda_packet_t *packet, conn_t * myconn) {
 	reg_func_args_t * pA = malloc(sizeof(reg_func_args_t));
 	fatcubin_info_t * pFcI = NULL;

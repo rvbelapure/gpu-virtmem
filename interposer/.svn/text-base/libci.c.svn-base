@@ -2987,37 +2987,6 @@ void r__cudaUnregisterFatBinary(void** fatCubinHandle, int index) {
 	free(pPacket);
 }
 
-void r__cudaUnregisterFatBinary2(void** fatCubinHandle, int index) {
-	cuda_packet_t * pPacket;
-    
-	if (l_remoteInitMetThrReq(&pPacket, __CUDA_UNREGISTER_FAT_BINARY,
-                              __FUNCTION__) == ERROR) {
-		exit(ERROR);
-	}
-    
-	// update packet
-	pPacket->args[0].argdp = fatCubinHandle;
-    
-	if (__nvback_cudaUnregisterFatBinary_rpc(pPacket, index) == ERROR) {
-		p_warn("__ERROR__ Return from rpc with the wrong return value.\n");
-		// @todo some cleaning or setting cuda_err
-		cuda_err = cudaErrorUnknown;
-	} else {
-		// printRegVarTab(regHostVarsTab);
-        
-		p_debug("__OK__ Return from rpc with ok value.\n");
-	#if 0
-		// remove the handler;
-		g_vars_remove(regHostVarsTab, fatCubinHandle);
-		// destroy the table if the last handler has been removed
-		if( regHostVarsTab != NULL && g_hash_table_size(regHostVarsTab)  == 0)
-			g_hash_table_destroy(regHostVarsTab);
-        #endif
-        regHostVarsTab = NULL;
-	}
-    
-	free(pPacket);
-}
 void l__cudaUnregisterFatBinary(void** fatCubinHandle) {
 	typedef void** (* pFuncType)(void** fatCubinHandle);
 	static pFuncType pFunc = NULL;
