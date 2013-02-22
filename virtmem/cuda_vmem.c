@@ -137,6 +137,41 @@ struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)
 	return NULL;
 }
 
+void vmem_pageout_all(struct mem_map ** table)	/* sample test method */
+{
+	struct mem_map * iter = *table;
+	cudaDeviceSynchronize();
+	while(iter)
+	{
+		enum vmem_status st = iter->status;
+		if((st == D_READY) || (st == D_MODIFIED))
+		{
+			cudaMemcpy(iter->swap, *(iter->actual_devptr), iter->size, cudaMemcpyDeviceToHost);
+			cudaFree(*(iter->actual_devptr));
+			(*(iter->actual_devptr)) = NULL;
+			iter->status = D_MEMWAIT;
+		}
+		iter = iter->next;
+	}
+}
+
+void vmem_pagein_all(struct mem_map ** table) /* sample test method */
+{
+	struct mem_map * iter = *table;
+	cudaDeviceSynchronize();
+	while(iter)
+	{
+		enum vmem_status st = iter->status;
+		if((st == D_MEMWAIT) || (st == D_DEFERRED))
+		{
+			cudaMalloc(iter->actual_devptr,iter->size);
+			cudaMemcpy(*(iter->actual_devptr), iter->swap, iter->size, cudaMemcpyHostToDevice);
+			iter->status = D_READY;
+		}
+		iter = iter->next;
+	}
+}
+
 
 /* ===================================================================================*/
 
