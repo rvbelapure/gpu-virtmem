@@ -186,7 +186,7 @@ void vmem_pagein_all(struct mem_map ** table) /* sample test method */
 	}
 }
 
-void mem_map_print(struct mem_map ** table)
+void mem_map_print(struct mem_map ** table) /* sample test method */
 {
 	struct mem_map * iter = *table;
 	while(iter)
