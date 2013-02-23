@@ -5,6 +5,7 @@
 
 void mem_map_init(struct mem_map ** table)
 {
+	fprintf(stderr,"VMEM vmem system initialized\n");
 	*table = NULL;
 }
 
@@ -20,6 +21,8 @@ void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size)
 	new_node->size = size;
 	new_node->next = NULL;
 
+	fprintf(stderr,"VMEM new vmem entry, devptr = %p\n",*devptr);
+
 	if(*table == NULL)
 		*table = new_node;
 	else
@@ -33,6 +36,7 @@ void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size)
 
 int mem_map_get_status(struct mem_map ** table, void ** devptr)
 {
+	fprintf(stderr,"VMEM in get status, devptr = %p\n",*devptr);
 	if(*table == NULL)
 		return -1;
 	struct mem_map * iter = *table;
@@ -40,6 +44,7 @@ int mem_map_get_status(struct mem_map ** table, void ** devptr)
 	{
 		if(*(iter->devptr) == *devptr)
 		{
+			fprintf(stderr,"VMEM status is %d, devptr = %p\n",iter->status,*devptr);
 			return iter->status;
 		}
 		iter = iter->next;
@@ -65,6 +70,8 @@ void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_st
 
 void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size)
 {
+
+	fprintf(stderr,"VMEM update data called, devptr = %p\n",*devptr);
 	if(*table == NULL)
 		return;
 	struct mem_map * iter = *table;
@@ -73,6 +80,7 @@ void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size
 		if(*(iter->devptr) == *devptr)
 		{
 			memcpy(iter->swap, src, size);
+			fprintf(stderr,"VMEM updated data, devptr = %p\n",*devptr);
 			break;
 		}
 		iter = iter->next;
@@ -82,11 +90,13 @@ void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size
 
 void ** mem_map_get_actual_devptr(struct mem_map ** table, void ** devptr)
 {
+	fprintf(stderr, "VMEM Searching actual device ptrs...\n");
 	if(*table == NULL)
 		return NULL;
 	struct mem_map * iter = *table;
 	while(iter)
 	{
+		fprintf(stderr,"VMEM %p == %p ?\n",*(iter->devptr), *devptr);
 		if(*(iter->devptr) == *devptr)
 			return iter->actual_devptr;
 		iter = iter->next;
@@ -139,6 +149,7 @@ struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)
 
 void vmem_pageout_all(struct mem_map ** table)	/* sample test method */
 {
+	fprintf(stderr,"VMEM Paging out all the devptrs\n");
 	struct mem_map * iter = *table;
 	cudaDeviceSynchronize();
 	while(iter)
@@ -146,6 +157,7 @@ void vmem_pageout_all(struct mem_map ** table)	/* sample test method */
 		enum vmem_status st = iter->status;
 		if((st == D_READY) || (st == D_MODIFIED))
 		{
+			fprintf(stderr,"VMEM paging out %p, size %ld\n", *(iter->actual_devptr), iter->size);
 			cudaMemcpy(iter->swap, *(iter->actual_devptr), iter->size, cudaMemcpyDeviceToHost);
 			cudaFree(*(iter->actual_devptr));
 			(*(iter->actual_devptr)) = NULL;
@@ -157,6 +169,7 @@ void vmem_pageout_all(struct mem_map ** table)	/* sample test method */
 
 void vmem_pagein_all(struct mem_map ** table) /* sample test method */
 {
+	fprintf(stderr,"VMEM Paging in all the devptrs\n");
 	struct mem_map * iter = *table;
 	cudaDeviceSynchronize();
 	while(iter)
@@ -167,7 +180,19 @@ void vmem_pagein_all(struct mem_map ** table) /* sample test method */
 			cudaMalloc(iter->actual_devptr,iter->size);
 			cudaMemcpy(*(iter->actual_devptr), iter->swap, iter->size, cudaMemcpyHostToDevice);
 			iter->status = D_READY;
+			fprintf(stderr,"VMEM paged in %p, size %ld\n", *(iter->actual_devptr), iter->size);
 		}
+		iter = iter->next;
+	}
+}
+
+void mem_map_print(struct mem_map ** table)
+{
+	struct mem_map * iter = *table;
+	while(iter)
+	{
+		fprintf(stderr,"VMEM devptr = %p, actual devptr = %p, status = %d, size = %d, swap = %p\n",*(iter->devptr),*iter->actual_devptr,
+		iter->status,iter->size,iter->swap);
 		iter = iter->next;
 	}
 }

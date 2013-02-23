@@ -665,13 +665,11 @@ D_MODIFIED	virtmem/cuda_vmem.h	/^	D_MODIFIED,	\/\/ device mem allocated, data pr
 D_READY	virtmem/cuda_vmem.h	/^	D_READY,	\/\/ device mem allocated and data copied on device, in sync with vmem system - cudaLaunch allowed$/;"	e	enum:vmem_status
 EPOCH_LENGTH	l2scheduler/sched_commons.h	38;"	d
 ERROR	include/debug.h	109;"	d
-FATBIN_2_PTX	cudaFatBinary.h	/^    FATBIN_2_PTX = 0x1$/;"	e	enum:FatBin2EntryType
 FATBIN_2_PTX	include/cudaFatBinary.h	/^    FATBIN_2_PTX = 0x1$/;"	e	enum:FatBin2EntryType
 FATCUBININFO_H_	include/fatcubininfo.h	11;"	d
 FE_BE_PIN_PAGES	include/method_id.h	/^    FE_BE_PIN_PAGES,$/;"	e	enum:METHOD_ID
 FIFO_PATH_0	backend/scheduler.c	19;"	d	file:
 FIFO_PATH_1	backend/scheduler.c	20;"	d	file:
-FatBin2EntryType	cudaFatBinary.h	/^enum FatBin2EntryType {$/;"	g
 FatBin2EntryType	include/cudaFatBinary.h	/^enum FatBin2EntryType {$/;"	g
 GBookmarkFile	interposer/libci.s	/^GBookmarkFile *g_bookmark_file_new (void);$/;"	l
 GDateDay	interposer/libci.s	/^GDateDay g_date_get_day (const GDate *date);$/;"	l
@@ -1090,28 +1088,18 @@ __const	interposer/libci.s	/^     __const struct timespec *__abstime);$/;"	t
 __const	interposer/libci.s	/^     __const struct tm *__restrict __tp,$/;"	t
 __const	interposer/libci.s	/^    __const struct in_addr *__slist)$/;"	t
 __const	interposer/libci.s	/^   __const struct tm *__restrict __tp) __attribute__ ((__nothrow__));$/;"	t
-__cudaFatCudaBinary2	cudaFatBinary.h	/^} __cudaFatCudaBinary2;$/;"	t	typeref:struct:__cudaFatCudaBinaryRec2
 __cudaFatCudaBinary2	include/cudaFatBinary.h	/^} __cudaFatCudaBinary2;$/;"	t	typeref:struct:__cudaFatCudaBinaryRec2
-__cudaFatCudaBinary2Entry	cudaFatBinary.h	/^} __cudaFatCudaBinary2Entry;$/;"	t	typeref:struct:__cudaFatCudaBinary2EntryRec
 __cudaFatCudaBinary2Entry	include/cudaFatBinary.h	/^} __cudaFatCudaBinary2Entry;$/;"	t	typeref:struct:__cudaFatCudaBinary2EntryRec
-__cudaFatCudaBinary2EntryRec	cudaFatBinary.h	/^typedef struct __cudaFatCudaBinary2EntryRec {$/;"	s
 __cudaFatCudaBinary2EntryRec	include/cudaFatBinary.h	/^typedef struct __cudaFatCudaBinary2EntryRec {$/;"	s
-__cudaFatCudaBinary2Header	cudaFatBinary.h	/^} __cudaFatCudaBinary2Header;$/;"	t	typeref:struct:__cudaFatCudaBinary2HeaderRec
 __cudaFatCudaBinary2Header	include/cudaFatBinary.h	/^} __cudaFatCudaBinary2Header;$/;"	t	typeref:struct:__cudaFatCudaBinary2HeaderRec
-__cudaFatCudaBinary2HeaderRec	cudaFatBinary.h	/^typedef struct __cudaFatCudaBinary2HeaderRec {$/;"	s
 __cudaFatCudaBinary2HeaderRec	include/cudaFatBinary.h	/^typedef struct __cudaFatCudaBinary2HeaderRec {$/;"	s
-__cudaFatCudaBinaryRec2	cudaFatBinary.h	/^typedef struct __cudaFatCudaBinaryRec2 {$/;"	s
 __cudaFatCudaBinaryRec2	include/cudaFatBinary.h	/^typedef struct __cudaFatCudaBinaryRec2 {$/;"	s
 __cudaFatDontCacheFlag	interposer/libci.s	/^      __cudaFatDontCacheFlag = (1 << 1),$/;"	d
 __cudaFatDontSearchFlag	interposer/libci.s	/^      __cudaFatDontSearchFlag = (1 << 0),$/;"	d
-__cudaFatMAGIC	cudaFatBinary.h	2;"	d
 __cudaFatMAGIC	include/cudaFatBinary.h	2;"	d
-__cudaFatMAGIC2	cudaFatBinary.h	3;"	d
 __cudaFatMAGIC2	include/cudaFatBinary.h	3;"	d
-__cudaFatMAGIC3	cudaFatBinary.h	4;"	d
 __cudaFatMAGIC3	include/cudaFatBinary.h	4;"	d
 __cudaFatSassDebugFlag	interposer/libci.s	/^      __cudaFatSassDebugFlag = (1 << 2)$/;"	d
-__cudaFatVERSION	cudaFatBinary.h	1;"	d
 __cudaFatVERSION	include/cudaFatBinary.h	1;"	d
 __cudaRegisterFatBinary	interposer/libci.c	/^void** __cudaRegisterFatBinary(void* fatC) {$/;"	f
 __cudaRegisterFatBinary	interposer/libci_back.c	/^void** __cudaRegisterFatBinary(void* fatC) {$/;"	f
@@ -1359,9 +1347,7 @@ becb39384ff5043a567fd1ac1eb0f64e	doxydoc/html/libci_8c.html	/^<a class="anchor" 
 bf96d37bcc19346d038c4e864ec41d93	doxydoc/html/remote__api__wrapper_8c.html	/^<a class="anchor" name="bf96d37bcc19346d038c4e864ec41d93"><\/a><!-- doxytag: member="remote_api_wrapper.c::nvbackCudaSetupArgument_srv" ref="bf96d37bcc19346d038c4e864ec41d93" args="(cuda_packet_t *packet, conn_t *pConn)" -->$/;"	a
 bf96d37bcc19346d038c4e864ec41d93	doxydoc/html/remote__api__wrapper_8h.html	/^<a class="anchor" name="bf96d37bcc19346d038c4e864ec41d93"><\/a><!-- doxytag: member="remote_api_wrapper.h::nvbackCudaSetupArgument_srv" ref="bf96d37bcc19346d038c4e864ec41d93" args="(cuda_packet_t *packet, conn_t *pConn)" -->$/;"	a
 bid	include/packetheader.h	/^    uint3* bid;$/;"	m	struct:__anon1
-binary	cudaFatBinary.h	/^    unsigned int            binary;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 binary	include/cudaFatBinary.h	/^    unsigned int            binary;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-binarySize	cudaFatBinary.h	/^    unsigned int            binarySize;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 binarySize	include/cudaFatBinary.h	/^    unsigned int            binarySize;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 bit_idx	include/packetheader.h	/^	int bit_idx;        \/\/ Pass idx into bitmap for mmap cases (HACK)$/;"	m	union:ret_extra
 blockDim	virtmem/cuda_vmem.h	/^	dim3 blockDim;$/;"	m	struct:kmap
@@ -2836,7 +2822,6 @@ extern	interposer/libci.s	/^extern void tzset (void) __attribute__ ((__nothrow__
 extern	interposer/libci.s	/^extern wint_t __woverflow (_IO_FILE *, wint_t);$/;"	l
 extern	interposer/libci.s	/^extern wint_t __wuflow (_IO_FILE *);$/;"	l
 extern	interposer/libci.s	/^extern wint_t __wunderflow (_IO_FILE *);$/;"	l
-f	cudaFatBinary.h	/^    char *                      f;$/;"	m	struct:__cudaFatCudaBinaryRec2
 f	include/cudaFatBinary.h	/^    char *                      f;$/;"	m	struct:__cudaFatCudaBinaryRec2
 f0966c2641d9eaf11cfce5ba80b7e536	doxydoc/html/testLibciutils_8c.html	/^<a class="anchor" name="f0966c2641d9eaf11cfce5ba80b7e536"><\/a><!-- doxytag: member="testLibciutils.c::test_l_packUnpackPtx" ref="f0966c2641d9eaf11cfce5ba80b7e536" args="(void)" -->$/;"	a
 f2b0b36351daada84c3e6ad9149d8c5c	doxydoc/html/structreg__tex__args__t.html	/^<a class="anchor" name="f2b0b36351daada84c3e6ad9149d8c5c"><\/a><!-- doxytag: member="reg_tex_args_t::hostChannel" ref="f2b0b36351daada84c3e6ad9149d8c5c" args="" -->$/;"	a
@@ -2872,7 +2857,6 @@ fatCubinHandle	include/packetheader.h	/^	void **fatCubinHandle;$/;"	m	struct:__a
 fatCubinHandle	include/packetheader.h	/^	void **fatCubinHandle;$/;"	m	struct:__anon3
 fatCubinHandle	include/packetheader.h	/^	void** fatCubinHandle;$/;"	m	struct:__anon1
 fatCubinHandle	interposer/libci.s	/^  fatCubinHandle = pPacket->ret_ex_val.handle;$/;"	d
-fatbinData	cudaFatBinary.h	/^    unsigned long long *  fatbinData;$/;"	m	struct:__cudaFatCudaBinaryRec2
 fatbinData	include/cudaFatBinary.h	/^    unsigned long long *  fatbinData;$/;"	m	struct:__cudaFatCudaBinaryRec2
 fatcubin_handle_counter	interposer/libci.c	/^int fatcubin_handle_counter=0;$/;"	v
 fatcubin_info_t	include/fatcubininfo.h	/^} fatcubin_info_t;$/;"	t	typeref:struct:__anon4
@@ -3537,7 +3521,6 @@ kernel_launch_count	remote/remote_api_wrapper.c	/^float kernel_launch_count[2][4
 kernel_launch_count	remote/remote_api_wrapper_3dec.c	/^float kernel_launch_count[2][4] = { {0} };$/;"	v
 kernel_time	include/packetheader.h	/^	struct timeval kernel_time, non_kernel_time;$/;"	m	struct:cuda_packet	typeref:struct:cuda_packet::timeval
 key	doxydoc/html/search.php	/^      $key=$di["url"];$/;"	v
-kindOffset	cudaFatBinary.h	/^    unsigned int            kindOffset;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 kindOffset	include/cudaFatBinary.h	/^    unsigned int            kindOffset;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 kindex	virtmem/cuda_vmem.c	/^int kindex, top, bottom;$/;"	v
 kmap	virtmem/cuda_vmem.h	/^struct kmap	\/* kernel map *\/$/;"	s
@@ -4585,14 +4568,11 @@ lcudaThreadSynchronize	interposer/libci.c	/^cudaError_t lcudaThreadSynchronize(v
 lcudaThreadSynchronize	interposer/libci_back.c	/^cudaError_t lcudaThreadSynchronize(void) {$/;"	f
 lcudaThreadSynchronize	interposer/libci_orig.c	/^cudaError_t lcudaThreadSynchronize(void) {$/;"	f
 lcudaThreadSynchronize	libci.s	/^lcudaThreadSynchronize:$/;"	l
-length	cudaFatBinary.h	/^    unsigned long long int  length;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 length	include/cudaFatBinary.h	/^    unsigned long long int  length;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 listen_thread	backend/scheduler.c	/^void* listen_thread(void *thid)$/;"	f
 listen_thread	l2scheduler/cfs_scheduler.c	/^void* listen_thread(void *thid)$/;"	f
 lo	doxydoc/html/search.php	/^  $lo = ord($word{1});$/;"	v
 m	cuda-app/particle.h	/^    float m;$/;"	m	struct:Particle
-magic	cudaFatBinary.h	/^    int                         magic;$/;"	m	struct:__cudaFatCudaBinaryRec2
-magic	cudaFatBinary.h	/^    unsigned int            magic;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 magic	include/cudaFatBinary.h	/^    int                         magic;$/;"	m	struct:__cudaFatCudaBinaryRec2
 magic	include/cudaFatBinary.h	/^    unsigned int            magic;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 main	Global_Sched/backend_14092012.c	/^int main(){$/;"	f
@@ -4630,6 +4610,7 @@ mem_map_get_actual_devptr	virtmem/cuda_vmem.c	/^void ** mem_map_get_actual_devpt
 mem_map_get_entry	virtmem/cuda_vmem.c	/^struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)$/;"	f
 mem_map_get_status	virtmem/cuda_vmem.c	/^int mem_map_get_status(struct mem_map ** table, void ** devptr)$/;"	f
 mem_map_init	virtmem/cuda_vmem.c	/^void mem_map_init(struct mem_map ** table)$/;"	f
+mem_map_print	virtmem/cuda_vmem.c	/^void mem_map_print(struct mem_map ** table)$/;"	f
 mem_map_update_data	virtmem/cuda_vmem.c	/^void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size)$/;"	f
 mem_map_update_status	virtmem/cuda_vmem.c	/^void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status)$/;"	f
 methodIdToString	interposer/libciutils.c	/^char * methodIdToString(const int method_id){$/;"	f
@@ -4649,9 +4630,7 @@ mysignalhandler1	backend/libl2scheduler.c	/^void mysignalhandler1(int n, siginfo
 mysignalhandler1	backend/libtruefairshare.c	/^void mysignalhandler1(int n, siginfo_t* info, void* k)$/;"	f
 mysignalhandler1	backend/scheduler.c	/^void mysignalhandler1(int n, siginfo_t* info, void* k)$/;"	f
 n	cuda-app/particle.h	/^	Vec3 n;$/;"	m	struct:Plane
-name	cudaFatBinary.h	/^    unsigned int            name;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 name	include/cudaFatBinary.h	/^    unsigned int            name;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-nameSize	cudaFatBinary.h	/^    unsigned int            nameSize;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 nameSize	include/cudaFatBinary.h	/^    unsigned int            nameSize;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 ncubs	interposer/libciutils.h	/^	int ncubs;$/;"	m	struct:__anon5
 ndebs	interposer/libciutils.h	/^	int ndebs;$/;"	m	struct:__anon5
@@ -5225,7 +5204,6 @@ total_execution_time	remote/remote_api_wrapper.c	/^float total_execution_time[2]
 total_execution_time	remote/remote_api_wrapper_3dec.c	/^float total_execution_time[2][4] = { {0} };$/;"	v
 total_kernel_time	remote/remote_api_wrapper.c	/^float total_kernel_time[2][4] = { {0} , {0}};$/;"	v
 total_kernel_time	remote/remote_api_wrapper_3dec.c	/^float total_kernel_time[2][4] = { {0} };$/;"	v
-type	cudaFatBinary.h	/^    unsigned int            type;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 type	include/cudaFatBinary.h	/^    unsigned int            type;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 type	remote/connection.h	/^    conn_type_t         type;$/;"	m	struct:connection
 typedef	interposer/libci.s	/^    typedef struct CUarray_st *CUarray;$/;"	t
@@ -5661,17 +5639,11 @@ union	interposer/libci.s	/^union _GFloatIEEE754$/;"	l
 union	interposer/libci.s	/^union _GSystemThread$/;"	l
 union	interposer/libci.s	/^union _GTokenValue$/;"	l
 union	interposer/libci.s	/^union wait$/;"	l
-unknown2	cudaFatBinary.h	/^    unsigned int            unknown2;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown2	include/cudaFatBinary.h	/^    unsigned int            unknown2;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-unknown3	cudaFatBinary.h	/^    unsigned int            unknown3;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown3	include/cudaFatBinary.h	/^    unsigned int            unknown3;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-unknown4	cudaFatBinary.h	/^    unsigned int            unknown4;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown4	include/cudaFatBinary.h	/^    unsigned int            unknown4;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-unknown5	cudaFatBinary.h	/^    unsigned int            unknown5;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown5	include/cudaFatBinary.h	/^    unsigned int            unknown5;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-unknown6	cudaFatBinary.h	/^    unsigned long long int  unknown6;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown6	include/cudaFatBinary.h	/^    unsigned long long int  unknown6;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-unknown7	cudaFatBinary.h	/^    unsigned long long int  unknown7;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unknown7	include/cudaFatBinary.h	/^    unsigned long long int  unknown7;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 unpackFatBinary	interposer/libciutils.c	/^int unpackFatBinary(__cudaFatCudaBinary *pFatC, char * pFatPack){$/;"	f
 unpackFatBinary	interposer/libciutils_back.c	/^int unpackFatBinary(__cudaFatCudaBinary *pFatC, char * pFatPack){$/;"	f
@@ -5698,10 +5670,10 @@ variables	include/fatcubininfo.h	/^	reg_var_args_t *variables[MAX_REGISTERED_VAR
 vars_val_t	interposer/libci.s	/^vars_val_t * g_vars_val_delete(vars_val_t * pValue);$/;"	l
 vars_val_t	interposer/libci.s	/^vars_val_t * g_vars_val_new(char * hostVar, const char * deviceName);$/;"	l
 vars_val_t	interposer/libciutils.h	/^} vars_val_t;$/;"	t	typeref:struct:__anon7
-version	cudaFatBinary.h	/^    int                         version;$/;"	m	struct:__cudaFatCudaBinaryRec2
-version	cudaFatBinary.h	/^    unsigned int            version;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 version	include/cudaFatBinary.h	/^    int                         version;$/;"	m	struct:__cudaFatCudaBinaryRec2
 version	include/cudaFatBinary.h	/^    unsigned int            version;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
+vmem_pagein_all	virtmem/cuda_vmem.c	/^void vmem_pagein_all(struct mem_map ** table) \/* sample test method *\/$/;"	f
+vmem_pageout_all	virtmem/cuda_vmem.c	/^void vmem_pageout_all(struct mem_map ** table)	\/* sample test method *\/$/;"	f
 vmem_ptr	virtmem/cuda_vmem.h	/^	struct mem_map * vmem_ptr;$/;"	m	struct:kernel_arg_node	typeref:struct:kernel_arg_node::mem_map
 vmem_status	virtmem/cuda_vmem.h	/^enum vmem_status$/;"	g
 vmmap	include/packetheader.h	/^	void **vmmap;$/;"	m	struct:cuda_packet

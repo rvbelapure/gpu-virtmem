@@ -1117,6 +1117,16 @@ int nvbackCudaSetupArgument_srv(cuda_packet_t *packet, conn_t *pConn) {
 	// and may contribute to some bugs
 	//void *arg = (void*) ((char *)pConn->request_data_buffer + packet->ret_ex_val.data_unit);
 	void *arg = (void*) ((char *) pConn->pReqBuffer);
+	mem_map_print((struct mem_map **) packet->vmmap);
+	fprintf(stderr,"ARGSETUP arg from packet : %p\n",packet->args[0].argp);
+	fprintf(stderr, "ARGSETUP argument is arg :%p *arg : %p\n",arg,*((char **) arg));
+	// Vmem will update this arg if it is an devPtr
+	void ** actual_devptr = mem_map_get_actual_devptr((struct mem_map **) packet->vmmap, ((char **)arg));
+	if(actual_devptr)
+	{
+		fprintf(stderr, "VMEM argsetup, devptr found, old = %p, new = %p\n",*((char **) arg), *actual_devptr);
+		arg = actual_devptr;
+	}
 	packet->ret_ex_val.err = cudaSetupArgument(arg, packet->args[1].argi,
 			packet->args[2].argi);
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
@@ -1124,6 +1134,7 @@ int nvbackCudaSetupArgument_srv(cuda_packet_t *packet, conn_t *pConn) {
 }
 
 int nvbackCudaConfigureCall_srv(cuda_packet_t *packet, conn_t *pConn) {
+//	vmem_pagein_all((struct mem_map **) packet->vmmap);
 	packet->ret_ex_val.err = cudaConfigureCall(packet->args[0].arg_dim,
 			packet->args[1].arg_dim, packet->args[2].argi,
 			(cudaStream_t) packet->args[3].argi);
@@ -1185,6 +1196,9 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 		if (found == 1)
 			break;
 	}
+
+	vmem_pageout_all((struct mem_map ** ) packet->vmmap);
+	vmem_pagein_all((struct mem_map ** ) packet->vmmap);
 
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 

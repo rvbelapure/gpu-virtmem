@@ -1104,6 +1104,8 @@ cudaError_t rcudaSetupArgument(const void *arg, size_t size, size_t offset, int 
 	pPacket->args[1].argi = size;
 	pPacket->args[2].argi = offset; // for driver; Offset in argument stack to push new arg
 
+	fprintf(stderr,"ARGSETUP kernel arg = %p * : %p\n",arg,*(char **)arg);
+
 	// send the packet
 	if (nvbackCudaSetupArgument_rpc(pPacket, index) == OK) {
 		cuda_err = cudaSuccess;
@@ -1155,8 +1157,7 @@ cudaError_t cudaSetupArgument(const void *arg, size_t size, size_t offset) {
         //ret = lcudaSetupArgument(arg, size, offset);
     //else
         ret = rcudaSetupArgument(arg, size, offset, DEV_TO_INDEX[*CUR_DEV]);
-	if(arg)
-		fprintf(stderr,"ARGSETUP %s\n",arg);
+    fprintf(stderr,"ARGSETUP arg = %p\n",arg);
     return(ret);
 }
 
@@ -1351,6 +1352,7 @@ cudaError_t cudaMalloc(void **devPtr, size_t size) {
         //ret = lcudaMalloc(devPtr, size);
     //else
         ret = rcudaMalloc(devPtr, size, DEV_TO_INDEX[*CUR_DEV]);
+    fprintf(stderr, "CUDAMALLOC devptr = %p\n",*devPtr);
     return(ret);
 }
 

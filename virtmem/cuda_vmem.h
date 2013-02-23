@@ -67,6 +67,7 @@ void mem_map_delete(struct mem_map ** table, void **devptr);
 void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size);
 void ** mem_map_get_actual_devptr(struct mem_map ** table, void **devptr);
 struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr);
+void mem_map_print(struct mem_map **table);
 
 
 struct kmap * kmap_creat();
