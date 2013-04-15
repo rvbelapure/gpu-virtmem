@@ -435,11 +435,11 @@ ADDR_ALREADY_MAPPED	include/packetheader.h	69;"	d
 ADDR_UNMAPPED	include/packetheader.h	70;"	d
 ADD_Q	backend/scheduler.c	25;"	d	file:
 ADD_Q	l2scheduler/cfs_scheduler.h	15;"	d
-ADD_Q	l2scheduler/sched_commons.h	29;"	d
+ADD_Q	l2scheduler/sched_commons.h	34;"	d
 ADMISSION_PORT	remote/rconfig.h	19;"	d
-APP_TYPE_A	l2scheduler/sched_commons.h	41;"	d
+APP_TYPE_A	l2scheduler/sched_commons.h	46;"	d
 APP_TYPE_A_SHARE	l2scheduler/fair_share_sched.h	6;"	d
-APP_TYPE_B	l2scheduler/sched_commons.h	42;"	d
+APP_TYPE_B	l2scheduler/sched_commons.h	47;"	d
 APP_TYPE_B_SHARE	l2scheduler/fair_share_sched.h	7;"	d
 BACKEND_DEVICES	interposer/libciutils.c	/^int BACKEND_DEVICES=0;$/;"	v
 BACKEND_DEVICES	remote/remote_api_wrapper.c	/^int BACKEND_DEVICES;$/;"	v
@@ -450,10 +450,10 @@ BACKEND_NODES	interposer/libciutils.c	/^int BACKEND_NODES=0;$/;"	v
 BACKEND_NODES	interposer/libciutils_back.c	/^int BACKEND_NODES=0;$/;"	v
 CITUILS_H_	interposer/libciutils.h	10;"	d
 CLIENT_READ_PATH	l2scheduler/cfs_scheduler.h	8;"	d
-CLIENT_READ_PATH	l2scheduler/sched_commons.h	22;"	d
-CLIENT_SIGGET_PATH	l2scheduler/sched_commons.h	23;"	d
+CLIENT_READ_PATH	l2scheduler/sched_commons.h	24;"	d
+CLIENT_SIGGET_PATH	l2scheduler/sched_commons.h	25;"	d
 CLIENT_WRITE_PATH	l2scheduler/cfs_scheduler.h	7;"	d
-CLIENT_WRITE_PATH	l2scheduler/sched_commons.h	21;"	d
+CLIENT_WRITE_PATH	l2scheduler/sched_commons.h	23;"	d
 CONFIG_H_	include/config.h	10;"	d
 CONNECTION_H_	remote/connection.h	10;"	d
 CUDA_Addrmapped	include/packetheader.h	61;"	d
@@ -659,12 +659,14 @@ DEV_TO_INDEX	interposer/libciutils.c	/^int DEV_TO_INDEX[MAX_BACKEND_DEVICES];$/;
 DEV_TO_LOCALDEV	interposer/libciutils.c	/^int DEV_TO_LOCALDEV[MAX_BACKEND_DEVICES];$/;"	v
 DONE	interposer/libciutils.c	/^int DONE;$/;"	v
 D_DEFERRED	virtmem/cuda_vmem.h	/^	D_DEFERRED	\/\/ device mem not allocated & can not allocate, data with vmem system, cudaLaunch request received$/;"	e	enum:vmem_status
+D_IDLE	virtmem/cuda_vmem.h	/^	D_IDLE,		\/\/ device mem allowed, data on device and host, may be out of sync, kernel execution complete$/;"	e	enum:vmem_status
 D_INIT	virtmem/cuda_vmem.h	/^	D_INIT,		\/\/ device mem is malloc'ed, but no data available on either device or with vmem system$/;"	e	enum:vmem_status
 D_MEMWAIT	virtmem/cuda_vmem.h	/^	D_MEMWAIT,	\/\/ device mem is not allocated. But data exists with vmem system. - must call host2device copy before cudaLaunch$/;"	e	enum:vmem_status
 D_MODIFIED	virtmem/cuda_vmem.h	/^	D_MODIFIED,	\/\/ device mem allocated, data present on device, but may be out of sync with vmem system - cudaLaunch allowed$/;"	e	enum:vmem_status
 D_READY	virtmem/cuda_vmem.h	/^	D_READY,	\/\/ device mem allocated and data copied on device, in sync with vmem system - cudaLaunch allowed$/;"	e	enum:vmem_status
-EPOCH_LENGTH	l2scheduler/sched_commons.h	38;"	d
+EPOCH_LENGTH	l2scheduler/sched_commons.h	43;"	d
 ERROR	include/debug.h	109;"	d
+FAILURE	virtmem/cuda_vmem.h	12;"	d
 FATBIN_2_PTX	include/cudaFatBinary.h	/^    FATBIN_2_PTX = 0x1$/;"	e	enum:FatBin2EntryType
 FATCUBININFO_H_	include/fatcubininfo.h	11;"	d
 FE_BE_PIN_PAGES	include/method_id.h	/^    FE_BE_PIN_PAGES,$/;"	e	enum:METHOD_ID
@@ -677,9 +679,9 @@ GDateMonth	interposer/libci.s	/^GDateMonth g_date_get_month (const GDate *date);
 GDateWeekday	interposer/libci.s	/^GDateWeekday g_date_get_weekday (const GDate *date);$/;"	l
 GDateYear	interposer/libci.s	/^GDateYear g_date_get_year (const GDate *date);$/;"	l
 GDir	interposer/libci.s	/^GDir * g_dir_open (const gchar *path,$/;"	l
-GET_L2_DATA	l2scheduler/sched_commons.h	34;"	d
-GET_PRIORITY	l2scheduler/sched_commons.h	33;"	d
-GET_SIGNUM	l2scheduler/sched_commons.h	32;"	d
+GET_L2_DATA	l2scheduler/sched_commons.h	39;"	d
+GET_PRIORITY	l2scheduler/sched_commons.h	38;"	d
+GET_SIGNUM	l2scheduler/sched_commons.h	37;"	d
 GFileError	interposer/libci.s	/^GFileError g_file_error_from_errno (gint err_no);$/;"	l
 GHook	interposer/libci.s	/^GHook * g_hook_ref (GHookList *hook_list,$/;"	l
 GIConv	interposer/libci.s	/^GIConv g_iconv_open (const gchar *to_codeset,$/;"	l
@@ -708,6 +710,9 @@ GList	interposer/libci.s	/^GList * g_queue_find_custom (GQueue *queue,$/;"	l
 GLogFunc	interposer/libci.s	/^GLogFunc g_log_set_default_handler (GLogFunc log_func,$/;"	l
 GLogLevelFlags	interposer/libci.s	/^GLogLevelFlags g_log_set_always_fatal (GLogLevelFlags fatal_mask);$/;"	l
 GLogLevelFlags	interposer/libci.s	/^GLogLevelFlags g_log_set_fatal_mask (const gchar *log_domain,$/;"	l
+GMT_KEYID	l2scheduler/sched_commons.h	30;"	d
+GMT_SHM_INDEX_KEY	l2scheduler/sched_commons.h	32;"	d
+GMT_SHM_KEY	l2scheduler/sched_commons.h	31;"	d
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_default (void);$/;"	l
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_new (void);$/;"	l
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_ref (GMainContext *context);$/;"	l
@@ -856,11 +861,11 @@ HOSTNAME_STRLEN	interposer/libci.c	71;"	d	file:
 HOSTNAME_STRLEN	interposer/libciutils.c	23;"	d	file:
 HOSTNAME_STRLEN	interposer/libciutils_back.c	22;"	d	file:
 HOSTNAME_STRLEN	remote/rconfig.h	23;"	d
-IFRIT_ID	l2scheduler/sched_commons.h	45;"	d
+IFRIT_ID	l2scheduler/sched_commons.h	50;"	d
 INCOMING	remote/connection.h	/^    INCOMING,   \/\/ servicing a remote guest domain$/;"	e	enum:connection_type
 INVALID_PROCEESS	backend/scheduler.c	28;"	d	file:
 INVALID_PROCEESS	l2scheduler/cfs_scheduler.h	18;"	d
-INVALID_PROCEESS	l2scheduler/sched_commons.h	36;"	d
+INVALID_PROCEESS	l2scheduler/sched_commons.h	41;"	d
 IPPORT_BIFFUDP	interposer/libci.s	/^    IPPORT_BIFFUDP = 512,$/;"	d
 IPPORT_CMDSERVER	interposer/libci.s	/^    IPPORT_CMDSERVER = 514,$/;"	d
 IPPORT_DAYTIME	interposer/libci.s	/^    IPPORT_DAYTIME = 13,$/;"	d
@@ -915,11 +920,12 @@ IPPROTO_TCP	interposer/libci.s	/^    IPPROTO_TCP = 6,$/;"	d
 IPPROTO_TP	interposer/libci.s	/^    IPPROTO_TP = 29,$/;"	d
 IPPROTO_UDP	interposer/libci.s	/^    IPPROTO_UDP = 17,$/;"	d
 KIDRON_INI	include/config.h	14;"	d
-L2_FEEDBACK_TYPE_EX_TIME	l2scheduler/sched_commons.h	10;"	d
-L2_FEEDBACK_TYPE_NONE	l2scheduler/sched_commons.h	8;"	d
-L2_FEEDBACK_TYPE_UTIL	l2scheduler/sched_commons.h	9;"	d
+KLAUNCH_NOT_PENDING	virtmem/cuda_vmem.h	13;"	d
+L2_FEEDBACK_TYPE_EX_TIME	l2scheduler/sched_commons.h	12;"	d
+L2_FEEDBACK_TYPE_NONE	l2scheduler/sched_commons.h	10;"	d
+L2_FEEDBACK_TYPE_UTIL	l2scheduler/sched_commons.h	11;"	d
 LISTEN_PATH	l2scheduler/cfs_scheduler.h	6;"	d
-LISTEN_PATH	l2scheduler/sched_commons.h	20;"	d
+LISTEN_PATH	l2scheduler/sched_commons.h	22;"	d
 LOCAL_EXEC	interposer/libci.c	/^static int LOCAL_EXEC=1;  \/\/ by default local$/;"	v	file:
 LOCAL_EXEC	interposer/libci.s	/^ LOCAL_EXEC = l_getLocalFromConfig();$/;"	d
 LOCAL_EXEC	interposer/libci_back.c	/^static int LOCAL_EXEC=1;  \/\/ by default local$/;"	v	file:
@@ -928,20 +934,21 @@ LOCAL_EXEC	libci.s	/^LOCAL_EXEC:$/;"	l
 MAX_ARGS	include/packetheader.h	35;"	d
 MAX_BACKEND_DEVICES	interposer/libci.c	73;"	d	file:
 MAX_BACKEND_DEVICES	interposer/libciutils.c	25;"	d	file:
-MAX_BACKEND_DEVICES	remote/remote_api_wrapper.c	49;"	d	file:
+MAX_BACKEND_DEVICES	remote/remote_api_wrapper.c	50;"	d	file:
 MAX_BACKEND_DEVICES	remote/remote_api_wrapper_3dec.c	48;"	d	file:
 MAX_BACKEND_NODES	interposer/libci.c	72;"	d	file:
 MAX_BACKEND_NODES	interposer/libciutils.c	24;"	d	file:
 MAX_BACKEND_NODES	interposer/libciutils_back.c	23;"	d	file:
-MAX_BACKEND_NODES	remote/remote_api_wrapper.c	48;"	d	file:
+MAX_BACKEND_NODES	remote/remote_api_wrapper.c	49;"	d	file:
 MAX_BACKEND_NODES	remote/remote_api_wrapper_3dec.c	47;"	d	file:
 MAX_BACKEND_NODES	remote/remote_api_wrapper_back.c	39;"	d	file:
 MAX_CONTROLLER_COUNT	backend/scheduler.c	18;"	d	file:
 MAX_CONTROLLER_COUNT	l2scheduler/cfs_scheduler.h	4;"	d
-MAX_CONTROLLER_COUNT	l2scheduler/sched_commons.h	18;"	d
+MAX_CONTROLLER_COUNT	l2scheduler/sched_commons.h	20;"	d
 MAX_EXTRA_ARGS	remote/rconfig.h	41;"	d
 MAX_FATCUBIN_HANDLES	interposer/libci.c	74;"	d	file:
 MAX_KERNELS	virtmem/cuda_vmem.h	8;"	d
+MAX_MEMORY	virtmem/cuda_vmem.h	9;"	d
 MAX_METHODS	include/method_id.h	/^    MAX_METHODS$/;"	e	enum:METHOD_ID
 MAX_REGISTERED_FUNCS	include/fatcubininfo.h	21;"	d
 MAX_REGISTERED_SHARED	include/fatcubininfo.h	25;"	d
@@ -973,13 +980,13 @@ MSG_TRYHARD	interposer/libci.s	/^    MSG_TRYHARD = MSG_DONTROUTE,$/;"	d
 MSG_WAITALL	interposer/libci.s	/^    MSG_WAITALL = 0x100,$/;"	d
 MU	remote/remote_api_wrapper.c	/^pthread_mutex_t MU=PTHREAD_MUTEX_INITIALIZER;$/;"	v
 MU	remote/remote_api_wrapper_3dec.c	/^pthread_mutex_t MU=PTHREAD_MUTEX_INITIALIZER;$/;"	v
-NOTIFY_SCHED	l2scheduler/sched_commons.h	31;"	d
+NOTIFY_SCHED	l2scheduler/sched_commons.h	36;"	d
 OK	include/debug.h	106;"	d
 OUTGOING	remote/connection.h	/^    OUTGOING    \/\/ offloading work to a remote machine$/;"	e	enum:connection_type
 P	backend/libcfsscheduler.c	/^static int P(int semID) { $/;"	f	file:
-P	backend/libl2scheduler.c	/^static int P(int semID) { $/;"	f	file:
-P	backend/libtruefairshare.c	/^static int P(int semID) { $/;"	f	file:
+P	interposer/semaphore_ops.c	/^static int P(int semID) { $/;"	f	file:
 PACKETHEADER_H_	include/packetheader.h	10;"	d
+PAGER	l2scheduler/sched_commons.h	8;"	d
 PARTICLE_H	cuda-app/particle.h	2;"	d
 PER_XFER_MAX	remote/rconfig.h	38;"	d
 PRIORITY_HIGH	l2scheduler/las_scheduler.h	7;"	d
@@ -1003,7 +1010,7 @@ REMOTE_SERVICE_THREAD_BUFFER_SIZE	remote/rconfig.h	32;"	d
 REMOTE_THREAD_BACKLOG	remote/rconfig.h	29;"	d
 REM_Q	backend/scheduler.c	26;"	d	file:
 REM_Q	l2scheduler/cfs_scheduler.h	16;"	d
-REM_Q	l2scheduler/sched_commons.h	30;"	d
+REM_Q	l2scheduler/sched_commons.h	35;"	d
 RTLD_DI_CONFIGADDR	interposer/libci.s	/^    RTLD_DI_CONFIGADDR = 3,$/;"	d
 RTLD_DI_LINKMAP	interposer/libci.s	/^    RTLD_DI_LINKMAP = 2,$/;"	d
 RTLD_DI_LMID	interposer/libci.s	/^    RTLD_DI_LMID = 1,$/;"	d
@@ -1022,16 +1029,16 @@ RT_signal_indx	l2scheduler/cfs_scheduler.h	/^	unsigned RT_signal_indx;$/;"	m	str
 RT_signal_indx	l2scheduler/sched_commons.h	/^	unsigned RT_signal_indx;$/;"	m	struct:_scheduler_datastructure
 SCHED_ADMISSION_PORT	remote/rconfig.h	20;"	d
 SCHED_COMMONS_H	l2scheduler/sched_commons.h	2;"	d
-SCHED_DEF_FILE_PATH	l2scheduler/sched_commons.h	24;"	d
+SCHED_DEF_FILE_PATH	l2scheduler/sched_commons.h	26;"	d
 SCM_RIGHTS	interposer/libci.s	/^    SCM_RIGHTS = 0x01$/;"	d
 SEMKEYID	backend/scheduler.c	23;"	d	file:
 SEMKEYID	l2scheduler/cfs_scheduler.h	13;"	d
-SEMKEYID	l2scheduler/sched_commons.h	27;"	d
+SEMKEYID	l2scheduler/sched_commons.h	29;"	d
 SEMKEYPATH	backend/scheduler.c	22;"	d	file:
 SEMKEYPATH	l2scheduler/cfs_scheduler.h	12;"	d
-SEMKEYPATH	l2scheduler/sched_commons.h	26;"	d
+SEMKEYPATH	l2scheduler/sched_commons.h	28;"	d
 SEND	remote/rconfig.h	/^typedef enum direction { SEND, RECV } direction_t;$/;"	e	enum:direction
-SHIVA_ID	l2scheduler/sched_commons.h	46;"	d
+SHIVA_ID	l2scheduler/sched_commons.h	51;"	d
 SHUT_RD	interposer/libci.s	/^  SHUT_RD = 0,$/;"	d
 SOCK_DGRAM	interposer/libci.s	/^  SOCK_DGRAM = 2,$/;"	d
 SOCK_PACKET	interposer/libci.s	/^  SOCK_PACKET = 10$/;"	d
@@ -1039,6 +1046,7 @@ SOCK_RAW	interposer/libci.s	/^  SOCK_RAW = 3,$/;"	d
 SOCK_RDM	interposer/libci.s	/^  SOCK_RDM = 4,$/;"	d
 SOCK_SEQPACKET	interposer/libci.s	/^  SOCK_SEQPACKET = 5,$/;"	d
 SOCK_STREAM	interposer/libci.s	/^  SOCK_STREAM = 1,$/;"	d
+SUCCESS	virtmem/cuda_vmem.h	11;"	d
 Scheduler_Data	backend/scheduler.c	/^scheduler_data Scheduler_Data;$/;"	v
 Scheduler_Data	l2scheduler/cfs_scheduler.c	/^scheduler_data Scheduler_Data;$/;"	v
 Scheduler_Data	l2scheduler/sched_commons.c	/^scheduler_data Scheduler_Data;$/;"	v
@@ -1046,8 +1054,7 @@ TOTAL_XFER_MAX	remote/rconfig.h	35;"	d
 UNUSED	interposer/libci.s	/^    UNUSED = 0,$/;"	d
 UNUSED	remote/connection.h	/^    UNUSED = 0,$/;"	e	enum:connection_type
 V	backend/libcfsscheduler.c	/^static int V(int semID) { $/;"	f	file:
-V	backend/libl2scheduler.c	/^static int V(int semID) { $/;"	f	file:
-V	backend/libtruefairshare.c	/^static int V(int semID) { $/;"	f	file:
+V	interposer/semaphore_ops.c	/^static int V(int semID) { $/;"	f	file:
 Vec3	cuda-app/particle.h	/^typedef float Vec3[3];$/;"	t
 _GNU_SOURCE	backend/scheduler.c	1;"	d	file:
 _GNU_SOURCE	interposer/libci.c	37;"	d	file:
@@ -1068,9 +1075,11 @@ __GCONV_IS_LAST	interposer/libci.s	/^  __GCONV_IS_LAST = 0x0001,$/;"	d
 __GCONV_OK	interposer/libci.s	/^  __GCONV_OK = 0,$/;"	d
 __LAS_SCHED	l2scheduler/las_scheduler.h	2;"	d
 __METHOD_ID_H	include/method_id.h	11;"	d
+__PAGER	l2scheduler/pager.h	2;"	d
 __REMOTE_CUDA_CALLS_WRAPPER_H	remote/remote_api_wrapper.h	12;"	d
 __REMOTE_CUDA_CALLS_WRAPPER_H	remote/remote_api_wrapper_back.h	12;"	d
 __REMOTE_CUDA_CALLS_WRAPPER_H	remote/remote_api_wrapper_orig.h	12;"	d
+__SEM_OPS	include/semaphore_ops.h	2;"	d
 __attribute__	interposer/libci.s	/^__attribute__ ((__nothrow__)) gnu_dev_major (unsigned long long int __dev)$/;"	l
 __attribute__	interposer/libci.s	/^__attribute__ ((__nothrow__)) gnu_dev_makedev (unsigned int __major, unsigned int __minor)$/;"	l
 __attribute__	interposer/libci.s	/^__attribute__ ((__nothrow__)) gnu_dev_minor (unsigned long long int __dev)$/;"	l
@@ -1276,9 +1285,9 @@ already_added	l2scheduler/fair_share_sched.c	/^int already_added(process_credit_
 app_type	include/packetheader.h	/^	int app_type;$/;"	m	struct:cuda_packet
 app_type	l2scheduler/sched_commons.h	/^	int app_type;$/;"	m	struct:_process_credit_data
 app_type	l2scheduler/sched_commons.h	/^	int app_type[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
-arg	virtmem/cuda_vmem.h	/^	void *arg;$/;"	m	struct:kernel_arg_node
+arg	virtmem/cuda_vmem.h	/^	void **arg;$/;"	m	struct:kernel_arg_node
 arg_dim	include/packetheader.h	/^	dim3 arg_dim;      \/\/ This does increase the size of the union but what to do$/;"	m	union:args
-arg_list	virtmem/cuda_vmem.h	/^	struct kernel_args arg_list;$/;"	m	struct:kmap	typeref:struct:kmap::kernel_args
+arg_list	virtmem/cuda_vmem.h	/^	struct kernel_args arg_list;$/;"	m	struct:kmap_node	typeref:struct:kmap_node::kernel_args
 arg_str	include/packetheader.h	/^	cudaStream_t arg_str;$/;"	m	union:args
 argcp	include/packetheader.h	/^	char *argcp;$/;"	m	union:args
 argdp	include/packetheader.h	/^	void **argdp;$/;"	m	union:args
@@ -1350,8 +1359,7 @@ bid	include/packetheader.h	/^    uint3* bid;$/;"	m	struct:__anon1
 binary	include/cudaFatBinary.h	/^    unsigned int            binary;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 binarySize	include/cudaFatBinary.h	/^    unsigned int            binarySize;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
 bit_idx	include/packetheader.h	/^	int bit_idx;        \/\/ Pass idx into bitmap for mmap cases (HACK)$/;"	m	union:ret_extra
-blockDim	virtmem/cuda_vmem.h	/^	dim3 blockDim;$/;"	m	struct:kmap
-bottom	virtmem/cuda_vmem.c	/^int kindex, top, bottom;$/;"	v
+blockDim	virtmem/cuda_vmem.h	/^	dim3 blockDim;$/;"	m	struct:kmap_node
 c	doxydoc/html/search.php	/^  \/\/  $c = ord($lword{$i});$/;"	v
 c0a2eda7146897e3b484c4940c7f8a30	doxydoc/html/testLibciutils_8c.html	/^<a class="anchor" name="c0a2eda7146897e3b484c4940c7f8a30"><\/a><!-- doxytag: member="testLibciutils.c::test_methodIdToString" ref="c0a2eda7146897e3b484c4940c7f8a30" args="(void)" -->$/;"	a
 c15c2ea2f913ed09f1ce0e4c3ed110d4	doxydoc/html/libciutils_8c.html	/^<a class="anchor" name="c15c2ea2f913ed09f1ce0e4c3ed110d4"><\/a><!-- doxytag: member="libciutils.c::l_unpackUint3Ptr" ref="c15c2ea2f913ed09f1ce0e4c3ed110d4" args="(const char *pSrc, int *pOffset)" -->$/;"	a
@@ -2919,7 +2927,7 @@ fs_rem_queue	backend/libtruefairshare.c	/^int fs_rem_queue(pid_t process_id, int
 fs_start_scheduler	l2scheduler/fair_share_sched.c	/^int fs_start_scheduler()$/;"	f
 fs_write_mappings	l2scheduler/fair_share_sched.c	/^void fs_write_mappings(int gpuid, pthread_t tid)$/;"	f
 func	interposer/libci.s	/^  func = dlsym(((void *) -1l), "__cudaRegisterFatBinary");$/;"	d
-func	virtmem/cuda_vmem.h	/^	char * func;$/;"	m	struct:kmap
+func	virtmem/cuda_vmem.h	/^	char * func;$/;"	m	struct:kmap_node
 gDim	include/packetheader.h	/^	dim3* gDim;$/;"	m	struct:__anon1
 g_bit_nth_lsf	interposer/libci.s	/^g_bit_nth_lsf (gulong mask,$/;"	l
 g_bit_nth_msf	interposer/libci.s	/^g_bit_nth_msf (gulong mask,$/;"	l
@@ -3149,6 +3157,7 @@ get_next_weighted_device_kernel_config_feedback	remote/remote_api_wrapper.c	/^in
 get_next_weighted_device_kernel_config_feedback	remote/remote_api_wrapper_3dec.c	/^int get_next_weighted_device_kernel_config_feedback(dim3 gDim, dim3 bDim){}$/;"	f
 get_next_weighted_device_overall_utilization_feedback	remote/remote_api_wrapper.c	/^int get_next_weighted_device_overall_utilization_feedback(int nodeid)$/;"	f
 get_next_weighted_device_overall_utilization_feedback	remote/remote_api_wrapper_3dec.c	/^int get_next_weighted_device_overall_utilization_feedback(int nodeid)$/;"	f
+get_semaphore	interposer/semaphore_ops.c	/^int get_semaphore(key_t id)$/;"	f
 gint	interposer/libci.s	/^gint *g_key_file_get_integer_list (GKeyFile *key_file,$/;"	l
 gint	interposer/libci.s	/^gint g_ascii_digit_value (gchar c) __attribute__((__const__));$/;"	l
 gint	interposer/libci.s	/^gint g_ascii_strcasecmp (const gchar *s1,$/;"	l
@@ -3200,6 +3209,8 @@ gint64	interposer/libci.s	/^gint64 g_slice_get_config (GSliceConfig ckey);$/;"	l
 global	include/packetheader.h	/^	int global;$/;"	m	struct:__anon2
 glong	interposer/libci.s	/^glong g_utf8_pointer_to_offset (const gchar *str,$/;"	l
 glong	interposer/libci.s	/^glong g_utf8_strlen (const gchar *p,$/;"	l
+gmt_index	l2scheduler/pager.c	/^int * gmt_index;$/;"	v
+gmt_table	l2scheduler/pager.c	/^struct mem_map * gmt_table;$/;"	v	typeref:struct:mem_map
 gpointer	interposer/libci.s	/^gpointer g_async_queue_pop (GAsyncQueue *queue);$/;"	l
 gpointer	interposer/libci.s	/^gpointer g_async_queue_pop_unlocked (GAsyncQueue *queue);$/;"	l
 gpointer	interposer/libci.s	/^gpointer g_async_queue_timed_pop (GAsyncQueue *queue,$/;"	l
@@ -3250,7 +3261,7 @@ gpu_weight	remote/remote_api_wrapper.c	/^float gpu_weight[] = {1, 3, 1, 1.5};$/;
 gpu_weight	remote/remote_api_wrapper_3dec.c	/^float gpu_weight[] = {1, 3, 1, 1.5};$/;"	v
 gpuid	l2scheduler/sched_commons.h	/^	int gpuid;$/;"	m	struct:_process_credit_data
 grant_ref_t	include/packetheader.h	/^typedef uint32_t grant_ref_t;$/;"	t
-gridDim	virtmem/cuda_vmem.h	/^	dim3 gridDim;$/;"	m	struct:kmap
+gridDim	virtmem/cuda_vmem.h	/^	dim3 gridDim;$/;"	m	struct:kmap_node
 gsize	interposer/libci.s	/^gsize g_base64_decode_step (const gchar *in,$/;"	l
 gsize	interposer/libci.s	/^gsize g_base64_encode_close (gboolean break_lines,$/;"	l
 gsize	interposer/libci.s	/^gsize g_base64_encode_step (const guchar *in,$/;"	l
@@ -3320,7 +3331,15 @@ gunichar	interposer/libci.s	/^gunichar g_utf8_get_char (const gchar *p);$/;"	l
 gunichar	interposer/libci.s	/^gunichar g_utf8_get_char_validated (const gchar *p,$/;"	l
 gunichar2	interposer/libci.s	/^gunichar2 *g_ucs4_to_utf16 (const gunichar *str,$/;"	l
 gunichar2	interposer/libci.s	/^gunichar2 *g_utf8_to_utf16 (const gchar *str,$/;"	l
+gvirt_cuda_launch_index	virtmem/cuda_vmem.c	/^int gvirt_cuda_launch_index(struct kmap * ktab, struct mem_map ** mtab, int index)$/;"	f
+gvirt_page_in	virtmem/cuda_vmem.c	/^int gvirt_page_in(struct mem_map ** table, struct mem_map * rowptr)$/;"	f
+gvirt_page_in_devptr	virtmem/cuda_vmem.c	/^int gvirt_page_in_devptr(struct mem_map ** table, void ** devptr)$/;"	f
+gvirt_page_out	virtmem/cuda_vmem.c	/^int gvirt_page_out(struct mem_map ** table, struct mem_map * rowptr)$/;"	f
+gvirt_page_out_devptr	virtmem/cuda_vmem.c	/^int gvirt_page_out_devptr(struct mem_map ** table, void ** devptr)$/;"	f
+gvirt_pagein_all	virtmem/cuda_vmem.c	/^void gvirt_pagein_all(struct mem_map ** table) \/* sample test method *\/$/;"	f
+gvirt_pageout_all	virtmem/cuda_vmem.c	/^void gvirt_pageout_all(struct mem_map ** table)	\/* sample test method *\/$/;"	f
 handle	include/packetheader.h	/^	void **handle;	    \/\/ Used to return fatCubinHandle$/;"	m	union:ret_extra
+handle	virtmem/cuda_vmem.h	/^	int handle;$/;"	m	struct:mem_map
 handle_req	Global_Sched/backend_14092012.c	/^void* handle_req(void* p)$/;"	f
 handle_req	Global_Sched/backend_MT.c	/^void* handle_req(void* p)$/;"	f
 handle_req	Global_Sched/backend_back.c	/^void* handle_req(void* p)$/;"	f
@@ -3343,6 +3362,7 @@ hostVar	interposer/libciutils.h	/^	char * hostVar;$/;"	m	struct:__anon7
 idx	doxydoc/html/search.php	/^          $idx=readInt($file); $/;"	v
 index	doxydoc/html/search.php	/^    $index = readInt($file);$/;"	v
 index	doxydoc/html/search.php	/^  $index = computeIndex($word);$/;"	v
+index	virtmem/cuda_vmem.h	/^	int index;$/;"	m	struct:kmap
 index__	doxydoc/html/globals.html	/^<h3><a class="anchor" name="index__">- _ -<\/a><\/h3><ul>$/;"	a
 index__	doxydoc/html/globals_defs.html	/^<h3><a class="anchor" name="index__">- _ -<\/a><\/h3><ul>$/;"	a
 index__	doxydoc/html/globals_eval.html	/^<h3><a class="anchor" name="index__">- _ -<\/a><\/h3><ul>$/;"	a
@@ -3522,15 +3542,14 @@ kernel_launch_count	remote/remote_api_wrapper_3dec.c	/^float kernel_launch_count
 kernel_time	include/packetheader.h	/^	struct timeval kernel_time, non_kernel_time;$/;"	m	struct:cuda_packet	typeref:struct:cuda_packet::timeval
 key	doxydoc/html/search.php	/^      $key=$di["url"];$/;"	v
 kindOffset	include/cudaFatBinary.h	/^    unsigned int            kindOffset;$/;"	m	struct:__cudaFatCudaBinary2EntryRec
-kindex	virtmem/cuda_vmem.c	/^int kindex, top, bottom;$/;"	v
-kmap	virtmem/cuda_vmem.h	/^struct kmap	\/* kernel map *\/$/;"	s
-kmap_add_arg	virtmem/cuda_vmem.c	/^void kmap_add_arg(struct kmap *table,void *arg, size_t size, size_t offset, struct mem_map ** vmem_table)$/;"	f
+kmap	include/packetheader.h	/^	void *kmap;$/;"	m	struct:cuda_packet
+kmap	virtmem/cuda_vmem.h	/^struct kmap$/;"	s
+kmap_add_arg	virtmem/cuda_vmem.c	/^void kmap_add_arg(struct kmap *table,void **arg, size_t size, size_t offset, struct mem_map ** vmem_table)$/;"	f
 kmap_add_config	virtmem/cuda_vmem.c	/^void kmap_add_config(struct kmap *table, dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream)$/;"	f
 kmap_add_kernel	virtmem/cuda_vmem.c	/^void kmap_add_kernel(struct kmap *table, char * kfun)$/;"	f
-kmap_clear	virtmem/cuda_vmem.c	/^void kmap_clear(struct kmap *table)$/;"	f
-kmap_creat	virtmem/cuda_vmem.c	/^struct kmap * kmap_creat()$/;"	f
-kmap_delete	virtmem/cuda_vmem.c	/^void kmap_delete(struct kmap *table)$/;"	f
-kmap_launch	virtmem/cuda_vmem.c	/^void kmap_launch(struct kmap * table, int idx)$/;"	f
+kmap_init	virtmem/cuda_vmem.c	/^void kmap_init(struct kmap * table)$/;"	f
+kmap_node	virtmem/cuda_vmem.h	/^struct kmap_node	\/* kernel map *\/$/;"	s
+kobjects	virtmem/cuda_vmem.h	/^	struct kmap_node * kobjects;$/;"	m	struct:kmap	typeref:struct:kmap::kmap_node
 l00001	doxydoc/html/config_8h-source.html	/^<h1>include\/config.h<\/h1><a href="config_8h.html">Go to the documentation of this file.<\/a><div class="fragment"><pre class="fragment"><a name="l00001"><\/a>00001 $/;"	a
 l00001	doxydoc/html/connection_8h-source.html	/^<h1>remote\/connection.h<\/h1><a href="connection_8h.html">Go to the documentation of this file.<\/a><div class="fragment"><pre class="fragment"><a name="l00001"><\/a>00001 $/;"	a
 l00001	doxydoc/html/debug_8h-source.html	/^<h1>include\/debug.h<\/h1><a href="debug_8h.html">Go to the documentation of this file.<\/a><div class="fragment"><pre class="fragment"><a name="l00001"><\/a>00001 $/;"	a
@@ -4511,7 +4530,7 @@ las_sem_cleanup_and_exit	l2scheduler/las_scheduler.c	/^void las_sem_cleanup_and_
 las_start_scheduler	l2scheduler/las_scheduler.c	/^int las_start_scheduler()$/;"	f
 las_write_mappings	l2scheduler/las_scheduler.c	/^void las_write_mappings(int gpuid, pthread_t tid)$/;"	f
 lastCudaErrorRemote	remote/connection.h	/^    cudaError_t lastCudaErrorRemote;$/;"	m	struct:connection
-launch_pending	virtmem/cuda_vmem.h	/^	int launch_pending;$/;"	m	struct:kmap
+launch_pending	virtmem/cuda_vmem.h	/^	int launch_pending;$/;"	m	struct:kmap_node
 lcudaConfigureCall	interposer/libci.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 lcudaConfigureCall	interposer/libci_back.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 lcudaConfigureCall	interposer/libci_orig.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
@@ -4572,6 +4591,7 @@ length	include/cudaFatBinary.h	/^    unsigned long long int  length;$/;"	m	struc
 listen_thread	backend/scheduler.c	/^void* listen_thread(void *thid)$/;"	f
 listen_thread	l2scheduler/cfs_scheduler.c	/^void* listen_thread(void *thid)$/;"	f
 lo	doxydoc/html/search.php	/^  $lo = ord($word{1});$/;"	v
+localindex	backend/backend.c	/^int localindex;$/;"	v
 m	cuda-app/particle.h	/^    float m;$/;"	m	struct:Particle
 magic	include/cudaFatBinary.h	/^    int                         magic;$/;"	m	struct:__cudaFatCudaBinaryRec2
 magic	include/cudaFatBinary.h	/^    unsigned int            magic;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
@@ -4610,7 +4630,7 @@ mem_map_get_actual_devptr	virtmem/cuda_vmem.c	/^void ** mem_map_get_actual_devpt
 mem_map_get_entry	virtmem/cuda_vmem.c	/^struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)$/;"	f
 mem_map_get_status	virtmem/cuda_vmem.c	/^int mem_map_get_status(struct mem_map ** table, void ** devptr)$/;"	f
 mem_map_init	virtmem/cuda_vmem.c	/^void mem_map_init(struct mem_map ** table)$/;"	f
-mem_map_print	virtmem/cuda_vmem.c	/^void mem_map_print(struct mem_map ** table)$/;"	f
+mem_map_print	virtmem/cuda_vmem.c	/^void mem_map_print(struct mem_map ** table) \/* sample test method *\/$/;"	f
 mem_map_update_data	virtmem/cuda_vmem.c	/^void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size)$/;"	f
 mem_map_update_status	virtmem/cuda_vmem.c	/^void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status)$/;"	f
 methodIdToString	interposer/libciutils.c	/^char * methodIdToString(const int method_id){$/;"	f
@@ -4906,6 +4926,8 @@ packRegFuncArgs	interposer/libciutils_orig.c	/^char * packRegFuncArgs( void** fa
 packRegVar	interposer/libciutils.c	/^char * packRegVar( void **fatCubinHandle, char *hostVar,$/;"	f
 packRegVar	interposer/libciutils_back.c	/^char * packRegVar( void **fatCubinHandle, char *hostVar,$/;"	f
 packRegVar	interposer/libciutils_orig.c	/^char * packRegVar( void **fatCubinHandle, char *hostVar,$/;"	f
+pager_thread	l2scheduler/pager.c	/^void * pager_thread(void *arg)$/;"	f
+pager_tid	l2scheduler/l2scheduler.c	/^pthread_t pager_tid;$/;"	v
 penalty_epochs	l2scheduler/sched_commons.h	/^	int penalty_epochs[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 pid	backend/scheduler.c	/^	pid_t pid;$/;"	m	struct:_process_credit_data	file:
 pid	l2scheduler/cfs_scheduler.h	/^	pid_t pid;$/;"	m	struct:_process_credit_data
@@ -5084,7 +5106,7 @@ share_unit	l2scheduler/cfs_scheduler.h	/^	unsigned long share_unit;$/;"	m	struct
 share_unit	l2scheduler/cfs_scheduler.h	/^	unsigned long share_unit[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 share_unit	l2scheduler/sched_commons.h	/^	unsigned long share_unit;$/;"	m	struct:_process_credit_data
 share_unit	l2scheduler/sched_commons.h	/^	unsigned long share_unit[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
-sharedMem	virtmem/cuda_vmem.h	/^	size_t sharedMem;$/;"	m	struct:kmap
+sharedMem	virtmem/cuda_vmem.h	/^	size_t sharedMem;$/;"	m	struct:kmap_node
 shared_vars	include/fatcubininfo.h	/^	char *shared_vars[MAX_REGISTERED_SHARED];$/;"	m	struct:__anon4
 signal_block_all	backend/libcfsscheduler.c	/^void signal_block_all()$/;"	f
 signal_block_all	backend/libl2scheduler.c	/^void signal_block_all()$/;"	f
@@ -5109,6 +5131,7 @@ sort_results	doxydoc/html/search.php	/^function sort_results($docs,&$sorted)$/;"
 sorted	doxydoc/html/search.php	/^  $sorted = $docs;$/;"	v
 sorted	doxydoc/html/search.php	/^  $sorted = array();$/;"	v
 start	doxydoc/html/search.php	/^      $start=sizeof($statsList);$/;"	v
+start_pager	l2scheduler/pager.c	/^void start_pager()$/;"	f
 start_scheduler	l2scheduler/cfs_scheduler.c	/^int start_scheduler()$/;"	f
 statIdx	doxydoc/html/search.php	/^        $statIdx = readInt($file);$/;"	v
 statInfo	doxydoc/html/search.php	/^        $statInfo = &$statsList[$count];$/;"	v
@@ -5119,7 +5142,7 @@ static	interposer/libci.s	/^static inline GString*$/;"	l
 static	interposer/libci.s	/^static int CUR_DEV=0;$/;"	l
 static	interposer/libci.s	/^static int LOCAL_EXEC=1;$/;"	l
 status	virtmem/cuda_vmem.h	/^	enum vmem_status status;$/;"	m	struct:mem_map	typeref:enum:mem_map::vmem_status
-stream	virtmem/cuda_vmem.h	/^	cudaStream_t stream;$/;"	m	struct:kmap
+stream	virtmem/cuda_vmem.h	/^	cudaStream_t stream;$/;"	m	struct:kmap_node
 strm	remote/connection.h	/^    strm_t              strm;$/;"	m	struct:connection
 strm_execute	remote/remote_packet.c	/^void strm_execute(strm_t *strm, conn_t *pConn)$/;"	f
 strm_expects_response	remote/remote_packet.c	/^int strm_expects_response(strm_t *strm)$/;"	f
@@ -5175,6 +5198,7 @@ textures	include/fatcubininfo.h	/^	reg_tex_args_t *textures[MAX_REGISTERED_TEXS]
 tf_arg	include/packetheader.h	/^typedef struct tf_arg {$/;"	s
 tf_args	include/packetheader.h	/^	tf_args_t tf_args;$/;"	m	union:args
 tf_args_t	include/packetheader.h	/^} tf_args_t;$/;"	t	typeref:struct:tf_arg
+thIDs	l2scheduler/l2scheduler.c	/^pthread_t thIDs[10];	\/* for schedulers *\/$/;"	v
 thr_id	include/packetheader.h	/^	tid_t thr_id;           \/\/ thread sending request$/;"	m	struct:cuda_packet
 thread_count_mem_async	remote/remote_api_wrapper.c	/^int thread_count_mem_async[2][4] = { {0} ,{0} };$/;"	v
 thread_count_mem_async	remote/remote_api_wrapper_3dec.c	/^int thread_count_mem_async[2][4] = { {0} };$/;"	v
@@ -5194,7 +5218,6 @@ tlsKey_DEVICE_ASSIGNED	remote/remote_api_wrapper.c	/^pthread_key_t tlsKey_DEVICE
 tlsKey_DEVICE_ASSIGNED	remote/remote_api_wrapper_3dec.c	/^pthread_key_t tlsKey_DEVICE_ASSIGNED;$/;"	v
 todo	doxydoc/html/todo.html	/^<h1><a class="anchor" name="todo">Todo List<\/a><\/h1><a class="anchor" name="_todo000001"><\/a> <dl>$/;"	a
 toggleFolder	doxydoc/html/tree.html	/^    function toggleFolder(id, imageNode) $/;"	f
-top	virtmem/cuda_vmem.c	/^int kindex, top, bottom;$/;"	v
 totalFreq	doxydoc/html/search.php	/^      $totalFreq=($totalHi+1)*$totalFreqLo + $totalFreqHi;$/;"	v
 totalFreqHi	doxydoc/html/search.php	/^      $totalFreqHi=0;$/;"	v
 totalFreqLo	doxydoc/html/search.php	/^      $totalFreqLo=0;$/;"	v
@@ -5665,15 +5688,17 @@ v	doxydoc/html/search.php	/^  \/\/  $v = (($v & 0xfc00) ^ ($v << 6) ^ $c) & 0xff
 valid	l2scheduler/cfs_scheduler.h	/^	int valid[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 valid	l2scheduler/sched_commons.h	/^	int valid[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 valid	remote/connection.h	/^    int                 valid;      \/\/ true if this structure is associated with a live connection$/;"	m	struct:connection
-valid	virtmem/cuda_vmem.h	/^	int valid;$/;"	m	struct:kmap
+valid	virtmem/cuda_vmem.h	/^	int valid;$/;"	m	struct:kmap_node
+valid	virtmem/cuda_vmem.h	/^	int valid;$/;"	m	struct:mem_map
 variables	include/fatcubininfo.h	/^	reg_var_args_t *variables[MAX_REGISTERED_VARS];$/;"	m	struct:__anon4
 vars_val_t	interposer/libci.s	/^vars_val_t * g_vars_val_delete(vars_val_t * pValue);$/;"	l
 vars_val_t	interposer/libci.s	/^vars_val_t * g_vars_val_new(char * hostVar, const char * deviceName);$/;"	l
 vars_val_t	interposer/libciutils.h	/^} vars_val_t;$/;"	t	typeref:struct:__anon7
 version	include/cudaFatBinary.h	/^    int                         version;$/;"	m	struct:__cudaFatCudaBinaryRec2
 version	include/cudaFatBinary.h	/^    unsigned int            version;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
-vmem_pagein_all	virtmem/cuda_vmem.c	/^void vmem_pagein_all(struct mem_map ** table) \/* sample test method *\/$/;"	f
-vmem_pageout_all	virtmem/cuda_vmem.c	/^void vmem_pageout_all(struct mem_map ** table)	\/* sample test method *\/$/;"	f
+vmap_index	backend/backend.c	/^int * vmap_index;$/;"	v
+vmap_table	backend/backend.c	/^struct mem_map * vmap_table;$/;"	v	typeref:struct:mem_map
+vmapped_local_arr	backend/backend.c	/^int vmapped_local_arr[MAX_MEMORY];$/;"	v
 vmem_ptr	virtmem/cuda_vmem.h	/^	struct mem_map * vmem_ptr;$/;"	m	struct:kernel_arg_node	typeref:struct:kernel_arg_node::mem_map
 vmem_status	virtmem/cuda_vmem.h	/^enum vmem_status$/;"	g
 vmmap	include/packetheader.h	/^	void **vmmap;$/;"	m	struct:cuda_packet

@@ -34,6 +34,13 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <sys/times.h>
+#include <sys/shm.h>
+
+struct mem_map * vmap_table;
+int * vmap_index;
+
+int vmapped_local_arr[MAX_MEMORY];
+int localindex;
 
 void * backend_thread(){
 	// connection for listening on a port
@@ -73,9 +80,30 @@ void * backend_thread(){
     {
        signal_block_all(); 
     if((childpid2 = fork()) == 0)
-    {    
-	struct mem_map * vmap_table;
-	mem_map_init(&vmap_table);
+    {
+	localindex = 0;
+	int shmid = shmget(ftok(SEMKEYPATH,GMT_SHM_KEY), MAX_MEMORY * sizeof(struct mem_map), 0666);
+	if(shmid != -1)
+		vmap_table = (struct mem_map *) shmat(shmid, NULL, SHM_R | SHM_W);
+	else
+	{
+		fprintf(stderr, "shmget failed\n");
+		exit(1);
+	}
+
+	shmid = shmget(ftok(SEMKEYPATH,GMT_SHM_INDEX_KEY), sizeof(int), 0666);
+	if(shmid != -1)
+		vmap_index = (int *) shmat(shmid, NULL, SHM_R | SHM_W);
+	else
+	{
+		fprintf(stderr, "shmget failed\n");
+		exit(1);
+	}
+
+//	mem_map_init(&vmap_table);	// only pager should do this
+	
+	struct kmap kmap_table;
+	kmap_init(&kmap_table);
 
 	#ifdef SCHED_FAIR_SHARE
 	printf("CFSCHED process pid %d getting added to queue\n",getpid());
@@ -94,6 +122,8 @@ void * backend_thread(){
 	/* Add queue for fare_share_sched called in nvbackCudaSetDevice_srv() in remote_api_wrapper.c */
 	sigset_t set;
 	sigemptyset(&set);
+	sigaddset(&set, SIGSCHED);
+	sigaddset(&set, SIGALRM);
 	printf("new connection : pid = %d\n",getpid());
     // CLOSE the listen connection
     //    conn_close(pConnListen);
@@ -263,12 +293,18 @@ void * backend_thread(){
 		#endif
 		
 		rpkts[0].vmmap = &vmap_table;		// allow vmem system to interact with packet execution
+		rpkts[0].kmap = &kmap_table;
 
 		gettimeofday(&before,NULL);
+
+		sigprocmask(SIG_BLOCK,&set,NULL);
 		pkt_execute(&rpkts[0], pConn);		// XXX XXX XXX- packet execution
+		sigprocmask(SIG_UNBLOCK,&set,NULL);
+
 		gettimeofday(&after,NULL);
 
 		rpkts[0].vmmap = NULL;			// we dont want vmap_table ptr to be sent back to frontend via packet for security
+		rpkts[0].kmap = NULL;
 
 		struct timeval temp;
 		timersub(&after,&before,&temp);
@@ -278,13 +314,18 @@ void * backend_thread(){
 			timeradd(&non_kernel_time, &temp, &non_kernel_time);
 		
 		#ifdef SCHED_FAIR_SHARE
+		/* No need to notify now. Scheduler will calculate time itself */
+		/*
 		sigprocmask(SIG_BLOCK,&set,NULL);
 		fs_notify_scheduler(&before,&after,running_gpu);
 		sigprocmask(SIG_UNBLOCK,&set,NULL);
-
+		*/
 		if(rpkts[0].method_id == CUDA_SET_DEVICE)
 		{
-			sigaddset(&set,rpkts[0].signo);
+			/* signal is no longer determined by scheduler.
+			 * all scheduling takes place via SIGSCHED and SIGVTALRM 
+			 * Thus, commenting following line */
+			//sigaddset(&set,rpkts[0].signo);
 			running_gpu = rpkts[0].args[0].argi;
 		}	
 		#endif
@@ -295,6 +336,7 @@ void * backend_thread(){
 		{
 			index = rpkts[0].signo;
 			running_gpu = rpkts[0].args[0].argi;
+			gpu_binding = running_gpu;
 		}
 		#endif
 

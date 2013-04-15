@@ -8,7 +8,7 @@
 
 extern pthread_mutex_t mut;
 
-void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid);
+void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid, int share);
 void* fs_listen_thread(void *thid);
 void* fs_control_thread(void *thid_arr);
 int fs_cpu_bind(const unsigned short cpu); 
@@ -17,7 +17,7 @@ void mysignalhandler1(int n, siginfo_t* info, void* k);
 int already_added(process_credit_data pcd);
 int fs_register_handler(int signum);
 int fs_start_scheduler();
-int fs_add_queue(pid_t process_id, int unsigned gpuid, unsigned long share_unit);
+int fs_add_queue(pid_t process_id, int unsigned gpuid, unsigned long app_type, int share);
 int fs_rem_queue(pid_t process_id, int gpuid);
 void fs_notify_scheduler(struct timeval *before, struct timeval *after, int gpuid);
 int fs_get_RTsignal(pid_t process_id);

@@ -36,6 +36,7 @@
 #include <sys/resource.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "semaphore_ops.h"
 
 
 #include "fatcubininfo.h"   // for fatcubin_info_t
@@ -1030,15 +1031,19 @@ int nvbackCudaSetDevice_srv(cuda_packet_t *packet, conn_t * pConn) {
 	packet->ret_ex_val.err = cudaSetDevice(packet->args[0].argi);
 //	packet->ret_ex_val.err = cudaSetDevice(0);//temporary change
 	isLocal = packet->args[1].argi;
+	int share = packet->args[2].argi;
 //	isLocal = 0;			/* isLocal = 0 for ifrit */
 	
 	fprintf(stderr, "\n\n\n%s isLocal:%d\n\n\n",__FUNCTION__, isLocal);
 	#ifdef SCHED_FAIR_SHARE		/* Fare Share Sched */
 	int signum = 0;
+	/*
 	if(isLocal == 0)
 		signum = fs_add_queue(getpid(),packet->args[0].argi,APP_TYPE_A);
 	else
 		signum = fs_add_queue(getpid(),packet->args[0].argi,APP_TYPE_B);
+	*/
+	signum = fs_add_queue(getpid(), packet->args[0].argi, APP_TYPE_A /* Dont care */, share);
 	packet->signo = signum;
 	#endif
 
@@ -1081,6 +1086,8 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	// the remote part (of course not the part on the device), but
 	// a kind of 'host' memory on the remote side. Need to return to this
 	// issue later
+	
+	int semid = getsemaphore(ftok(SEMKEYPATH,GMT_KEYID));
 
 	printf("\nbefore devPtr %p, *devPtr %p, size %ld\n",
 			&(packet->args[0].argp), packet->args[0].argp, packet->args[1].argi);
@@ -1095,8 +1102,13 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	p_debug( "CUDA_ERROR=%d for method id=%d after execution\n",
 			packet->ret_ex_val.err, packet->method_id);
 
-	if(packet->ret_ex_val.err == cudaSuccess)
-		mem_map_creat((struct mem_map **) packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);
+	int i;
+	P(semid);
+	int myindex = *vmap_index;
+	(*vmap_index)++;
+	V(semid);
+	mem_map_creat((struct mem_map **) packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);		// TODO : create at myindex
+	vmapped_local_arr[localindex++] = myindex;
 
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
@@ -1127,17 +1139,21 @@ int nvbackCudaSetupArgument_srv(cuda_packet_t *packet, conn_t *pConn) {
 		fprintf(stderr, "VMEM argsetup, devptr found, old = %p, new = %p\n",*((char **) arg), *actual_devptr);
 		arg = actual_devptr;
 	}
-	packet->ret_ex_val.err = cudaSetupArgument(arg, packet->args[1].argi,
-			packet->args[2].argi);
+/*	packet->ret_ex_val.err = cudaSetupArgument(arg, packet->args[1].argi,
+			packet->args[2].argi); */
+//	kmap_add_config((struct kmap **) packet->kmap,
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
 
 int nvbackCudaConfigureCall_srv(cuda_packet_t *packet, conn_t *pConn) {
 //	vmem_pagein_all((struct mem_map **) packet->vmmap);
-	packet->ret_ex_val.err = cudaConfigureCall(packet->args[0].arg_dim,
+
+/*	packet->ret_ex_val.err = cudaConfigureCall(packet->args[0].arg_dim,
 			packet->args[1].arg_dim, packet->args[2].argi,
-			(cudaStream_t) packet->args[3].argi);
+			(cudaStream_t) packet->args[3].argi);*/
+	kmap_add_config((struct kmap **) packet->kmap, packet->args[0].arg_dim,packet->args[1].arg_dim,
+				packet->args[2].argi,(cudaStream_t) packet->args[3].argi);
 
 	p_debug(
 			"After: gridDim(x,y,z)=%u, %u, %u; blockDim(x,y,z)=%u, %u, %u; sharedMem (size) = %ld; stream =%ld\n",
@@ -1197,8 +1213,11 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 			break;
 	}
 
+	//test multiple gpu use in GVirt
 	vmem_pageout_all((struct mem_map ** ) packet->vmmap);
 	vmem_pagein_all((struct mem_map ** ) packet->vmmap);
+//	cudaSetDevice(1);
+	//vmem_pagein_all((struct mem_map ** ) packet->vmmap);
 
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 
@@ -1255,7 +1274,7 @@ int nvbackCudaMemcpy_srv(cuda_packet_t *packet, conn_t * pConn) {
 
 	p_info( "CUDA_ERROR=%d (%s) for method id=%d\n", packet->ret_ex_val.err,
 			cudaGetErrorString(packet->ret_ex_val.err), packet->method_id);
-	
+	//GVirt code	
 	switch(packet->method_id)
 	{
 		case CUDA_MEMCPY_H2D:

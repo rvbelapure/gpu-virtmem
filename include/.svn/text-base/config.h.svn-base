@@ -11,7 +11,7 @@
 
 //! The stores the name of the file with the configuration
 #ifndef KIDRON_INI
-#define KIDRON_INI "/home/dipanjans/GVirt/gpu_pool/kidron_fs/kidron.ini"
+#define KIDRON_INI "/home/dipanjans/raghavendra/gpu_pool/kidron_fs/kidron.ini"
 #endif
 
 #endif /* CONFIG_H_ */

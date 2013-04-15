@@ -209,7 +209,6 @@ typedef struct cuda_packet {
 
 	// vitual mem map
 	void **vmmap;
-	void *kmap;
 } cuda_packet_t;
 
 

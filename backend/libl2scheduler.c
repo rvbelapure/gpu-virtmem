@@ -15,35 +15,10 @@
 #include <fcntl.h>
 #include <wait.h>
 #include <string.h>
+#include "semaphore_ops.h"
 
 int semid;
-
-static int P(int semID) { 
-  struct sembuf buff ;
-  buff.sem_num = 0 ;
-  buff.sem_op = -1 ;
-  buff.sem_flg = 0 ;
-  printf("CFSCHED In P operation\n");
-  if(semop(semID, &buff, 1) == -1) 
-    { 
-      perror("CFSCHED semop P operation error") ; 
-      return 0 ;
-    }
-  return -1 ; 
-}
-
-static int V(int semID) { 
-  struct sembuf buff ;
-  buff.sem_num = 0 ;
-  buff.sem_op = 1 ;
-  buff.sem_flg = 0 ;
-  if(semop(semID, &buff, 1) == -1) 
-    { 
-      perror("CFSCHED semop V operation error") ; 
-      return 0 ;
-    }
-  return -1 ; 
-}
+int gpu_binding;
 
 void mysignalhandler1(int n, siginfo_t* info, void* k)
 {
@@ -64,21 +39,64 @@ void mysignalhandler1(int n, siginfo_t* info, void* k)
 
 }
 
+void sigschedulehandler(int signo)
+{
+	/* TODO : Should we block SIGSCHED when process is executing
+	 * and unblock it when waiting for sigwait only ? */
+	sigset_t set;
+	struct timeval tp;
+	int signalid;
+	siginfo_t si;
+
+	pid_t sched_pid;
+	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
+	fscanf(fp,"%ld",&sched_pid);
+	fclose(fp);
+	union sigval data;
+	data.sival_int = gpu_binding;
+
+	sigemptyset(&set);
+	sigaddset(&set, SIGSCHED);
+
+	gettimeofday(&tp, NULL); 
+	fprintf(stderr, "CFSCHED Signal to sleep to process id: %d with signal id:%d time:%d sec %d usec\n", 
+			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
+
+	/* Send wakeup signal to l2sched */
+	sigqueue(sched_pid, SIGRTMAX, data); 
+	/* SIGVTALRM received. Should sleep till next occurence of SIGSCHED */
+	signalid = sigwaitinfo(&set, &si);
+	/* SIGSCHED received. Now we set up the timer and let the process execute till timer expires.
+	 * On timer expiry, this handler will be called again */
+	gettimeofday(&tp, NULL); 
+	fprintf(stderr, "CFSCHED Signal to wake up process id: %d with signal id:%d time:%d sec %d usec\n", 
+			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
+	
+	union sigval data = si->si_value;
+	tp = *((struct timeval) data.sival_ptr);
+	struct itimerval ti;
+	ti.it_interval.tv_sec = 0;
+	ti.it_interval.tv_usec = 0;
+	ti.it_value = tp;
+	setitimer(ITIMER_REAL, &ti, NULL);
+}
+
 
 int fs_register_handler(int signum)
 {
   sigset_t set;
   sigemptyset(&set);
-  sigaddset(&set, signum);
+  sigaddset(&set, SIGSCHED);
+  sigaddset(&set, SIGALRM);
   
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
   struct sigaction act;
-  act.sa_sigaction = &mysignalhandler1;
-  act.sa_flags = SA_SIGINFO | SA_RESTART;
+  act.sa_handler = &sigschedulehandler;
+  act.sa_flags = SA_RESTART;
 
   fprintf(stderr, "CFSCHED Registering handler for process id: %d, thread id: %d on signum: %d\n", getpid(), (int)pthread_self(), signum);
-  if(sigaction(signum, &act, NULL) < 0)
+  if(sigaction(SIGALRM, &act, NULL) < 0)
     {
       fprintf(stderr, "CFSCHED handler registration failed\n");
       return -1;
@@ -131,7 +149,7 @@ void fs_notify_scheduler(struct timeval *before, struct timeval *after, int gpui
 }
 
 
-int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type)
+int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type, int share)
 {
   int server_fifo, client_read_fifo, client_write_fifo, signum, err;
   int semid;
@@ -153,9 +171,9 @@ int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type)
 
   process_credit_data pcd;
   pcd.pid = process_id;
-  pcd.share_unit = 0;	/* deprecated : define app_type instead */
+  pcd.share_unit = share;
   pcd.action = ADD_Q;
-  pcd.app_type = app_type;
+  pcd.app_type = app_type; /* deprecated : now share unit is set via call to getcwd() in application */
   pcd.gpuid = gpuid;
 
   fprintf(stderr, "CFSCHED Inside add_queue pid : %d\n",getpid());

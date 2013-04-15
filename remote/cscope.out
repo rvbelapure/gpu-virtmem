@@ -1,4 +1,4 @@
-cscope 15 $HOME/GPU_Pool_raghav/kidron_fs/remote               0000516340
+cscope 15 $HOME/GVirt/gpu_pool/kidron_fs/remote               0000564438
 	@connection.c
 
 9 
@@ -1635,6 +1635,7318 @@ RCONFIG_H_
 	~"../l2scheduËr/Ïs_scheduËr.h
 "
 
+26 
+	~"../vœtmem/cuda_vmem.h
+"
+
+28 
+	~<¡dio.h
+>
+
+29 
+	~<¡dlib.h
+>
+
+30 
+	~<¡ršg.h
+>
+
+31 
+	~<as£¹.h
+>
+
+32 
+	~<dlfú.h
+>
+
+33 
+	~"cÚÃùiÚ.h
+"
+
+34 
+	~<±h»ad.h
+>
+
+35 
+	~<sys/time.h
+>
+
+36 
+	~<sys/»sourû.h
+>
+
+37 
+	~<sys/ty³s.h
+>
+
+38 
+	~<uni¡d.h
+>
+
+39 
+	~"£m­hÜe_İs.h
+"
+
+42 
+	~"çtcubššfo.h
+"
+
+43 
+	~"š¬£r.h
+"
+
+46 
+	~"cÚfig.h
+"
+
+48 
+	~<glib.h
+>
+
+49 
+	#MAX_BACKEND_NODES
+ 100
+
+	)
+
+50 
+	#MAX_BACKEND_DEVICES
+ 100
+
+	)
+
+60 
+±h»ad_key_t
+ 
+	gsKey
+ = 0;
+
+63 
+	gREMOTE_HOSTNAME
+[
+HOSTNAME_STRLEN
+];
+
+75 
+GA¼ay
+ * 
+	gçtCInfoA¼
+ = 
+NULL
+;
+
+77 
+±h»ad_key_t
+ 
+	gsKey_DEVICE_ASSIGNED
+;
+
+81 ** 
+__cudaRegi¡”F©Bš¬y
+(* 
+çtC
+);
+
+82 
+__cudaRegi¡”FunùiÚ
+(** 
+çtCubšHªdË
+, cÚ¡ * 
+ho¡Fun
+,
+
+83 * 
+deviûFun
+, cÚ¡ * 
+deviûName
+, 
+th»ad_lim™
+, 
+ušt3
+* 
+tid
+,
+
+84 
+ušt3
+* 
+bid
+, 
+dim3
+* 
+bDim
+, dim3* 
+gDim
+, * 
+wSize
+);
+
+85 
+__cudaUÄegi¡”F©Bš¬y
+(** 
+çtCubšHªdË
+);
+
+86 
+__cudaRegi¡”V¬
+(**
+çtCubšHªdË
+, *
+ho¡V¬
+,
+
+87 *
+deviûAdd»ss
+, cÚ¡ *
+deviûName
+, 
+ext
+, 
+vsize
+,
+
+88 
+cÚ¡ªt
+, 
+glob®
+);
+
+90 
+BACKEND_LIST
+[
+MAX_BACKEND_NODES
++1][
+HOSTNAME_STRLEN
+];
+
+91 
+	gBACKEND_DEVICES
+;
+
+93 
+	gth»ad_couÁ_³r_deviû
+[
+MAX_BACKEND_DEVICES
+];
+
+94 
+	ggpu_weight
+[] = {1, 3, 1, 1.5};
+
+95 
+	gDEV_RR
+=0;
+
+96 
+±h»ad_mu‹x_t
+ 
+	gMU
+=
+PTHREAD_MUTEX_INITIALIZER
+;
+
+97 
+	gisLoÿl
+;
+
+100 
+	ggpu_utiz©iÚ
+[2][4] = { {1}, {1} };
+
+101 
+	gmem_async_utiz©iÚ
+[4] = {1};
+
+102 
+	gtÙ®_executiÚ_time
+[2][4] = { {0}, {0} };
+
+103 
+	gk”Ãl_Ïunch_couÁ
+[2][4] = { {0} , {0}};
+
+104 
+	gtÙ®_k”Ãl_time
+[2][4] = { {0} , {0}};
+
+105 
+	gnÚ_k”Ãl_time
+[2][4] = { {0} ,{0} };
+
+106 
+	gsys_time
+[2][4] = { {0} , {0}};
+
+107 
+	gu¤_time
+[2][4] = { {0} , {0} };
+
+108 
+	gth»ad_couÁ_mem_async
+[2][4] = { {0} ,{0} };
+
+110 
+	gl2_ãedback_ty³
+ = 
+L2_FEEDBACK_TYPE_NONE
+;
+
+112 
+	$g‘_gpu_šdex
+(
+node
+, 
+devid
+)
+
+114  ((2 * 
+node
+è+ 
+devid
+);
+
+115 
+	}
+}
+
+130 
+	$l_ş—nUpCÚn
+(
+cÚn_t
+ * 
+pCÚn
+, cÚ¡ 
+ex™_code
+) {
+
+135  
+ex™_code
+;
+
+136 
+	}
+}
+
+138 
+	$g‘_Ãxt_deviû_RR
+()
+
+140 
+deviû_tmp
+;
+
+142 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+143 
+deviû_tmp
+ = 
+DEV_RR
+;
+
+144 
+DEV_RR
+ = (DEV_RR+1)%
+BACKEND_DEVICES
+;
+
+145 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+147  
+deviû_tmp
+;
+
+148 
+	}
+}
+
+150 
+	$g‘_Ãxt_deviû
+()
+
+152 
+deviû_tmp
+, 
+i
+, 
+mš
+;
+
+153 
+mš
+ = 0;
+
+154 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+155 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+157 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] <h»ad_couÁ_³r_deviû[
+mš
+])
+
+159 
+mš
+ = 
+i
+;
+
+163 
+th»ad_couÁ_³r_deviû
+[
+mš
+]++;
+
+164 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+165 (
+mš
+);
+
+166 
+	}
+}
+
+168 
+	$g‘_Ãxt_weigh‹d_deviû
+()
+
+170 
+deviû_tmp
+, 
+i
+, 
+mš
+;
+
+171 
+mš
+ = 0;
+
+172 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+173 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+175 if(
+th»ad_couÁ_³r_deviû
+[
+i
+]*
+gpu_weight
+[i] <h»ad_couÁ_³r_deviû[
+mš
+]*gpu_weight[min])
+
+177 
+mš
+ = 
+i
+;
+
+181 
+th»ad_couÁ_³r_deviû
+[
+mš
+]++;
+
+182 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+183 (
+mš
+);
+
+184 
+	}
+}
+
+186 
+	$g‘_Ãxt_weigh‹d_deviû_k”Ãl_cÚfig_ãedback
+(
+dim3
+ 
+gDim
+, dim3 
+bDim
+){
+	}
+}
+
+188 
+	$g‘_Ãxt_weigh‹d_deviû_async_memıy_ãedback
+(
+­p_id
+)
+
+190 
+l2_ãedback_ty³
+ = 
+L2_FEEDBACK_TYPE_UTIL
+;
+
+191 
+deviû_tmp
+, 
+i
+, 
+mš
+, 
+£cÚd_mš
+;
+
+192 
+mš
+ = 0, 
+£cÚd_mš
+ = 0;
+
+193 
+lim
+ = 
+BACKEND_DEVICES
+;
+
+194 
+lim
+ = 4;
+
+195 
+®l_d©a_»ûived
+ = 1;
+
+196 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+198 
+i
+ = 0 ; i < 
+lim
+ ; i++)
+
+200 if((
+gpu_utiz©iÚ
+[0][
+i
+] == 1 ) || (gpu_utilization[1][i] == 1))
+
+202 
+®l_d©a_»ûived
+ = 0;
+
+205 if((
+nÚ_k”Ãl_time
+[0][
+i
+] == 0) || (non_kernel_time[0][i] == 0))
+
+207 
+®l_d©a_»ûived
+ = 0;
+
+213 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+215 if(
+th»ad_couÁ_³r_deviû
+[
+i
+]* 
+gpu_weight
+[i]
+
+216 < 
+th»ad_couÁ_³r_deviû
+[
+mš
+]* 
+gpu_weight
+[min])
+
+218 
+mš
+ = 
+i
+;
+
+222 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+224 if((
+th»ad_couÁ_³r_deviû
+[
+i
+]* 
+gpu_weight
+[i]
+
+225 > 
+th»ad_couÁ_³r_deviû
+[
+mš
+]* 
+gpu_weight
+[min]) &&
+
+226 (
+th»ad_couÁ_³r_deviû
+[
+i
+] * 
+gpu_weight
+[i]
+
+227 <ğ
+th»ad_couÁ_³r_deviû
+[
+£cÚd_mš
+] * 
+gpu_weight
+[second_min]))
+
+229 
+£cÚd_mš
+ = 
+i
+;
+
+234 
+mš_weight
+ = 
+th»ad_couÁ_³r_deviû
+[
+mš
+]*
+gpu_weight
+[min];
+
+235 
+£cÚd_mš_weight
+ = 
+th»ad_couÁ_³r_deviû
+[
+£cÚd_mš
+]*
+gpu_weight
+[second_min];
+
+237 if(
+®l_d©a_»ûived
+)
+
+239 
+cho£n
+ = 0;
+
+240 if(
+£cÚd_mš_weight
+-
+mš_weight
+ <=1 && 
+nÚ_k”Ãl_time
+[
+­p_id
+][
+mš
+] <‚Ú_k”Ãl_time[­p_id][
+£cÚd_mš
+])
+
+241 
+cho£n
+ = 
+£cÚd_mš
+;
+
+243 
+cho£n
+ = 
+mš
+;
+
+246 
+¿tio
+, 
+g»©”
+;
+
+247 if(
+gpu_utiz©iÚ
+[0][
+cho£n
+] >= gpu_utilization[1][chosen])
+
+249 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[0][
+cho£n
+] / gpu_utilization[1][chosen]);
+
+250 
+g»©”
+ = 0;
+
+254 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[1][
+cho£n
+] / gpu_utilization[0][chosen]);
+
+255 
+g»©”
+ = 1;
+
+258 if(
+g»©”
+ =ğ
+­p_id
+)
+
+259 
+th»ad_couÁ_³r_deviû
+[
+cho£n
+] +ğ
+¿tio
+;
+
+261 
+th»ad_couÁ_³r_deviû
+[
+cho£n
+] += 1;
+
+263 
+mš
+ = 
+cho£n
+;
+
+267 
+th»ad_couÁ_³r_deviû
+[
+mš
+]++;
+
+268 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+269 (
+mš
+);
+
+270 
+	}
+}
+
+272 
+	$g‘_Ãxt_weigh‹d_deviû_ov”®l_utiz©iÚ_ãedback
+(
+nodeid
+)
+
+274 
+l2_ãedback_ty³
+ = 
+L2_FEEDBACK_TYPE_UTIL
+;
+
+275 
+deviû_tmp
+, 
+i
+, 
+mš
+;
+
+276 
+mš
+ = 0;
+
+277 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+278 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+280 
+	`´štf
+("UTILFB iğ%d,h»ad_couÁ = %d\n",
+i
+,
+th»ad_couÁ_³r_deviû
+[i]);
+
+281 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] * 
+gpu_weight
+[i] <h»ad_couÁ_³r_deviû[
+mš
+]* gpu_weight[min])
+
+283 
+mš
+ = 
+i
+;
+
+288 
+	`´štf
+("UTILFB s–eùed = %d\n",
+mš
+);
+
+289 
+¿tio
+, 
+g»©”
+;
+
+290 
+	`´štf
+("UTILFB ut(0,mšèğ%f, ut(1,mšèğ%f\n",
+gpu_utiz©iÚ
+[0][
+mš
+],gpu_utilization[1][min]);
+
+291 if(
+gpu_utiz©iÚ
+[0][
+mš
+] >= gpu_utilization[1][min])
+
+293 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[0][
+mš
+] / gpu_utilization[1][min]);
+
+294 
+g»©”
+ = 0;
+
+298 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[1][
+mš
+] / gpu_utilization[0][min]);
+
+299 
+g»©”
+ = 1;
+
+302 if(
+g»©”
+ =ğ
+nodeid
+)
+
+303 
+th»ad_couÁ_³r_deviû
+[
+mš
+] +ğ
+¿tio
+;
+
+305 
+th»ad_couÁ_³r_deviû
+[
+mš
+] += 1;
+
+307 
+	`´štf
+("UTILFB‚odeid = %d, g»©” = %d,h»adcouÁ[%d] = %d\n",
+nodeid
+,
+g»©”
+,
+mš
+,
+th»ad_couÁ_³r_deviû
+[min]);
+
+308 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+309 (
+mš
+);
+
+310 
+	}
+}
+
+312 
+	$g‘_Ãxt_weigh‹d_deviû_executiÚ_time_ãedback
+(
+­p_id
+)
+
+314 
+l2_ãedback_ty³
+ = 
+L2_FEEDBACK_TYPE_EX_TIME
+;
+
+315 
+deviû_tmp
+, 
+i
+, 
+mš
+;
+
+316 
+mš
+ = 0;
+
+317 
+lim
+ = 
+BACKEND_DEVICES
+;
+
+318 
+lim
+ = 4;
+
+319 
+®l_d©a_»ûived
+ = 1;
+
+320 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+321 
+i
+ = 0 ; i < 
+lim
+ ; i++)
+
+323 if((
+tÙ®_executiÚ_time
+[0][
+i
+] == 0 ) || (total_execution_time[1][i] == 0))
+
+325 
+®l_d©a_»ûived
+ = 0;
+
+330 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+332 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] * 
+gpu_weight
+[i] <h»ad_couÁ_³r_deviû[
+mš
+]* gpu_weight[min])
+
+334 
+mš
+ = 
+i
+;
+
+339 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+341 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] <h»ad_couÁ_³r_deviû[
+mš
+])
+
+343 
+mš
+ = 
+i
+;
+
+348 
+¿tio
+, 
+g»©”
+;
+
+349 if(
+®l_d©a_»ûived
+)
+
+352 if(
+tÙ®_executiÚ_time
+[0][
+mš
+] >=otal_execution_time[1][min])
+
+354 
+¿tio
+ = (è(
+tÙ®_executiÚ_time
+[0][
+mš
+] /otal_execution_time[1][min]);
+
+355 
+g»©”
+ = 0;
+
+359 
+¿tio
+ = (è(
+tÙ®_executiÚ_time
+[1][
+mš
+] /otal_execution_time[0][min]);
+
+360 
+g»©”
+ = 1;
+
+363 if(
+g»©”
+ =ğ
+­p_id
+)
+
+364 
+th»ad_couÁ_³r_deviû
+[
+mš
+] +ğ
+¿tio
+;
+
+366 
+th»ad_couÁ_³r_deviû
+[
+mš
+] += 1;
+
+370 
+th»ad_couÁ_³r_deviû
+[
+mš
+]++;
+
+372 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+373 (
+mš
+);
+
+375 
+	}
+}
+
+377 
+	$g‘_Ãxt_deviû_loÿl_´ef
+(
+loÿlho¡_id
+)
+
+379 
+deviû_tmp
+, 
+i
+=
+loÿlho¡_id
+, 
+mš
+, 
+couÁ
+=0;
+
+380 
+mš
+ = 
+loÿlho¡_id
+;
+
+381 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+383 
+couÁ
+<
+BACKEND_DEVICES
+)
+
+385 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] <h»ad_couÁ_³r_deviû[
+mš
+])
+
+387 
+mš
+ = 
+i
+;
+
+389 
+i
+ = (i<
+BACKEND_DEVICES
+-1)?i+1:0;
+
+390 
+couÁ
+++;
+
+392 
+th»ad_couÁ_³r_deviû
+[
+mš
+]++;
+
+393 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+394 (
+mš
+);
+
+395 
+	}
+}
+
+398 
+	$dec_th»ad_couÁ_³r_deviû
+(
+­p_ty³
+)
+
+400 *
+DEVICE_ASSIGNED
+,
+¿tio
+,
+g»©”
+;
+
+401 
+DEVICE_ASSIGNED
+ = 
+	`±h»ad_g‘¥ecific
+(
+sKey_DEVICE_ASSIGNED
+);
+
+402 
+	`´štf
+("DEC DEV:%d\n", *
+DEVICE_ASSIGNED
+);
+
+403 
+®l_d©a_»ûived
+ = 1, 
+i
+;
+
+404 
+lim
+ = 4;
+
+406 #ifdeà
+L2_FEEDBACK_ENABLED
+
+
+407 if(
+l2_ãedback_ty³
+ =ğ
+L2_FEEDBACK_TYPE_UTIL
+)
+
+409 
+i
+ = 0 ; i < 
+lim
+ ; i++)
+
+411 if((
+gpu_utiz©iÚ
+[0][
+i
+] == 1 ) || (gpu_utilization[1][i] == 1))
+
+413 
+®l_d©a_»ûived
+ = 0;
+
+416 if((
+nÚ_k”Ãl_time
+[0][
+i
+] == 0) || (non_kernel_time[0][i] == 0))
+
+418 
+®l_d©a_»ûived
+ = 0;
+
+423 if(
+®l_d©a_»ûived
+)
+
+425 if(
+gpu_utiz©iÚ
+[0][*
+DEVICE_ASSIGNED
+] >= gpu_utilization[1][*DEVICE_ASSIGNED])
+
+427 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[0][*
+DEVICE_ASSIGNED
+] / gpu_utilization[1][*DEVICE_ASSIGNED]);
+
+428 
+g»©”
+ = 0;
+
+432 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[1][*
+DEVICE_ASSIGNED
+] / gpu_utilization[0][*DEVICE_ASSIGNED]);
+
+433 
+g»©”
+ = 1;
+
+435 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+436 if(
+g»©”
+ =ğ
+­p_ty³
+)
+
+437 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+] -ğ
+¿tio
+;
+
+439 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+] -= 1;
+
+440 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+444 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+445 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+]--;
+
+446 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+450 if(
+l2_ãedback_ty³
+ =ğ
+L2_FEEDBACK_TYPE_EX_TIME
+)
+
+452 
+i
+ = 0 ; i < 
+lim
+ ; i++)
+
+454 if((
+tÙ®_executiÚ_time
+[0][
+i
+] == 0 ) || (total_execution_time[1][i] == 0))
+
+456 
+®l_d©a_»ûived
+ = 0;
+
+460 if(
+®l_d©a_»ûived
+)
+
+462 if(
+tÙ®_executiÚ_time
+[0][*
+DEVICE_ASSIGNED
+] >=otal_execution_time[1][*DEVICE_ASSIGNED])
+
+464 
+¿tio
+ = (è(
+tÙ®_executiÚ_time
+[0][*
+DEVICE_ASSIGNED
+] /otal_execution_time[1][*DEVICE_ASSIGNED]);
+
+465 
+g»©”
+ = 0;
+
+469 
+¿tio
+ = (è(
+tÙ®_executiÚ_time
+[1][*
+DEVICE_ASSIGNED
+] /otal_execution_time[0][*DEVICE_ASSIGNED]);
+
+470 
+g»©”
+ = 1;
+
+472 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+473 if(
+g»©”
+ =ğ
+­p_ty³
+)
+
+474 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+] -ğ
+¿tio
+;
+
+476 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+] -= 1;
+
+477 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+481 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+482 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+]--;
+
+483 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+491 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+492 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+]--;
+
+493 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+496 
+	}
+}
+
+501 
+šlše
+ * 
+	$l_g‘RemÙeHo¡
+(
+šdex
+) {
+
+503 
+diùiÚ¬y
+ * 
+d
+;
+
+504 * 
+s
+;
+
+505 
+key
+[100];
+
+506 
+	`¥rštf
+(
+key
+, "%s%d\0", "ÃtwÜk:»mÙe", 
+šdex
+);
+
+508 
+d
+ = 
+	`š¬£r_lßd
+(
+KIDRON_INI
+);
+
+509 ià(
+NULL
+ =ğ
+d
+) {
+
+510 
+	`p_”rÜ
+( "Can't…arsehe config file. Quitting ... ");
+
+513 
+	`´štf
+("KEY: %s**************************************************************\n", 
+key
+);
+
+514 
+s
+ = 
+	`š¬£r_g‘¡ršg
+(
+d
+, 
+key
+, 
+NULL
+);
+
+517 
+	`as£¹
+(
+	`¡¾’
+(
+s
+è< 
+HOSTNAME_STRLEN
+ - 1);
+
+518 
+	`¡rıy
+(
+REMOTE_HOSTNAME
+, 
+s
+);
+
+519 
+	`š¬£r_ä“diù
+(
+d
+);
+
+521 
+	`p_debug
+Ğ"%s\n", 
+REMOTE_HOSTNAME
+);
+
+522  
+REMOTE_HOSTNAME
+;
+
+523 
+	}
+}
+
+548 
+	$l_do_cuda_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, * 
+»qbuf
+, cÚ¡ 
+»qbuf_size
+,
+
+549 * 
+r¥buf
+, cÚ¡ 
+r¥buf_size
+, 
+šdex
+) {
+
+551 
+¡rm_hdr_t
+ *
+pHdr
+;
+
+553 
+½kt_t
+ * 
+pRpkts
+;
+
+554 
+size_t
+ 
+½kt_size
+ = (
+½kt_t
+);
+
+555 
+cÚn_t
+* 
+mycÚn
+;
+
+556 
+æag
+ = 0;
+
+558 
+	`p_debug
+("MethodID: %d,„eqbuf %p,„eqbuf_size %d,„spbuf %p,„spbuf_size %d\n",
+
+559 
+·ck‘
+->
+m‘hod_id
+, 
+»qbuf
+, 
+»qbuf_size
+, 
+r¥buf
+, 
+r¥buf_size
+);
+
+564 if(!(
+mycÚn
+ = 
+	`±h»ad_g‘¥ecific
+(
+sKey
+))) {
+
+565 
+mycÚn
+ = 
+	`ÿÎoc
+(
+MAX_BACKEND_NODES
++1, (
+cÚn_t
+));
+
+566 
+	`±h»ad_£t¥ecific
+(
+sKey
+, 
+mycÚn
+);
+
+568 if(
+šdex
+ =ğ
+MAX_BACKEND_NODES
+è
+æag
+ = 1;
+
+569 ià(0 =ğ
+mycÚn
+[
+šdex
+].
+v®id
+) {
+
+570 ià(
+	`cÚn_cÚÃù
+(&
+mycÚn
+[
+šdex
+], 
+BACKEND_LIST
+[šdex], 
+æag
+) == -1)
+
+571 
+	`ex™
+(
+ERROR
+);
+
+572 
+	`p_šfo
+Ğ"CÚÃùiÚØho¡: %s\n", 
+REMOTE_HOSTNAME
+);
+
+573 
+mycÚn
+[
+šdex
+].
+v®id
+ = 1;
+
+577 
+pHdr
+ = &
+mycÚn
+[
+šdex
+].
+¡rm
+.
+hdr
+;
+
+578 
+pRpkts
+ = 
+mycÚn
+[
+šdex
+].
+¡rm
+.
+½kts
+;
+
+584 
+pHdr
+->
+num_cuda_pkts
+ = 1;
+
+585 
+pHdr
+->
+d©a_size
+ = 
+»qbuf_size
+;
+
+587 ià(
+»qbuf_size
+ > 0) {
+
+590 
+pRpkts
+[0].
+»t_ex_v®
+.
+d©a_un™
+ = 
+pHdr
+->
+d©a_size
+;
+
+593 
+pRpkts
+[0].
+»t_ex_v®
+.
+d©a_un™
+ = -1;
+
+596 ià(
+	`cÚn_£ndCudaPktHdr
+(&
+mycÚn
+[
+šdex
+], 1, 
+»qbuf_size
+è=ğ
+ERROR
+) {
+
+597  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+602 
+	`memıy
+(&
+pRpkts
+[0], 
+·ck‘
+, 
+½kt_size
+);
+
+605 ià(1 !ğ
+	`put
+(&
+mycÚn
+[
+šdex
+], (*è
+pRpkts
+, 
+pHdr
+->
+num_cuda_pkts
+ * 
+½kt_size
+)) {
+
+606  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+610 ià(
+»qbuf_size
+ > 0) {
+
+611 
+	`as£¹
+(
+»qbuf
+ && 
+»qbuf_size
+);
+
+612 ià(1 !ğ
+	`put
+(&
+mycÚn
+[
+šdex
+], (*è
+»qbuf
+, 
+»qbuf_size
+)) {
+
+613  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+615 
+	`p_debug
+Ğ"Reque¡ bufã¸£Á (%d by‹s).\n", 
+»qbuf_size
+);
+
+622 ià(!
+	`¡rm_ex³ùs_»¥Ú£
+(&
+mycÚn
+[
+šdex
+].
+¡rm
+)) {
+
+625  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+OK
+);
+
+629 
+	`mem£t
+(
+pHdr
+, 0, (
+¡rm_hdr_t
+));
+
+630 
+	`mem£t
+(
+pRpkts
+, 0, 
+MAX_REMOTE_BATCH_SIZE
+ * 
+½kt_size
+);
+
+635 ià(1 !ğ
+	`g‘
+(&
+mycÚn
+[
+šdex
+], 
+pHdr
+, (
+¡rm_hdr_t
+))) {
+
+636  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+639 
+	`p_debug
+("received„esponse header. Expecting %d…ackets‡ndƒxtra„esponse size of %u in„esponse batch\n",
+
+640 
+pHdr
+->
+num_cuda_pkts
+,…Hdr->
+d©a_size
+);
+
+642 
+	`as£¹
+(
+pHdr
+->
+num_cuda_pkts
+ == 1);
+
+645 ià(1 !ğ
+	`g‘
+(&
+mycÚn
+[
+šdex
+], 
+pRpkts
+, 
+pHdr
+->
+num_cuda_pkts
+ * 
+½kt_size
+)) {
+
+646  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+649 
+	`p_šfo
+("Reûived„e¥Ú£ b©ch. %d…ack‘s\n", 
+pHdr
+->
+num_cuda_pkts
+);
+
+652 
+	`memıy
+(
+·ck‘
+, &
+pRpkts
+[0], 
+½kt_size
+);
+
+654 ià(
+·ck‘
+->
+m‘hod_id
+ =ğ
+__CUDA_REGISTER_FAT_BINARY
+) {
+
+655 
+	`p_debug
+("FAT CUBIN HANDLE:„egi¡”ed %p.\n", 
+·ck‘
+->
+»t_ex_v®
+.
+hªdË
+);
+
+660 ià(
+pHdr
+->
+d©a_size
+ > 0) {
+
+661 
+	`as£¹
+(
+r¥buf
+ && 
+r¥buf_size
+);
+
+663 
+	`as£¹
+((è
+pHdr
+->
+d©a_size
+ <ğ
+r¥buf_size
+ );
+
+667 ià(1 !ğ
+	`g‘
+(&
+mycÚn
+[
+šdex
+], 
+r¥buf
+, (è
+pHdr
+->
+d©a_size
+)) {
+
+668  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+ERROR
+);
+
+673 
+	`mem£t
+(
+pHdr
+, 0, (
+¡rm_hdr_t
+));
+
+674 
+	`mem£t
+(
+pRpkts
+, 0, 
+MAX_REMOTE_BATCH_SIZE
+ * 
+½kt_size
+);
+
+676  
+	`l_ş—nUpCÚn
+(&
+mycÚn
+[
+šdex
+], 
+OK
+);
+
+677 
+	}
+}
+
+686 
+	$nvbackCudaG‘DeviûCouÁ_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+687 
+	`´štd
+(
+DBG_DEBUG
+, "CUDA_ERROR=%d before RPC on method %d\n",
+
+688 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+689 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+691  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+692 
+	}
+}
+
+694 
+	$nvbackCudaG‘DeviûPrİ”t›s_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+695 
+	`´štd
+(
+DBG_DEBUG
+, "CUDA_ERROR=%d before RPC on method %d\n",
+
+696 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+704 
+	`´štd
+(
+DBG_DEBUG
+, "Re¥Ú£ Bufãr:…oš‹¸%p, siz%ld\n", (*)
+·ck‘
+->
+¬gs
+[0].
+¬gui
+,…ack‘->¬gs[2].
+¬gi
+);
+
+705 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, (*è·ck‘->
+¬gs
+[0].
+¬gui
+,
+
+706 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+, 
+šdex
+);
+
+708  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+709 
+	}
+}
+
+712 
+	$nvbackCudaG‘Deviû_½c
+(
+cuda_·ck‘_t
+ * 
+pPack‘
+, 
+šdex
+) {
+
+713 
+	`´štd
+(
+DBG_DEBUG
+, "CUDA_ERROR=%d before RPC on method %d\n",
+
+714 
+pPack‘
+->
+»t_ex_v®
+.
+”r
+,…Pack‘->
+m‘hod_id
+);
+
+715 
+	`l_do_cuda_½c
+(
+pPack‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+717  (
+pPack‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+718 
+	}
+}
+
+721 
+	$nvbackCudaS‘Deviû_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+722 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+723 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+725 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+729  
+OK
+;
+
+730 
+	}
+}
+
+732 
+	$nvbackCudaF»e_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+734 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+735 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+737 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+739  
+OK
+;
+
+740 
+	}
+}
+
+742 
+	$nvbackCudaM®loc_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+744 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+745 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+749 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+751 
+	`p_debug
+("%s: devPŒ i %p",
+__FUNCTION__
+, 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+);
+
+753  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+754 
+	}
+}
+
+756 
+	$nvbackCudaS‘upArgum’t_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+757 
+	`´štd
+(
+DBG_DEBUG
+, "CUDA_ERROR=%d before RPC on method %d\n",
+
+758 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+760 
+	`l_do_cuda_½c
+(
+·ck‘
+, (*è·ck‘->
+¬gs
+[0].
+¬gp
+,…ack‘->¬gs[1].
+¬gi
+,
+
+761 
+NULL
+, 0, 
+šdex
+);
+
+764  
+OK
+;
+
+765 
+	}
+}
+
+767 
+	$nvbackCudaCÚfigu»C®l_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+768 
+	`´štd
+(
+DBG_DEBUG
+, "CUDA_ERROR=%d before RPC on method %d\n",
+
+769 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+771 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+773  
+OK
+;
+
+774 
+	}
+}
+
+776 
+	$nvbackCudaLaunch_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+) {
+
+778 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+779 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+781 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+784  
+OK
+;
+
+785 
+	}
+}
+
+787 
+	$nvbackCudaMemıy_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+789 
+	`p_debug
+( "Packet content:‡rgs[0].argp (dst)= %p,‡rgs[1].argp (src)= %p\n",
+
+790 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+,…acket->args[1].argp);
+
+791 
+	`p_debug
+Ğ"¬gs[2].¬gi=%ld,‡rgs[3].¬gi=%ld\n", 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+,…acket->args[3].argi);
+
+794 
+št64_t
+ 
+kšd
+ = 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+;
+
+796 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+) {
+
+797 
+cudaMemıyHo¡ToDeviû
+:
+
+798 
+·ck‘
+->
+m‘hod_id
+ = 
+CUDA_MEMCPY_H2D
+;
+
+799 
+	`l_do_cuda_½c
+(
+·ck‘
+, (*è·ck‘->
+¬gs
+[1].
+¬gui
+,
+
+800 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+, 
+NULL
+, 0, 
+šdex
+);
+
+802 
+cudaMemıyDeviûToHo¡
+:
+
+803 
+·ck‘
+->
+m‘hod_id
+ = 
+CUDA_MEMCPY_D2H
+;
+
+804 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, (*è·ck‘->
+¬gs
+[0].
+¬gui
+,
+
+805 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+, 
+šdex
+);
+
+807 
+cudaMemıyDeviûToDeviû
+:
+
+808 
+·ck‘
+->
+m‘hod_id
+ = 
+CUDA_MEMCPY_D2D
+;
+
+809 
+·ck‘
+->
+æags
+ &ğ~
+CUDA_Cİyty³
+;
+
+810 
+·ck‘
+->
+æags
+ &ğ~
+CUDA_Addrsh¬ed
+;
+
+811 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+813 
+cudaMemıyHo¡ToHo¡
+:
+
+814 
+	`p_ü™iÿl
+("Not implemented yet\n");
+
+815 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idMemıyDœeùiÚ
+;
+
+819 
+	`p_ü™iÿl
+Ğ"UnknowÀmemıy v®u%ld\n", 
+kšd
+);
+
+820 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idMemıyDœeùiÚ
+;
+
+824  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+825 
+	}
+}
+
+827 
+	$nvbackCudaTh»adSynchrÚize_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+828 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+829 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+831 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+833  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+834 
+	}
+}
+
+836 
+	$nvbackCudaTh»adEx™_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+) {
+
+837 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+838 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+840 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+844  
+OK
+;
+
+845 
+	}
+}
+
+847 
+	$nvbackCudaMemıyToSymbŞ_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+) {
+
+848 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+849 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+851 (
+cudaMemıyKšd
+è
+·ck‘
+->
+¬gs
+[3].
+¬gi
+) {
+
+852 
+cudaMemıyHo¡ToDeviû
+:
+
+854 
+	`l_do_cuda_½c
+(
+·ck‘
+,…ack‘->
+¬gs
+[1].
+¬gp
+,
+
+855 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0], 
+NULL
+, 0, 
+šdex
+);
+
+857 
+cudaMemıyDeviûToDeviû
+:
+
+858 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+861 
+	`p_ü™iÿl
+("UnsuµÜ‹d memıy dœeùiÚ: %ld\n", 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+);
+
+862  
+ERROR
+;
+
+865  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+866 
+	}
+}
+
+868 
+	$nvbackCudaMemıyFromSymbŞ_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+) {
+
+869 
+	`p_debug
+("CUDA_ERROR=%d before RPC on method %d\n",
+
+870 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+872 (
+cudaMemıyKšd
+è
+·ck‘
+->
+¬gs
+[3].
+¬gi
+) {
+
+873 
+cudaMemıyDeviûToDeviû
+:
+
+874 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+876 
+cudaMemıyDeviûToHo¡
+:
+
+877 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0,…ack‘->
+¬gs
+[1].
+¬gp
+,
+
+878 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0], 
+šdex
+);
+
+881 
+	`p_ü™iÿl
+("__ERROR__: unsuµÜ‹d memıy dœeùiÚ: %ld\n", 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+);
+
+882  
+ERROR
+;
+
+885  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+886 
+	}
+}
+
+888 
+	$__nvback_cudaRegi¡”F©Bš¬y_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+889 
+	`p_debug
+("CUDA_ERROR=%u before RPC on method %d\n",
+
+890 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+892 
+	`p_debug
+( "pPackedFat,…acket->args[0].argp, size = %p, %ld\n",
+
+893 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+,…ack‘->¬gs[1].
+¬gi
+);
+
+895 
+	`l_do_cuda_½c
+(
+·ck‘
+, (*è·ck‘->
+¬gs
+[0].
+¬gui
+,…ack‘->¬gs[1].
+¬gi
+,
+
+896 
+NULL
+, 0, 
+šdex
+);
+
+898  (
+·ck‘
+->
+»t_ex_v®
+.
+hªdË
+ !ğ
+NULL
+è? 
+OK
+ : 
+ERROR
+;
+
+899 
+	}
+}
+
+901 
+	$__nvback_cudaRegi¡”FunùiÚ_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+902 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+903 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+904 
+	`l_do_cuda_½c
+(
+·ck‘
+, (*è·ck‘->
+¬gs
+[0].
+¬gui
+,…ack‘->¬gs[1].
+¬gi
+,
+
+905 
+NULL
+, 0, 
+šdex
+);
+
+907  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+908 
+	}
+}
+
+910 
+	$__nvback_cudaRegi¡”V¬_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+) {
+
+911 
+	`p_debug
+( "CUDA_ERROR=%d before RPC on method %d\n",
+
+912 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+913 
+	`l_do_cuda_½c
+(
+·ck‘
+, (*è·ck‘->
+¬gs
+[0].
+¬gui
+,…ack‘->¬gs[1].
+¬gi
+,
+
+914 
+NULL
+, 0, 
+šdex
+);
+
+916  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+917 
+	}
+}
+
+919 
+	$__nvback_cudaUÄegi¡”F©Bš¬y_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+) {
+
+920 
+	`p_debug
+("CUDA_ERROR=%d before RPC on method %d\n",
+
+921 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+922 
+	`l_do_cuda_½c
+(
+·ck‘
+, 
+NULL
+, 0, NULL, 0, 
+šdex
+);
+
+926  
+OK
+;
+
+927 
+	}
+}
+
+933 
+	$nvbackCudaG‘DeviûCouÁ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+934 
+devCouÁ
+ = 0;
+
+937 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaG‘DeviûCouÁ
+(&
+devCouÁ
+);
+
+938 
+·ck‘
+->
+¬gs
+[0].
+¬gi
+ = 
+devCouÁ
+;
+
+940 
+	`p_debug
+("CUDA_ERROR=%d for method id=%d‡fter calling method\n",
+
+941 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+942  
+OK
+;
+
+943 
+	}
+}
+
+945 
+	$nvbackCudaG‘DeviûPrİ”t›s_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+947 
+cudaDeviûPrİ
+ * 
+´İ
+ = 
+NULL
+;
+
+949 
+pCÚn
+->
+»¥Ú£_d©a_size
+ = (
+cudaDeviûPrİ
+);
+
+950 
+pCÚn
+->
+pR¥Bufãr
+ = 
+	`m®loc
+ÕCÚn->
+»¥Ú£_d©a_size
+);
+
+951 ià(
+	`m®locCheck
+(
+pCÚn
+->
+pR¥Bufãr
+, 
+__FUNCTION__
+, 
+NULL
+è=ğ
+ERROR
+) {
+
+952  
+ERROR
+;
+
+954 
+´İ
+ = (
+cudaDeviûPrİ
+ *è
+pCÚn
+->
+pR¥Bufãr
+;
+
+956 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+
+
+957 ğ
+	`cudaG‘DeviûPrİ”t›s
+(
+´İ
+, 
+·ck‘
+->
+¬gs
+[1].
+¬gi
+);
+
+961 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+963  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+964 
+	}
+}
+
+966 
+	$nvbackCudaG‘Deviû_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+968 
+l2_ãedback_’abËd
+ = 0;
+
+969 #ifdeà
+L2_FEEDBACK_ENABLED
+
+
+970 
+l2_ãedback_’abËd
+ = 1;
+
+973 
+	`´štf
+("FBPKT†2_’abËd = %d, is_ãedback = %d\n",
+l2_ãedback_’abËd
+, 
+·ck‘
+->
+is_ãedback_·ck‘
+);
+
+974 if(
+l2_ãedback_’abËd
+ && 
+·ck‘
+->
+is_ãedback_·ck‘
+)
+
+976 
+row
+ = 
+·ck‘
+->
+­p_ty³
+;
+
+977 
+cŞ
+ = 
+	`g‘_gpu_šdex
+(
+·ck‘
+->
+node
+,·ck‘->
+devid
+);
+
+979 
+u¤_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->usr_time;
+
+980 
+sys_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->sys_time;
+
+981 
+tÙ®_executiÚ_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->
+tÙ®_ex_time
+;
+
+982 
+k”Ãl_Ïunch_couÁ
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->
+cuda_k”Ãl_Ïunches
+;
+
+984 
+	`´štf
+("FBPKT„ow=%d, cŞ=%d, u¤=%f, sys=%f,„—l=%f\n",
+row
+,
+cŞ
+,
+u¤_time
+[row][cŞ], 
+sys_time
+[row][cŞ], 
+tÙ®_executiÚ_time
+[row][col]);
+
+986 
+tÙ®_k”Ãl_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->
+k”Ãl_time
+.
+tv_£c
+ + (·ck‘->k”Ãl_time.
+tv_u£c
+ * 0.000001);
+
+987 
+nÚ_k”Ãl_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->nÚ_k”Ãl_time.
+tv_£c
+ + (·ck‘->nÚ_k”Ãl_time.
+tv_u£c
+ * 0.000001);
+
+989 
+gpu_utiz©iÚ
+[
+row
+][
+cŞ
+] = ((è(
+tÙ®_k”Ãl_time
+[row][cŞ] ))/ ((è(
+·ck‘
+->
+sys_time
+ +…ack‘->
+u¤_time
+));
+
+993 if(
+th»ad_couÁ_mem_async
+[0][
+cŞ
+] +hread_count_mem_async[1][col] == 0)
+
+994 
+mem_async_utiz©iÚ
+[
+cŞ
+] = 1;
+
+997 
+mem_async_utiz©iÚ
+[
+cŞ
+] =
+
+998 ((
+th»ad_couÁ_mem_async
+[0][
+cŞ
+] * 
+tÙ®_k”Ãl_time
+[0][cŞ] / 
+nÚ_k”Ãl_time
+[0][col])
+
+999 + (
+th»ad_couÁ_mem_async
+[1][
+cŞ
+] * 
+tÙ®_k”Ãl_time
+[1][cŞ] / 
+nÚ_k”Ãl_time
+[1][col]))
+
+1000 / (
+th»ad_couÁ_mem_async
+[0][
+cŞ
+] +hread_count_mem_async[1][col]);
+
+1003 
+deviû
+ = 0;
+
+1004 *
+DEVICE_ASSIGNED
+;
+
+1007 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 0;
+
+1008 
+BACKEND_DEVICES
+=
+·ck‘
+->
+¬gs
+[0].
+¬gi
+;
+
+1010 if(!(
+DEVICE_ASSIGNED
+=
+	`±h»ad_g‘¥ecific
+(
+sKey_DEVICE_ASSIGNED
+))) {
+
+1011 
+DEVICE_ASSIGNED
+=(*)
+	`ÿÎoc
+(1, ());
+
+1012 
+	`±h»ad_£t¥ecific
+(
+sKey_DEVICE_ASSIGNED
+, 
+DEVICE_ASSIGNED
+);
+
+1020 *
+DEVICE_ASSIGNED
+ = 
+·ck‘
+->
+¬gs
+[0].
+¬gi
+ = 
+	`g‘_Ãxt_deviû_RR
+();
+
+1022 
+	`´štf
+("\n\n\n\ÂvbackCudaG‘Deviû_¤v: GOT DEV:%d********\n\n\n\n", 
+·ck‘
+->
+¬gs
+[0].
+¬gi
+);
+
+1024 
+	`p_debug
+Ğ"Cu¼’ˆassigÃd deviû id = %ld\n", 
+·ck‘
+->
+¬gs
+[0].
+¬gi
+ );
+
+1025 
+	`p_debug
+( "CUDA_ERROR=%d for method id=%d‡fter calling method\n",
+
+1026 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1027  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+1028 
+	}
+}
+
+1030 
+	$nvbackCudaS‘Deviû_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1031 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaS‘Deviû
+Õack‘->
+¬gs
+[0].
+¬gi
+);
+
+1033 
+isLoÿl
+ = 
+·ck‘
+->
+¬gs
+[1].
+¬gi
+;
+
+1036 
+	`årštf
+(
+¡d”r
+, "\n\n\n% isLoÿl:%d\n\n\n",
+__FUNCTION__
+, 
+isLoÿl
+);
+
+1037 #ifdeà
+SCHED_FAIR_SHARE
+
+
+1038 
+signum
+ = 0;
+
+1039 if(
+isLoÿl
+ == 0)
+
+1040 
+signum
+ = 
+	`fs_add_queue
+(
+	`g‘pid
+(),
+·ck‘
+->
+¬gs
+[0].
+¬gi
+,
+APP_TYPE_A
+);
+
+1042 
+signum
+ = 
+	`fs_add_queue
+(
+	`g‘pid
+(),
+·ck‘
+->
+¬gs
+[0].
+¬gi
+,
+APP_TYPE_B
+);
+
+1043 
+·ck‘
+->
+signo
+ = 
+signum
+;
+
+1046 #ifdeà
+SCHED_LAS
+
+
+1047 if(
+isLoÿl
+ == 0)
+
+1048 
+·ck‘
+->
+signo
+ = 
+	`Ïs_add_queue
+(
+	`g‘pid
+(),·ck‘->
+¬gs
+[0].
+¬gi
+, 
+APP_TYPE_A
+);
+
+1050 
+·ck‘
+->
+signo
+ = 
+	`Ïs_add_queue
+(
+	`g‘pid
+(),·ck‘->
+¬gs
+[0].
+¬gi
+, 
+APP_TYPE_B
+);
+
+1053 if(
+isLoÿl
+ == 0)
+
+1055 
+max_´iÜ™y
+ = 
+	`sched_g‘_´iÜ™y_max
+(
+SCHED_RR
+);
+
+1056 
+mš_´iÜ™y
+ = 
+	`sched_g‘_´iÜ™y_mš
+(
+SCHED_RR
+);
+
+1058 
+sched_·¿m
+ 
+·¿m
+;
+
+1062 
+·¿m
+.
+sched_´iÜ™y
+ = 
+max_´iÜ™y
+;
+
+1065 
+	`sched_£tscheduËr
+(0, 
+SCHED_RR
+, &
+·¿m
+);
+
+1066 
+cu¼_´io
+ = 
+	`sched_g‘·¿m
+(0, &
+·¿m
+);
+
+1067 
+	`årštf
+(
+¡d”r
+, "\n\n\ncu¼„ˆ´iÜ™y:%d\n\n\n", 
+·¿m
+.
+sched_´iÜ™y
+);
+
+1072 
+	`p_debug
+("S‘ deviû id = %ld\n", 
+·ck‘
+->
+¬gs
+[0].
+¬gi
+ );
+
+1073 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1075  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+1076 
+	}
+}
+
+1078 
+	$nvbackCudaM®loc_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1086 
+£mid
+ = 
+	`g‘£m­hÜe
+(
+	`áok
+(
+SEMKEYPATH
+,
+GMT_KEYID
+));
+
+1088 
+	`´štf
+("\nbefore devPtr %p, *devPtr %p, size %ld\n",
+
+1089 &(
+·ck‘
+->
+¬gs
+[0].
+¬gp
+),…ack‘->¬gs[0].¬gp,…ack‘->¬gs[1].
+¬gi
+);
+
+1090 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+ = 
+NULL
+;
+
+1091 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaM®loc
+(&Õack‘->
+¬gs
+[0].
+¬gp
+),
+
+1092 
+·ck‘
+->
+¬gs
+[1].
+¬gi
+);
+
+1093 
+	`´štf
+("‡á” devPŒ i %p, *devPŒ %p\n", &(
+·ck‘
+->
+¬gs
+[0].
+¬gp
+),
+
+1094 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+);
+
+1096 
+	`p_debug
+("devPŒ i %p",
+·ck‘
+->
+¬gs
+[0].
+¬gp
+);
+
+1098 
+	`p_debug
+( "CUDA_ERROR=%d for method id=%d‡fterƒxecution\n",
+
+1099 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1101 
+i
+;
+
+1102 
+	`P
+(
+£mid
+);
+
+1103 
+myšdex
+ = *
+vm­_šdex
+;
+
+1104 (*
+vm­_šdex
+)++;
+
+1105 
+	`V
+(
+£mid
+);
+
+1106 
+	`mem_m­_ü—t
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+,&Õack‘->
+¬gs
+[0].
+¬gp
+),·ck‘->¬gs[1].
+¬gi
+);
+
+1107 
+vm­³d_loÿl_¬r
+[
+loÿlšdex
+++] = 
+myšdex
+;
+
+1109  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1110 
+	}
+}
+
+1112 
+	$nvbackCudaF»e_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+) {
+
+1113 
+	`p_debug
+("devPŒ i %p\n",
+·ck‘
+->
+¬gs
+[0].
+¬gp
+);
+
+1114 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaF»e
+Õack‘->
+¬gs
+[0].
+¬gp
+);
+
+1115 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1116 if(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ == 0)
+
+1117 
+	`mem_m­_d–‘e
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+,&Õack‘->
+¬gs
+[0].
+¬gp
+));
+
+1118  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ0è? 
+OK
+ : 
+ERROR
+;
+
+1119 
+	}
+}
+
+1121 
+	$nvbackCudaS‘upArgum’t_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+) {
+
+1127 *
+¬g
+ = (*è((*è
+pCÚn
+->
+pReqBufãr
+);
+
+1128 
+	`mem_m­_´št
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+);
+
+1129 
+	`årštf
+(
+¡d”r
+,"ARGSETUP‡rg from…ack‘ : %p\n",
+·ck‘
+->
+¬gs
+[0].
+¬gp
+);
+
+1130 
+	`årštf
+(
+¡d”r
+, "ARGSETUP‡rgum’ˆi ¬g :%°*¬g : %p\n",
+¬g
+,*((**)‡rg));
+
+1132 ** 
+aùu®_dev±r
+ = 
+	`mem_m­_g‘_aùu®_dev±r
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+, ((**)
+¬g
+));
+
+1133 if(
+aùu®_dev±r
+)
+
+1135 
+	`årštf
+(
+¡d”r
+, "VMEM‡rg£tup, dev±¸found, old = %p,‚ew = %p\n",*((**è
+¬g
+), *
+aùu®_dev±r
+);
+
+1136 
+¬g
+ = 
+aùu®_dev±r
+;
+
+1141 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1142  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1143 
+	}
+}
+
+1145 
+	$nvbackCudaCÚfigu»C®l_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+) {
+
+1151 
+	`km­_add_cÚfig
+((
+km­
+ **è
+·ck‘
+->km­,…ack‘->
+¬gs
+[0].
+¬g_dim
+,packet->args[1].arg_dim,
+
+1152 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+,(
+cudaSŒ—m_t
+)…acket->args[3].argi);
+
+1154 
+	`p_debug
+(
+
+1156 
+·ck‘
+->
+¬gs
+[0].
+¬g_dim
+.
+x
+,…ack‘->¬gs[0].¬g_dim.
+y
+,
+
+1157 
+·ck‘
+->
+¬gs
+[0].
+¬g_dim
+.
+z
+,…ack‘->¬gs[1].¬g_dim.
+x
+,
+
+1158 
+·ck‘
+->
+¬gs
+[1].
+¬g_dim
+.
+y
+,…ack‘->¬gs[1].¬g_dim.
+z
+,
+
+1159 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+,…acket->args[3].argi);
+
+1161 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1162  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1163 
+	}
+}
+
+1165 
+	$nvbackCudaLaunch_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1166 
+i
+;
+
+1167 
+j
+;
+
+1168 cÚ¡ *
+¬g
+;
+
+1169 
+found
+ = 0;
+
+1172 
+¬g
+ = (cÚ¡ *è
+·ck‘
+->
+¬gs
+[0].
+¬gı
+;
+
+1174 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜLaunchFau»
+;
+
+1180 
+i
+ = 0; i < 
+çtCInfoA¼
+->
+Ën
+; i++) {
+
+1181 
+çtcubš_šfo_t
+ * 
+p
+ = &
+	`g_¬¿y_šdex
+(
+çtCInfoA¼
+, f©cubš_šfo_t, 
+i
+);
+
+1182 
+	`as£¹
+Ğ
+p
+ !ğ
+NULL
+ );
+
+1184 
+j
+ = 0; j < 
+p
+->
+num_»g_âs
+; j++) {
+
+1185 ià(
+p
+->
+»g_âs
+[
+j
+] !ğ
+NULL
+ &&…->»g_âs[j]->
+ho¡FEaddr
+ =ğ
+¬g
+) {
+
+1186 
+	`p_debug
+( "function %p:%s\n",
+
+1187 
+p
+->
+»g_âs
+[
+j
+]->
+ho¡FEaddr
+,
+
+1188 
+p
+->
+»g_âs
+[
+j
+]->
+ho¡Fun
+);
+
+1189 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaLaunch
+(
+p
+->
+»g_âs
+[
+j
+]->
+ho¡Fun
+);
+
+1190 if(
+p
+->
+»g_âs
+[
+j
+]->
+gDim
+)
+
+1191 
+	`årštf
+(
+¡d”r
+,"LAUNCH gridDim %d\n",
+p
+->
+»g_âs
+[
+j
+]->
+gDim
+->
+x
+);
+
+1192 if(
+p
+->
+»g_âs
+[
+j
+]->
+bDim
+)
+
+1193 
+	`årštf
+(
+¡d”r
+,"LAUNCH blockDim %d\n",
+p
+->
+»g_âs
+[
+j
+]->
+bDim
+->
+x
+);
+
+1194 if(
+p
+->
+»g_âs
+[
+j
+]->
+wSize
+)
+
+1195 
+	`årštf
+(
+¡d”r
+,"LAUNCH wSiz%d\n",
+p
+->
+»g_âs
+[
+j
+]->
+wSize
+);
+
+1204 
+found
+ = 1;
+
+1208 ià(
+found
+ == 1)
+
+1213 
+	`vmem_·geout_®l
+((
+mem_m­
+ ** ) 
+·ck‘
+->
+vmm­
+);
+
+1214 
+	`vmem_·geš_®l
+((
+mem_m­
+ ** ) 
+·ck‘
+->
+vmm­
+);
+
+1218 
+	`p_debug
+("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1220  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1221 
+	}
+}
+
+1223 
+	$nvbackCudaMemıy_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1224 
+	`p_debug
+( "Packet content:‡rgs[0].argp (dst)= %p,‡rgs[1].argp (src)= %p\n",
+
+1225 
+·ck‘
+->
+¬gs
+[0].
+¬gp
+,…acket->args[1].argp);
+
+1226 
+	`p_debug
+Ğ"¬gs[2].¬gi=%ld,‡rgs[3].¬gi=%ld\n", 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+,…acket->args[3].argi);
+
+1228 
+·ck‘
+->
+m‘hod_id
+) {
+
+1230 
+CUDA_MEMCPY_H2H
+:
+
+1232 
+	`p_w¬n
+( "Warning: CUDA_MEMCPY_H2H‚ot supported\n");
+
+1233  
+ERROR
+;
+
+1235 
+CUDA_MEMCPY_H2D
+:
+
+1236 
+	`p_debug
+("request_data_size = %d,„eceived count =%ld\n",
+
+1237 
+pCÚn
+->
+»que¡_d©a_size
+, 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+);
+
+1238 
+	`as£¹
+(
+pCÚn
+->
+»que¡_d©a_size
+ =ğ
+·ck‘
+->
+¬gs
+[2].
+¬gi
+);
+
+1241 
+·ck‘
+->
+¬gs
+[1].
+¬gui
+ = (
+ušt64_t
+è((*è
+pCÚn
+->
+pReqBufãr
+);
+
+1248 
+CUDA_MEMCPY_D2H
+:
+
+1249 
+pCÚn
+->
+»¥Ú£_d©a_size
+ = 
+·ck‘
+->
+¬gs
+[2].
+¬gi
+;
+
+1250 
+	`as£¹
+(
+pCÚn
+->
+pR¥Bufãr
+ =ğ
+NULL
+);
+
+1251 
+pCÚn
+->
+pR¥Bufãr
+ = 
+	`m®loc
+ÕCÚn->
+»¥Ú£_d©a_size
+);
+
+1252 ià(
+	`m®locCheck
+(
+pCÚn
+->
+pR¥Bufãr
+, 
+__FUNCTION__
+, 
+NULL
+è=ğ
+ERROR
+) {
+
+1253  
+ERROR
+;
+
+1255 
+·ck‘
+->
+¬gs
+[0].
+¬gui
+ = (
+ušt64_t
+è
+pCÚn
+->
+pR¥Bufãr
+;
+
+1262 
+CUDA_MEMCPY_D2D
+:
+
+1267 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaMemıy
+((*è·ck‘->
+¬gs
+[0].
+¬gui
+,
+
+1268 (*è
+·ck‘
+->
+¬gs
+[1].
+¬gui
+,…ack‘->¬gs[2].
+¬gi
+,
+
+1269 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+);
+
+1271 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1272 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1274 
+·ck‘
+->
+m‘hod_id
+)
+
+1276 
+CUDA_MEMCPY_H2D
+:
+
+1277 
+	`mem_m­_upd©e_d©a
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+,(**è&Õack‘->
+¬gs
+[0].
+¬gui
+), (*è·ck‘->¬gs[1].¬gui,·ck‘->¬gs[2].
+¬gi
+);
+
+1278 
+	`mem_m­_upd©e_¡©us
+((
+mem_m­
+ **è
+·ck‘
+->
+vmm­
+, (**è&Õack‘->
+¬gs
+[0].
+¬gui
+), 
+D_READY
+);
+
+1282  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1283 
+	}
+}
+
+1285 
+	$nvbackCudaTh»adSynchrÚize_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1286 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaTh»adSynchrÚize
+();
+
+1288 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1289 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1291  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1292 
+	}
+}
+
+1294 
+	$nvbackCudaTh»adEx™_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1295 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaTh»adEx™
+();
+
+1299 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1300 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1302  (
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+è? 
+OK
+ : 
+ERROR
+;
+
+1303 
+	}
+}
+
+1305 
+	$nvbackCudaMemıyToSymbŞ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1307 cÚ¡ * 
+ho¡V¬
+ = (cÚ¡ *è
+·ck‘
+->
+¬gs
+[0].
+¬gı
+;
+
+1309 (
+cudaMemıyKšd
+è
+·ck‘
+->
+¬gs
+[3].
+¬gi
+) {
+
+1310 
+cudaMemıyHo¡ToDeviû
+:
+
+1311 
+	`p_debug
+("pcÚn->»que¡_d©a_sizğ%d,…ack‘->couÁ = %ld\n", 
+pCÚn
+->
+»que¡_d©a_size
+,
+
+1312 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0]);
+
+1314 
+	`as£¹
+(()
+pCÚn
+->
+»que¡_d©a_size
+ =ğ
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0]);
+
+1316 
+·ck‘
+->
+¬gs
+[1].
+¬gui
+ = (
+ušt64_t
+è((*è
+pCÚn
+->
+pReqBufãr
+);
+
+1319 
+cudaMemıyDeviûToDeviû
+:
+
+1320 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜNÙY‘Im¶em’‹d
+;
+
+1321 
+	`p_ü™iÿl
+("__ERROR__: cudaMemcpyDeviceToDevice‚ot supported\n");
+
+1322 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1323 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1324  
+ERROR
+;
+
+1327 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idMemıyDœeùiÚ
+;
+
+1328 
+	`p_ü™iÿl
+("__ERROR__: Invalid Memcpy direction\n");
+
+1329 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1330 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1331  
+ERROR
+;
+
+1336 
+idx
+ = 0;
+
+1337 
+çtcubš_šfo_t
+ * 
+p
+ = 
+	`g_fcŸ_ho¡_v¬
+(
+çtCInfoA¼
+, (*è
+ho¡V¬
+, &
+idx
+);
+
+1339 ià(
+	`nuÎDebugChk±
+(
+p
+, 
+__FUNCTION__
+, "The hostVar has‚ot been found\n")
+
+1340 =ğ
+TRUE
+) {
+
+1341 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idSymbŞ
+;
+
+1343 
+	`as£¹
+(
+idx
+ > -1);
+
+1344 
+	`as£¹
+(
+idx
+ < 
+MAX_REGISTERED_VARS
+);
+
+1354 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaMemıyToSymbŞ
+(
+
+1355 
+p
+->
+v¬ŸbËs
+[
+idx
+]->
+dom0Ho¡Addr
+,
+
+1357 (*è
+·ck‘
+->
+¬gs
+[1].
+¬gui
+,
+
+1358 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0],
+
+1359 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[1],
+
+1360 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+);
+
+1363 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1364 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1366  
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+ ? 
+OK
+ : 
+ERROR
+;
+
+1367 
+	}
+}
+
+1369 
+	$nvbackCudaMemıyFromSymbŞ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1371 cÚ¡ * 
+ho¡V¬
+ = (cÚ¡ *è
+·ck‘
+->
+¬gs
+[0].
+¬gı
+;
+
+1373 (
+cudaMemıyKšd
+è
+·ck‘
+->
+¬gs
+[3].
+¬gi
+) {
+
+1374 
+cudaMemıyDeviûToHo¡
+:
+
+1375 
+pCÚn
+->
+»¥Ú£_d©a_size
+ = 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0];
+
+1376 
+	`as£¹
+(
+pCÚn
+->
+pR¥Bufãr
+ =ğ
+NULL
+);
+
+1377 
+pCÚn
+->
+pR¥Bufãr
+ = 
+	`m®loc
+ÕCÚn->
+»¥Ú£_d©a_size
+);
+
+1378 ià(
+	`m®locCheck
+(
+pCÚn
+->
+pR¥Bufãr
+, 
+__FUNCTION__
+, 
+NULL
+è=ğ
+ERROR
+) {
+
+1379  
+ERROR
+;
+
+1381 
+·ck‘
+->
+¬gs
+[1].
+¬gui
+ = (
+ušt64_t
+è
+pCÚn
+->
+pR¥Bufãr
+;
+
+1384 
+cudaMemıyDeviûToDeviû
+:
+
+1385 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜNÙY‘Im¶em’‹d
+;
+
+1386 
+	`p_ü™iÿl
+("__ERROR__: cudaMemcpyDeviceToDevice‚ot supported\n");
+
+1387 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1388 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1389  
+ERROR
+;
+
+1392 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idMemıyDœeùiÚ
+;
+
+1393 
+	`p_ü™iÿl
+("__ERROR__: Invalid Memcpy direction\n");
+
+1394 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1395 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1396  
+ERROR
+;
+
+1401 
+idx
+ = 0;
+
+1402 
+çtcubš_šfo_t
+ * 
+p
+ = 
+	`g_fcŸ_ho¡_v¬
+(
+çtCInfoA¼
+, (*è
+ho¡V¬
+, &
+idx
+);
+
+1404 ià(
+	`nuÎDebugChk±
+(
+p
+, 
+__FUNCTION__
+, "The hostVar has‚ot been found\n")
+
+1405 =ğ
+TRUE
+) {
+
+1406 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaE¼ÜInv®idSymbŞ
+;
+
+1408 
+	`as£¹
+(
+idx
+ > -1);
+
+1409 
+	`as£¹
+(
+idx
+ < 
+MAX_REGISTERED_VARS
+);
+
+1415 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+	`cudaMemıyFromSymbŞ
+(
+
+1416 (*è
+·ck‘
+->
+¬gs
+[1].
+¬gui
+,
+
+1418 
+p
+->
+v¬ŸbËs
+[
+idx
+]->
+dom0Ho¡Addr
+,
+
+1419 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[0],
+
+1420 
+·ck‘
+->
+¬gs
+[2].
+¬r_¬gi
+[1],
+
+1421 
+·ck‘
+->
+¬gs
+[3].
+¬gi
+);
+
+1424 
+	`p_šfo
+Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1425 
+	`cudaG‘E¼ÜSŒšg
+(
+·ck‘
+->
+»t_ex_v®
+.
+”r
+),…ack‘->
+m‘hod_id
+);
+
+1427  
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ =ğ
+cudaSucûss
+ ? 
+OK
+ : 
+ERROR
+;
+
+1428 
+	}
+}
+
+1435 
+	$__nvback_cudaRegi¡”F©Bš¬y_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+) {
+
+1438 
+çtcubš_šfo_t
+ * 
+pF©CInfo
+ = 
+NULL
+;
+
+1442 ià(
+NULL
+ =ğ
+çtCInfoA¼
+)
+
+1445 
+çtCInfoA¼
+ = 
+	`g_¬¿y_Ãw
+(
+FALSE
+, 
+TRUE
+, (
+çtcubš_šfo_t
+));
+
+1448 
+pF©CInfo
+ = (
+çtcubš_šfo_t
+*è
+	`ÿÎoc
+(1, (fatcubin_info_t));
+
+1450 
+	`nuÎEx™Chk±M®loc
+(
+pF©CInfo
+, (*è
+__FUNCTION__
+);
+
+1452 
+pF©CInfo
+->
+çtCubš
+ = (
+__cudaF©CudaBš¬y
+ *è
+	`m®loc
+(
+
+1453 (
+__cudaF©CudaBš¬y
+ ));
+
+1455 ià(
+	`m®locCheck
+(
+pF©CInfo
+->
+çtCubš
+, 
+__FUNCTION__
+, 
+NULL
+è=ğ
+ERROR
+)
+
+1456 
+	`ex™
+(
+ERROR
+);
+
+1458 ià(
+	`uÅackF©Bš¬y
+(
+pF©CInfo
+->
+çtCubš
+, 
+mycÚn
+->
+pReqBufãr
+è=ğ
+ERROR
+) {
+
+1459 
+	`p_”rÜ
+("Problems with unpacking fat binary. Exiting ... \n");
+
+1461 
+	`p_debug
+( "__OK__ No…roblem with unpacking fat binary\n");
+
+1466 
+pF©CInfo
+->
+çtCubšHªdË
+ = 
+	`__cudaRegi¡”F©Bš¬y
+ÕF©CInfo->
+çtCubš
+);
+
+1473 
+	`g_¬¿y_­³nd_v®
+(
+çtCInfoA¼
+, *
+pF©CInfo
+);
+
+1475 
+·ck‘
+->
+¬gs
+[1].
+¬gp
+ = 
+pF©CInfo
+->
+çtCubš
+;
+
+1476 
+·ck‘
+->
+»t_ex_v®
+.
+hªdË
+ = 
+pF©CInfo
+->
+çtCubšHªdË
+;
+
+1478 
+	`p_debug
+Ğ"FATCUBIN HANDLE:„egi¡”ed %p\n", 
+pF©CInfo
+->
+çtCubšHªdË
+);
+
+1479 
+	`p_debug
+Ğ"FATCUBIN:„egi¡”ed %p\n", 
+pF©CInfo
+->
+çtCubš
+);
+
+1480  
+OK
+;
+
+1481 
+	}
+}
+
+1484 
+	$__nvback_cudaRegi¡”F©Bš¬y2_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+) {
+
+1487 
+çtcubš_šfo_t
+ * 
+pF©CInfo
+ = 
+NULL
+;
+
+1491 ià(
+NULL
+ =ğ
+çtCInfoA¼
+)
+
+1494 
+çtCInfoA¼
+ = 
+	`g_¬¿y_Ãw
+(
+FALSE
+, 
+TRUE
+, (
+çtcubš_šfo_t
+));
+
+1497 
+pF©CInfo
+ = (
+çtcubš_šfo_t
+*è
+	`ÿÎoc
+(1, (fatcubin_info_t));
+
+1499 
+	`nuÎEx™Chk±M®loc
+(
+pF©CInfo
+, (*è
+__FUNCTION__
+);
+
+1501 
+pF©CInfo
+->
+çtCubš
+ = (
+__cudaF©CudaBš¬y2
+ *è
+	`m®loc
+(
+
+1502 (
+__cudaF©CudaBš¬y2
+ ));
+
+1504 ià(
+	`m®locCheck
+(
+pF©CInfo
+->
+çtCubš
+, 
+__FUNCTION__
+, 
+NULL
+è=ğ
+ERROR
+)
+
+1505 
+	`ex™
+(
+ERROR
+);
+
+1507 ià(
+	`uÅackF©Bš¬y_4
+(
+pF©CInfo
+->
+çtCubš
+, 
+mycÚn
+->
+pReqBufãr
+è=ğ
+ERROR
+) {
+
+1508 
+	`p_”rÜ
+("Problems with unpacking fat binary. Exiting ... \n");
+
+1510 
+	`p_debug
+( "__OK__ No…roblem with unpacking fat binary\n");
+
+1515 
+pF©CInfo
+->
+çtCubšHªdË
+ = 
+	`__cudaRegi¡”F©Bš¬y
+ÕF©CInfo->
+çtCubš
+);
+
+1522 
+	`g_¬¿y_­³nd_v®
+(
+çtCInfoA¼
+, *
+pF©CInfo
+);
+
+1524 
+·ck‘
+->
+¬gs
+[1].
+¬gp
+ = 
+pF©CInfo
+->
+çtCubš
+;
+
+1525 
+·ck‘
+->
+»t_ex_v®
+.
+hªdË
+ = 
+pF©CInfo
+->
+çtCubšHªdË
+;
+
+1527 
+	`p_debug
+Ğ"FATCUBIN HANDLE:„egi¡”ed %p\n", 
+pF©CInfo
+->
+çtCubšHªdË
+);
+
+1528 
+	`p_debug
+Ğ"FATCUBIN:„egi¡”ed %p\n", 
+pF©CInfo
+->
+çtCubš
+);
+
+1529  
+OK
+;
+
+1530 
+	}
+}
+
+1531 
+	$__nvback_cudaRegi¡”FunùiÚ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+) {
+
+1532 
+»g_func_¬gs_t
+ * 
+pA
+ = 
+	`m®loc
+((reg_func_args_t));
+
+1533 
+çtcubš_šfo_t
+ * 
+pFcI
+ = 
+NULL
+;
+
+1535 
+	`nuÎEx™Chk±M®loc
+((*è
+pA
+, (*è
+__FUNCTION__
+);
+
+1537 ià(
+	`uÅackRegFuncArgs
+(
+pA
+, 
+mycÚn
+->
+pReqBufãr
+è=ğ
+ERROR
+)
+
+1538 
+	`p_w¬n
+("Problems with unpacking‡rguments in function„egister\n");
+
+1540 
+	`´štF©CIA¼ay
+(
+çtCInfoA¼
+);
+
+1543 
+pFcI
+ = 
+	`g_fcŸ_–em
+(
+çtCInfoA¼
+, 
+pA
+->
+çtCubšHªdË
+);
+
+1545 ià(
+NULL
+ =ğ
+pFcI
+) {
+
+1546 
+	`p_w¬n
+("__ERROR__: NÙ such f© cubš hªdË¸%p\n", 
+pA
+->
+çtCubšHªdË
+);
+
+1549 
+	`p_debug
+("FATCUBIN HANDLE:„eûived=%p, found=%p", 
+pA
+->
+çtCubšHªdË
+, 
+pFcI
+->fatCubinHandle);
+
+1551 
+	`as£¹
+(
+pA
+->
+çtCubšHªdË
+ =ğ
+pFcI
+->fatCubinHandle);
+
+1553 
+	`l_´štRegFunArgs
+(
+pA
+->
+çtCubšHªdË
+, (cÚ¡ *èpA->
+ho¡Fun
+,
+
+1554 
+pA
+->
+deviûFun
+, (cÚ¡ *èpA->
+deviûName
+,…A->
+th»ad_lim™
+,
+
+1555 
+pA
+->
+tid
+,…A->
+bid
+,…A->
+bDim
+,…A->
+gDim
+,…A->
+wSize
+);
+
+1557 
+	`__cudaRegi¡”FunùiÚ
+(
+pA
+->
+çtCubšHªdË
+, (cÚ¡ *èpA->
+ho¡Fun
+,
+
+1558 
+pA
+->
+deviûFun
+, (cÚ¡ *èpA->
+deviûName
+,…A->
+th»ad_lim™
+,
+
+1559 
+pA
+->
+tid
+,…A->
+bid
+,…A->
+bDim
+,…A->
+gDim
+,…A->
+wSize
+);
+
+1563 
+	`as£¹
+(
+pFcI
+->
+num_»g_âs
+ < 
+MAX_REGISTERED_FUNCS
+);
+
+1564 
+pFcI
+->
+»g_âs
+[pFcI->
+num_»g_âs
+] = 
+pA
+;
+
+1565 
+pFcI
+->
+num_»g_âs
+++;
+
+1567 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaSucûss
+;
+
+1568 
+	`p_debug
+Ğ"CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1570  
+OK
+;
+
+1571 
+	}
+}
+
+1573 
+	$__nvback_cudaRegi¡”V¬_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+) {
+
+1574 
+»g_v¬_¬gs_t
+ * 
+pA
+ = (»g_v¬_¬gs_ˆ*è
+	`m®loc
+((reg_var_args_t));
+
+1575 
+çtcubš_šfo_t
+ * 
+pFcI
+ = 
+NULL
+;
+
+1577 
+	`nuÎEx™Chk±M®loc
+((*è
+pA
+, (*è
+__FUNCTION__
+);
+
+1579 ià(
+	`uÅackRegV¬
+(
+pA
+, 
+mycÚn
+->
+pReqBufãr
+è=ğ
+ERROR
+)
+
+1580 
+	`p_”rÜ
+("Problems with unpacking‡rguments in function„egister. Exiting ...\n");
+
+1583 
+pFcI
+ = 
+	`g_fcŸ_–em
+(
+çtCInfoA¼
+, 
+pA
+->
+çtCubšHªdË
+);
+
+1584 
+	`p_debug
+("num_»g_v¬s: %d\n", 
+pFcI
+->
+num_»g_v¬s
+);
+
+1586 ià(
+NULL
+ =ğ
+pFcI
+)
+
+1587 
+	`p_”rÜ
+("NÙ such f© cubš hªdËr. Ex™šg %p\n", 
+pA
+->
+çtCubšHªdË
+);
+
+1589 
+	`p_debug
+("FATCUBIN HANDLE:„eceived=%p, found=%p\n",
+
+1590 
+pA
+->
+çtCubšHªdË
+, 
+pFcI
+->fatCubinHandle);
+
+1592 
+	`as£¹
+(
+pA
+->
+çtCubšHªdË
+ =ğ
+pFcI
+->fatCubinHandle);
+
+1594 
+	`l_´štRegV¬
+(
+pA
+->
+çtCubšHªdË
+,…A->
+ho¡V¬
+,…A->
+deviûAdd»ss
+,
+
+1595 (cÚ¡ *è
+pA
+->
+deviûName
+,…A->
+ext
+,…A->
+size
+,…A->
+cÚ¡ªt
+,
+
+1596 
+pA
+->
+glob®
+);
+
+1598 
+	`p_debug
+("pA->dom0Ho¡Add¸befÜğ%p\n", 
+pA
+->
+dom0Ho¡Addr
+);
+
+1599 
+	`__cudaRegi¡”V¬
+(
+pA
+->
+çtCubšHªdË
+,…A->
+dom0Ho¡Addr
+,…A->
+deviûAdd»ss
+,
+
+1600 (cÚ¡ *è
+pA
+->
+deviûName
+,…A->
+ext
+,…A->
+size
+,…A->
+cÚ¡ªt
+,
+
+1601 
+pA
+->
+glob®
+);
+
+1602 
+	`p_debug
+("pA->hostVar‡fter __cudaRegisterVar:…ointer = %p\n",
+
+1603 
+pA
+->
+dom0Ho¡Addr
+);
+
+1607 
+	`as£¹
+(
+pFcI
+->
+num_»g_v¬s
+ < 
+MAX_REGISTERED_VARS
+);
+
+1608 
+pFcI
+->
+v¬ŸbËs
+[pFcI->
+num_»g_v¬s
+] = 
+pA
+;
+
+1609 
+pFcI
+->
+num_»g_v¬s
+++;
+
+1611 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaSucûss
+;
+
+1612 
+	`p_debug
+("CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,
+
+1613 
+·ck‘
+->
+m‘hod_id
+);
+
+1615  
+OK
+;
+
+1616 
+	}
+}
+
+1618 
+	$__nvback_cudaUÄegi¡”F©Bš¬y_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+) {
+
+1621 ** 
+pFCHªdË
+ = 
+·ck‘
+->
+¬gs
+[0].
+¬gdp
+;
+
+1623 
+çtcubš_šfo_t
+ * 
+pFCI
+;
+
+1624 
+pFCIdx
+;
+
+1626 
+	`´štF©CIA¼ay
+(
+çtCInfoA¼
+);
+
+1627 
+	`p_debug
+Ğ"ThFAT cubš hªdË we'vgÙ: %p\n", 
+pFCHªdË
+);
+
+1630 
+pFCI
+ = 
+	`g_fcŸ_–idx
+(
+çtCInfoA¼
+, 
+pFCHªdË
+, &
+pFCIdx
+);
+
+1631 
+	`as£¹
+(
+pFCI
+ !ğ
+NULL
+);
+
+1633 
+	`__cudaUÄegi¡”F©Bš¬y
+(
+pFCHªdË
+);
+
+1635 
+	`ş—nF©CubšInfo
+(
+pFCI
+);
+
+1638 
+	`g_¬¿y_»move_šdex_ç¡
+(
+çtCInfoA¼
+, 
+pFCIdx
+);
+
+1640 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+ = 
+cudaSucûss
+;
+
+1641 
+	`p_debug
+("CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
+·ck‘
+->
+»t_ex_v®
+.
+”r
+,…ack‘->
+m‘hod_id
+);
+
+1643  
+OK
+;
+
+1644 
+	}
+}
+
+	@remote_api_wrapper.h
+
+11 #iâdeà
+__REMOTE_CUDA_CALLS_WRAPPER_H
+
+
+12 
+	#__REMOTE_CUDA_CALLS_WRAPPER_H
+
+
+	)
+
+14 
+	~"·ck‘h—d”.h
+"
+
+15 
+	~"cÚÃùiÚ.h
+"
+
+42 
+l_do_cuda_½c
+Ğ
+cuda_·ck‘_t
+ *
+pPack‘
+, *
+»qbuf
+,
+
+43 cÚ¡ 
+»qbuf_size
+,
+
+44 *
+r¥buf
+,
+
+45 cÚ¡ 
+r¥buf_size
+, 
+šdex
+);
+
+48 
+mem_m­
+ * 
+vm­_bË
+;
+
+49 * 
+vm­_šdex
+;
+
+50 
+vm­³d_loÿl_¬r
+[
+MAX_MEMORY
+];
+
+51 
+loÿlšdex
+;
+
+57 
+g‘_Ãxt_deviû_RR
+();
+
+58 
+g‘_Ãxt_deviû
+();
+
+59 
+g‘_Ãxt_weigh‹d_deviû
+();
+
+60 
+g‘_Ãxt_deviû_loÿl_´ef
+(
+loÿlho¡_id
+);
+
+61 
+dec_th»ad_couÁ_³r_deviû
+();
+
+70 
+nvbackCudaM®loc_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+71 
+nvbackCudaF»e_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+72 
+nvbackCudaG‘DeviûCouÁ_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+73 
+nvbackCudaG‘DeviûPrİ”t›s_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+74 
+nvbackCudaG‘Deviû_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+75 
+nvbackCudaS‘Deviû_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+76 
+nvbackCudaS‘upArgum’t_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+77 
+nvbackCudaCÚfigu»C®l_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+78 
+nvbackCudaLaunch_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+79 
+nvbackCudaMemıy_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+80 
+nvbackCudaMemıyToSymbŞ_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+81 
+nvbackCudaMemıyFromSymbŞ_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+82 
+nvbackCudaTh»adSynchrÚize_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+83 
+nvbackCudaTh»adEx™_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+84 
+__nvback_cudaRegi¡”F©Bš¬y_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+85 
+__nvback_cudaRegi¡”FunùiÚ_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+86 
+__nvback_cudaUÄegi¡”F©Bš¬y_½c
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+šdex
+);
+
+87 
+__nvback_cudaRegi¡”V¬_½c
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+šdex
+);
+
+92 
+nvbackCudaM®loc_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+93 
+nvbackCudaG‘DeviûCouÁ_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+94 
+nvbackCudaG‘DeviûPrİ”t›s_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+);
+
+95 
+nvbackCudaG‘Deviû_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+96 
+nvbackCudaS‘Deviû_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+97 
+nvbackCudaF»e_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+98 
+nvbackCudaS‘upArgum’t_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+);
+
+99 
+nvbackCudaCÚfigu»C®l_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ *
+pCÚn
+);
+
+100 
+nvbackCudaLaunch_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+101 
+nvbackCudaMemıy_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+102 
+nvbackCudaMemıyToSymbŞ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+103 
+nvbackCudaMemıyFromSymbŞ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+104 
+nvbackCudaTh»adSynchrÚize_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+105 
+nvbackCudaTh»adEx™_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+pCÚn
+);
+
+106 
+__nvback_cudaRegi¡”F©Bš¬y_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+);
+
+107 
+__nvback_cudaRegi¡”FunùiÚ_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+);
+
+108 
+__nvback_cudaUÄegi¡”F©Bš¬y_¤v
+(
+cuda_·ck‘_t
+ *
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+);
+
+109 
+__nvback_cudaRegi¡”V¬_¤v
+(
+cuda_·ck‘_t
+ * 
+·ck‘
+, 
+cÚn_t
+ * 
+mycÚn
+);
+
+	@remote_api_wrapper_3dec.c
+
+15 
+	~"»mÙe_­i_w¿µ”.h
+"
+
+16 
+	~"debug.h
+"
+
+17 
+	~<cuda.h
+>
+
+18 
+	~<cuda_ruÁime_­i.h
+>
+
+19 
+	~"libciuts.h
+"
+
+20 
+	~"m‘hod_id.h
+"
+
+21 
+	~"»mÙe_­i_w¿µ”.h
+"
+
+23 
+	~"»mÙe_·ck‘.h
+"
+
+24 
+	~"../l2scheduËr/çœ_sh¬e_sched.h
+"
+
+25 
+	~"../l2scheduËr/Ïs_scheduËr.h
+"
+
 27 
 	~<¡dio.h
 >
@@ -1846,22 +9158,38 @@ PTHREAD_MUTEX_INITIALIZER
 [2][4] = { {1} };
 
 99 
+	gmem_async_utiz©iÚ
+[4] = {1};
+
+100 
 	gtÙ®_executiÚ_time
 [2][4] = { {0} };
 
-100 
+101 
 	gk”Ãl_Ïunch_couÁ
 [2][4] = { {0} };
 
-101 
+102 
+	gtÙ®_k”Ãl_time
+[2][4] = { {0} };
+
+103 
+	gnÚ_k”Ãl_time
+[2][4] = { {0} };
+
+104 
 	gsys_time
 [2][4] = { {0} };
 
-102 
+105 
 	gu¤_time
 [2][4] = { {0} };
 
-104 
+106 
+	gth»ad_couÁ_mem_async
+[2][4] = { {0} };
+
+108 
 	$g‘_gpu_šdex
 (
 node
@@ -1869,17 +9197,17 @@ node
 devid
 )
 
-106  ((2 * 
+110  ((2 * 
 node
 è+ 
 devid
 );
 
-107 
+111 
 	}
 }
 
-122 
+126 
 	$l_ş—nUpCÚn
 (
 cÚn_t
@@ -1889,59 +9217,59 @@ pCÚn
 ex™_code
 ) {
 
-127  
+131  
 ex™_code
 ;
 
-128 
+132 
 	}
 }
 
-130 
+134 
 	$g‘_Ãxt_deviû_RR
 ()
 
-132 
+136 
 deviû_tmp
 ;
 
-134 
+138 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-135 
+139 
 deviû_tmp
  = 
 DEV_RR
 ;
 
-136 
+140 
 DEV_RR
  = (DEV_RR+1)%
 BACKEND_DEVICES
 ;
 
-137 
+141 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-139  
+143  
 deviû_tmp
 ;
 
-140 
+144 
 	}
 }
 
-142 
+146 
 	$g‘_Ãxt_deviû
 ()
 
-144 
+148 
 deviû_tmp
 , 
 i
@@ -1949,23 +9277,23 @@ i
 mš
 ;
 
-145 
+149 
 mš
  = 0;
 
-146 
+150 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-147 
+151 
 i
 =0; i<
 BACKEND_DEVICES
 ; i++)
 
-149 if(
+153 if(
 th»ad_couÁ_³r_deviû
 [
 i
@@ -1973,37 +9301,37 @@ i
 mš
 ])
 
-151 
+155 
 mš
  = 
 i
 ;
 
-155 
+159 
 th»ad_couÁ_³r_deviû
 [
 mš
 ]++;
 
-156 
+160 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-157 (
+161 (
 mš
 );
 
-158 
+162 
 	}
 }
 
-160 
+164 
 	$g‘_Ãxt_weigh‹d_deviû
 ()
 
-162 
+166 
 deviû_tmp
 , 
 i
@@ -2011,23 +9339,23 @@ i
 mš
 ;
 
-163 
+167 
 mš
  = 0;
 
-164 
+168 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-165 
+169 
 i
 =0; i<
 BACKEND_DEVICES
 ; i++)
 
-167 if(
+171 if(
 th»ad_couÁ_³r_deviû
 [
 i
@@ -2037,39 +9365,51 @@ gpu_weight
 mš
 ]*gpu_weight[min])
 
-169 
+173 
 mš
  = 
 i
 ;
 
-173 
+177 
 th»ad_couÁ_³r_deviû
 [
 mš
 ]++;
 
-174 
+178 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-175 (
+179 (
 mš
 );
 
-176 
+180 
 	}
 }
 
-178 
-	$g‘_Ãxt_weigh‹d_deviû_cÚsid”šg_l2ãedback
+182 
+	$g‘_Ãxt_weigh‹d_deviû_k”Ãl_cÚfig_ãedback
+(
+dim3
+ 
+gDim
+, dim3 
+bDim
+){
+	}
+}
+
+184 
+	$g‘_Ãxt_weigh‹d_deviû_async_memıy_ãedback
 (
-nodeid
+­p_id
 )
 
-180 
+186 
 deviû_tmp
 , 
 i
@@ -2077,49 +9417,265 @@ i
 mš
 ;
 
-181 
+187 
 mš
+ = 0, 
+£cÚd_mš
  = 0;
 
-182 
+188 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-183 
+189 
 i
 =0; i<
 BACKEND_DEVICES
 ; i++)
 
-185 if(
+191 if(
 th»ad_couÁ_³r_deviû
 [
 i
-] <h»ad_couÁ_³r_deviû[
-mš
-])
+]* 
+mem_async_utiz©iÚ
+[i] * 
+gpu_weight
+[i]
 
-187 
+192 < 
+th»ad_couÁ_³r_deviû
+[
+mš
+]* 
+mem_async_utiz©iÚ
+[mš] * 
+gpu_weight
+[min])
+
+194 
 mš
  = 
 i
 ;
 
-192 
+198 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+200 if((
+th»ad_couÁ_³r_deviû
+[
+i
+]* 
+mem_async_utiz©iÚ
+[i] * 
+gpu_weight
+[i]
+
+201 > 
+th»ad_couÁ_³r_deviû
+[
+mš
+]* 
+mem_async_utiz©iÚ
+[mš] * 
+gpu_weight
+[min]) &&
+
+202 (
+th»ad_couÁ_³r_deviû
+[
+i
+] * 
+mem_async_utiz©iÚ
+[i] * 
+gpu_weight
+[i]
+
+203 =< 
+th»ad_couÁ_³r_deviû
+[
+£cÚd_mš
+] * 
+mem_async_utiz©iÚ
+[£cÚd_mš] * 
+gpu_weight
+[second_min]))
+
+205 
+£cÚd_mš
+ = 
+i
+;
+
+210 
+cho£n
+ = 0;
+
+211 if(
+nÚ_k”Ãl_time
+[
+­p_id
+][
+mš
+] <‚Ú_k”Ãl_time[­p_id][
+£cÚd_mš
+])
+
+212 
+cho£n
+ = 
+£cÚd_mš
+;
+
+214 
+cho£n
+ = 
+mš
+;
+
+217 
 ¿tio
 , 
 g»©”
 ;
 
-193 if(
+218 if(
+gpu_utiz©iÚ
+[0][
+cho£n
+] >= gpu_utilization[1][chosen])
+
+220 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[0][
+cho£n
+] / gpu_utilization[1][chosen]);
+
+221 
+g»©”
+ = 0;
+
+225 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[1][
+cho£n
+] / gpu_utilization[0][chosen]);
+
+226 
+g»©”
+ = 1;
+
+229 if(
+g»©”
+ =ğ
+­p_id
+)
+
+230 
+th»ad_couÁ_³r_deviû
+[
+cho£n
+] +ğ
+¿tio
+;
+
+232 
+th»ad_couÁ_³r_deviû
+[
+cho£n
+] += 1;
+
+235 
+th»ad_couÁ_mem_async
+[
+­p_id
+][
+cho£n
+]++;
+
+236 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+237 (
+mš
+);
+
+238 
+	}
+}
+
+240 
+	$g‘_Ãxt_weigh‹d_deviû_ov”®l_utiz©iÚ_ãedback
+(
+nodeid
+)
+
+242 
+deviû_tmp
+, 
+i
+, 
+mš
+;
+
+243 
+mš
+ = 0;
+
+244 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+245 
+i
+=0; i<
+BACKEND_DEVICES
+; i++)
+
+247 if(
+th»ad_couÁ_³r_deviû
+[
+i
+] * 
+gpu_weight
+[i] <h»ad_couÁ_³r_deviû[
+mš
+]* gpu_weight[min])
+
+249 
+mš
+ = 
+i
+;
+
+254 
+¿tio
+, 
+g»©”
+;
+
+255 if(
 gpu_utiz©iÚ
 [0][
 mš
 ] >= gpu_utilization[1][min])
 
-195 
+257 
 ¿tio
  = (è(
 gpu_utiz©iÚ
@@ -2127,11 +9683,11 @@ gpu_utiz©iÚ
 mš
 ] / gpu_utilization[1][min]);
 
-196 
+258 
 g»©”
  = 0;
 
-200 
+262 
 ¿tio
  = (è(
 gpu_utiz©iÚ
@@ -2139,17 +9695,17 @@ gpu_utiz©iÚ
 mš
 ] / gpu_utilization[0][min]);
 
-201 
+263 
 g»©”
  = 1;
 
-204 if(
+266 if(
 g»©”
  =ğ
 nodeid
 )
 
-205 
+267 
 th»ad_couÁ_³r_deviû
 [
 mš
@@ -2157,33 +9713,33 @@ mš
 ¿tio
 ;
 
-207 
+269 
 th»ad_couÁ_³r_deviû
 [
 mš
 ] += 1;
 
-210 
+272 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-211 (
+273 (
 mš
 );
 
-212 
+274 
 	}
 }
 
-214 
+276 
 	$g‘_Ãxt_deviû_loÿl_´ef
 (
 loÿlho¡_id
 )
 
-216 
+278 
 deviû_tmp
 , 
 i
@@ -2195,25 +9751,25 @@ mš
 couÁ
 =0;
 
-217 
+279 
 mš
  = 
 loÿlho¡_id
 ;
 
-218 
+280 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-220 
+282 
 couÁ
 <
 BACKEND_DEVICES
 )
 
-222 if(
+284 if(
 th»ad_couÁ_³r_deviû
 [
 i
@@ -2221,51 +9777,57 @@ i
 mš
 ])
 
-224 
+286 
 mš
  = 
 i
 ;
 
-226 
+288 
 i
  = (i<
 BACKEND_DEVICES
 -1)?i+1:0;
 
-227 
+289 
 couÁ
 ++;
 
-229 
+291 
 th»ad_couÁ_³r_deviû
 [
 mš
 ]++;
 
-230 
+292 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-231 (
+293 (
 mš
 );
 
-232 
+294 
 	}
 }
 
-234 
+297 
 	$dec_th»ad_couÁ_³r_deviû
-()
+(
+­p_ty³
+)
 
-236 *
+299 *
 DEVICE_ASSIGNED
+,
+¿tio
+,
+g»©”
 ;
 
-237 
+300 
 DEVICE_ASSIGNED
  = 
 	`±h»ad_g‘¥ecific
@@ -2273,35 +9835,109 @@ DEVICE_ASSIGNED
 sKey_DEVICE_ASSIGNED
 );
 
-238 
+301 
 	`´štf
 ("DEC DEV:%d\n", *
 DEVICE_ASSIGNED
 );
 
-240 
+303 #ifdeà
+L2_FEEDBACK_ENABLED
+
+
+304 if(
+gpu_utiz©iÚ
+[0][*
+DEVICE_ASSIGNED
+] >= gpu_utilization[1][*DEVICE_ASSIGNED])
+
+306 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[0][*
+DEVICE_ASSIGNED
+] / gpu_utilization[1][*DEVICE_ASSIGNED]);
+
+307 
+g»©”
+ = 0;
+
+311 
+¿tio
+ = (è(
+gpu_utiz©iÚ
+[1][*
+DEVICE_ASSIGNED
+] / gpu_utilization[0][*DEVICE_ASSIGNED]);
+
+312 
+g»©”
+ = 1;
+
+315 
 	`±h»ad_mu‹x_lock
 (&
 MU
 );
 
-241 
+316 if(
+g»©”
+ =ğ
+­p_ty³
+)
+
+317 
 th»ad_couÁ_³r_deviû
 [*
 DEVICE_ASSIGNED
-]--;
+] -ğ
+¿tio
+;
 
-242 
+319 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+] -= 1;
+
+320 
 	`±h»ad_mu‹x_uÆock
 (&
 MU
 );
 
-244 
+321 
+th»ad_couÁ_mem_async
+[
+­p_ty³
+][*
+DEVICE_ASSIGNED
+]--;
+
+324 
+	`±h»ad_mu‹x_lock
+(&
+MU
+);
+
+325 
+th»ad_couÁ_³r_deviû
+[*
+DEVICE_ASSIGNED
+]--;
+
+326 
+	`±h»ad_mu‹x_uÆock
+(&
+MU
+);
+
+329 
 	}
 }
 
-249 
+334 
 šlše
  * 
 	$l_g‘RemÙeHo¡
@@ -2309,21 +9945,21 @@ MU
 šdex
 ) {
 
-251 
+336 
 diùiÚ¬y
  * 
 d
 ;
 
-252 * 
+337 * 
 s
 ;
 
-253 
+338 
 key
 [100];
 
-254 
+339 
 	`¥rštf
 (
 key
@@ -2331,7 +9967,7 @@ key
 šdex
 );
 
-256 
+341 
 d
  = 
 	`š¬£r_lßd
@@ -2339,23 +9975,23 @@ d
 KIDRON_INI
 );
 
-257 ià(
+342 ià(
 NULL
  =ğ
 d
 ) {
 
-258 
+343 
 	`p_”rÜ
 ( "Can't…arsehe config file. Quitting ... ");
 
-261 
+346 
 	`´štf
 ("KEY: %s**************************************************************\n", 
 key
 );
 
-262 
+347 
 s
  = 
 	`š¬£r_g‘¡ršg
@@ -2367,7 +10003,7 @@ key
 NULL
 );
 
-265 
+350 
 	`as£¹
 (
 	`¡¾’
@@ -2377,7 +10013,7 @@ s
 HOSTNAME_STRLEN
  - 1);
 
-266 
+351 
 	`¡rıy
 (
 REMOTE_HOSTNAME
@@ -2385,27 +10021,27 @@ REMOTE_HOSTNAME
 s
 );
 
-267 
+352 
 	`š¬£r_ä“diù
 (
 d
 );
 
-269 
+354 
 	`p_debug
 Ğ"%s\n", 
 REMOTE_HOSTNAME
 );
 
-270  
+355  
 REMOTE_HOSTNAME
 ;
 
-271 
+356 
 	}
 }
 
-296 
+381 
 	$l_do_cuda_½c
 (
 cuda_·ck‘_t
@@ -2417,7 +10053,7 @@ cuda_·ck‘_t
 »qbuf_size
 ,
 
-297 * 
+382 * 
 r¥buf
 , cÚ¡ 
 r¥buf_size
@@ -2425,19 +10061,19 @@ r¥buf_size
 šdex
 ) {
 
-299 
+384 
 ¡rm_hdr_t
  *
 pHdr
 ;
 
-301 
+386 
 ½kt_t
  * 
 pRpkts
 ;
 
-302 
+387 
 size_t
  
 ½kt_size
@@ -2445,21 +10081,21 @@ size_t
 ½kt_t
 );
 
-303 
+388 
 cÚn_t
 * 
 mycÚn
 ;
 
-304 
+389 
 æag
  = 0;
 
-306 
+391 
 	`p_debug
 ("MethodID: %d,„eqbuf %p,„eqbuf_size %d,„spbuf %p,„spbuf_size %d\n",
 
-307 
+392 
 ·ck‘
 ->
 m‘hod_id
@@ -2473,7 +10109,7 @@ r¥buf
 r¥buf_size
 );
 
-312 if(!(
+397 if(!(
 mycÚn
  = 
 	`±h»ad_g‘¥ecific
@@ -2481,7 +10117,7 @@ mycÚn
 sKey
 ))) {
 
-313 
+398 
 mycÚn
  = 
 	`ÿÎoc
@@ -2491,7 +10127,7 @@ MAX_BACKEND_NODES
 cÚn_t
 ));
 
-314 
+399 
 	`±h»ad_£t¥ecific
 (
 sKey
@@ -2499,7 +10135,7 @@ cÚn_t
 mycÚn
 );
 
-316 if(
+401 if(
 šdex
  =ğ
 MAX_BACKEND_NODES
@@ -2507,7 +10143,7 @@ MAX_BACKEND_NODES
 æag
  = 1;
 
-317 ià(0 =ğ
+402 ià(0 =ğ
 mycÚn
 [
 šdex
@@ -2515,7 +10151,7 @@ mycÚn
 v®id
 ) {
 
-318 ià(
+403 ià(
 	`cÚn_cÚÃù
 (&
 mycÚn
@@ -2527,19 +10163,19 @@ BACKEND_LIST
 æag
 ) == -1)
 
-319 
+404 
 	`ex™
 (
 ERROR
 );
 
-320 
+405 
 	`p_šfo
 Ğ"CÚÃùiÚØho¡: %s\n", 
 REMOTE_HOSTNAME
 );
 
-321 
+406 
 mycÚn
 [
 šdex
@@ -2547,7 +10183,7 @@ mycÚn
 v®id
  = 1;
 
-325 
+410 
 pHdr
  = &
 mycÚn
@@ -2559,7 +10195,7 @@ mycÚn
 hdr
 ;
 
-326 
+411 
 pRpkts
  = 
 mycÚn
@@ -2571,13 +10207,13 @@ mycÚn
 ½kts
 ;
 
-332 
+417 
 pHdr
 ->
 num_cuda_pkts
  = 1;
 
-333 
+418 
 pHdr
 ->
 d©a_size
@@ -2585,11 +10221,11 @@ d©a_size
 »qbuf_size
 ;
 
-335 ià(
+420 ià(
 »qbuf_size
  > 0) {
 
-338 
+423 
 pRpkts
 [0].
 »t_ex_v®
@@ -2601,7 +10237,7 @@ pHdr
 d©a_size
 ;
 
-341 
+426 
 pRpkts
 [0].
 »t_ex_v®
@@ -2609,7 +10245,7 @@ pRpkts
 d©a_un™
  = -1;
 
-344 ià(
+429 ià(
 	`cÚn_£ndCudaPktHdr
 (&
 mycÚn
@@ -2621,7 +10257,7 @@ mycÚn
 ERROR
 ) {
 
-345  
+430  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2631,7 +10267,7 @@ mycÚn
 ERROR
 );
 
-350 
+435 
 	`memıy
 (&
 pRpkts
@@ -2641,7 +10277,7 @@ pRpkts
 ½kt_size
 );
 
-353 ià(1 !ğ
+438 ià(1 !ğ
 	`put
 (&
 mycÚn
@@ -2657,7 +10293,7 @@ num_cuda_pkts
 ½kt_size
 )) {
 
-354  
+439  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2667,11 +10303,11 @@ mycÚn
 ERROR
 );
 
-358 ià(
+443 ià(
 »qbuf_size
  > 0) {
 
-359 
+444 
 	`as£¹
 (
 »qbuf
@@ -2679,7 +10315,7 @@ ERROR
 »qbuf_size
 );
 
-360 ià(1 !ğ
+445 ià(1 !ğ
 	`put
 (&
 mycÚn
@@ -2691,7 +10327,7 @@ mycÚn
 »qbuf_size
 )) {
 
-361  
+446  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2701,13 +10337,13 @@ mycÚn
 ERROR
 );
 
-363 
+448 
 	`p_debug
 Ğ"Reque¡ bufã¸£Á (%d by‹s).\n", 
 »qbuf_size
 );
 
-370 ià(!
+455 ià(!
 	`¡rm_ex³ùs_»¥Ú£
 (&
 mycÚn
@@ -2717,7 +10353,7 @@ mycÚn
 ¡rm
 )) {
 
-373  
+458  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2727,7 +10363,7 @@ mycÚn
 OK
 );
 
-377 
+462 
 	`mem£t
 (
 pHdr
@@ -2735,7 +10371,7 @@ pHdr
 ¡rm_hdr_t
 ));
 
-378 
+463 
 	`mem£t
 (
 pRpkts
@@ -2745,7 +10381,7 @@ MAX_REMOTE_BATCH_SIZE
 ½kt_size
 );
 
-383 ià(1 !ğ
+468 ià(1 !ğ
 	`g‘
 (&
 mycÚn
@@ -2757,7 +10393,7 @@ pHdr
 ¡rm_hdr_t
 ))) {
 
-384  
+469  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2767,11 +10403,11 @@ mycÚn
 ERROR
 );
 
-387 
+472 
 	`p_debug
 ("received„esponse header. Expecting %d…ackets‡ndƒxtra„esponse size of %u in„esponse batch\n",
 
-388 
+473 
 pHdr
 ->
 num_cuda_pkts
@@ -2779,7 +10415,7 @@ num_cuda_pkts
 d©a_size
 );
 
-390 
+475 
 	`as£¹
 (
 pHdr
@@ -2787,7 +10423,7 @@ pHdr
 num_cuda_pkts
  == 1);
 
-393 ià(1 !ğ
+478 ià(1 !ğ
 	`g‘
 (&
 mycÚn
@@ -2803,7 +10439,7 @@ num_cuda_pkts
 ½kt_size
 )) {
 
-394  
+479  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2813,7 +10449,7 @@ mycÚn
 ERROR
 );
 
-397 
+482 
 	`p_šfo
 ("Reûived„e¥Ú£ b©ch. %d…ack‘s\n", 
 pHdr
@@ -2821,7 +10457,7 @@ pHdr
 num_cuda_pkts
 );
 
-400 
+485 
 	`memıy
 (
 ·ck‘
@@ -2831,7 +10467,7 @@ pRpkts
 ½kt_size
 );
 
-402 ià(
+487 ià(
 ·ck‘
 ->
 m‘hod_id
@@ -2839,7 +10475,7 @@ m‘hod_id
 __CUDA_REGISTER_FAT_BINARY
 ) {
 
-403 
+488 
 	`p_debug
 ("FAT CUBIN HANDLE:„egi¡”ed %p.\n", 
 ·ck‘
@@ -2849,13 +10485,13 @@ __CUDA_REGISTER_FAT_BINARY
 hªdË
 );
 
-408 ià(
+493 ià(
 pHdr
 ->
 d©a_size
  > 0) {
 
-409 
+494 
 	`as£¹
 (
 r¥buf
@@ -2863,7 +10499,7 @@ r¥buf
 r¥buf_size
 );
 
-411 
+496 
 	`as£¹
 ((è
 pHdr
@@ -2873,7 +10509,7 @@ d©a_size
 r¥buf_size
  );
 
-415 ià(1 !ğ
+500 ià(1 !ğ
 	`g‘
 (&
 mycÚn
@@ -2887,7 +10523,7 @@ pHdr
 d©a_size
 )) {
 
-416  
+501  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2897,7 +10533,7 @@ mycÚn
 ERROR
 );
 
-421 
+506 
 	`mem£t
 (
 pHdr
@@ -2905,7 +10541,7 @@ pHdr
 ¡rm_hdr_t
 ));
 
-422 
+507 
 	`mem£t
 (
 pRpkts
@@ -2915,7 +10551,7 @@ MAX_REMOTE_BATCH_SIZE
 ½kt_size
 );
 
-424  
+509  
 	`l_ş—nUpCÚn
 (&
 mycÚn
@@ -2925,11 +10561,11 @@ mycÚn
 OK
 );
 
-425 
+510 
 	}
 }
 
-434 
+519 
 	$nvbackCudaG‘DeviûCouÁ_½c
 (
 cuda_·ck‘_t
@@ -2939,13 +10575,13 @@ cuda_·ck‘_t
 šdex
 ) {
 
-435 
+520 
 	`´štd
 (
 DBG_DEBUG
 , "CUDA_ERROR=%d before RPC on method %d\n",
 
-436 
+521 
 ·ck‘
 ->
 »t_ex_v®
@@ -2955,7 +10591,7 @@ DBG_DEBUG
 m‘hod_id
 );
 
-437 
+522 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -2965,7 +10601,7 @@ NULL
 šdex
 );
 
-439  (
+524  (
 ·ck‘
 ->
 »t_ex_v®
@@ -2977,11 +10613,11 @@ OK
 ERROR
 ;
 
-440 
+525 
 	}
 }
 
-442 
+527 
 	$nvbackCudaG‘DeviûPrİ”t›s_½c
 (
 cuda_·ck‘_t
@@ -2991,13 +10627,13 @@ cuda_·ck‘_t
 šdex
 ) {
 
-443 
+528 
 	`´štd
 (
 DBG_DEBUG
 , "CUDA_ERROR=%d before RPC on method %d\n",
 
-444 
+529 
 ·ck‘
 ->
 »t_ex_v®
@@ -3007,7 +10643,7 @@ DBG_DEBUG
 m‘hod_id
 );
 
-452 
+537 
 	`´štd
 (
 DBG_DEBUG
@@ -3021,7 +10657,7 @@ DBG_DEBUG
 ¬gi
 );
 
-453 
+538 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3033,7 +10669,7 @@ NULL
 ¬gui
 ,
 
-454 
+539 
 ·ck‘
 ->
 ¬gs
@@ -3043,7 +10679,7 @@ NULL
 šdex
 );
 
-456  (
+541  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3055,11 +10691,11 @@ OK
 ERROR
 ;
 
-457 
+542 
 	}
 }
 
-460 
+545 
 	$nvbackCudaG‘Deviû_½c
 (
 cuda_·ck‘_t
@@ -3069,13 +10705,13 @@ pPack‘
 šdex
 ) {
 
-461 
+546 
 	`´štd
 (
 DBG_DEBUG
 , "CUDA_ERROR=%d before RPC on method %d\n",
 
-462 
+547 
 pPack‘
 ->
 »t_ex_v®
@@ -3085,7 +10721,7 @@ pPack‘
 m‘hod_id
 );
 
-463 
+548 
 	`l_do_cuda_½c
 (
 pPack‘
@@ -3095,7 +10731,7 @@ NULL
 šdex
 );
 
-465  (
+550  (
 pPack‘
 ->
 »t_ex_v®
@@ -3107,11 +10743,11 @@ OK
 ERROR
 ;
 
-466 
+551 
 	}
 }
 
-469 
+554 
 	$nvbackCudaS‘Deviû_½c
 (
 cuda_·ck‘_t
@@ -3121,11 +10757,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-470 
+555 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-471 
+556 
 ·ck‘
 ->
 »t_ex_v®
@@ -3135,7 +10771,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-473 
+558 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3145,15 +10781,15 @@ NULL
 šdex
 );
 
-477  
+562  
 OK
 ;
 
-478 
+563 
 	}
 }
 
-480 
+565 
 	$nvbackCudaF»e_½c
 (
 cuda_·ck‘_t
@@ -3163,11 +10799,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-482 
+567 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-483 
+568 
 ·ck‘
 ->
 »t_ex_v®
@@ -3177,7 +10813,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-485 
+570 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3187,15 +10823,15 @@ NULL
 šdex
 );
 
-487  
+572  
 OK
 ;
 
-488 
+573 
 	}
 }
 
-490 
+575 
 	$nvbackCudaM®loc_½c
 (
 cuda_·ck‘_t
@@ -3205,11 +10841,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-492 
+577 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-493 
+578 
 ·ck‘
 ->
 »t_ex_v®
@@ -3219,7 +10855,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-497 
+582 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3229,7 +10865,7 @@ NULL
 šdex
 );
 
-499 
+584 
 	`p_debug
 ("%s: devPŒ i %p",
 __FUNCTION__
@@ -3241,7 +10877,7 @@ __FUNCTION__
 ¬gp
 );
 
-501  (
+586  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3255,11 +10891,11 @@ OK
 ERROR
 ;
 
-502 
+587 
 	}
 }
 
-504 
+589 
 	$nvbackCudaS‘upArgum’t_½c
 (
 cuda_·ck‘_t
@@ -3269,13 +10905,13 @@ cuda_·ck‘_t
 šdex
 ) {
 
-505 
+590 
 	`´štd
 (
 DBG_DEBUG
 , "CUDA_ERROR=%d before RPC on method %d\n",
 
-506 
+591 
 ·ck‘
 ->
 »t_ex_v®
@@ -3285,7 +10921,7 @@ DBG_DEBUG
 m‘hod_id
 );
 
-508 
+593 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3297,21 +10933,21 @@ m‘hod_id
 ¬gi
 ,
 
-509 
+594 
 NULL
 , 0, 
 šdex
 );
 
-512  
+597  
 OK
 ;
 
-513 
+598 
 	}
 }
 
-515 
+600 
 	$nvbackCudaCÚfigu»C®l_½c
 (
 cuda_·ck‘_t
@@ -3321,13 +10957,13 @@ cuda_·ck‘_t
 šdex
 ) {
 
-516 
+601 
 	`´štd
 (
 DBG_DEBUG
 , "CUDA_ERROR=%d before RPC on method %d\n",
 
-517 
+602 
 ·ck‘
 ->
 »t_ex_v®
@@ -3337,7 +10973,7 @@ DBG_DEBUG
 m‘hod_id
 );
 
-519 
+604 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3347,15 +10983,15 @@ NULL
 šdex
 );
 
-521  
+606  
 OK
 ;
 
-522 
+607 
 	}
 }
 
-524 
+609 
 	$nvbackCudaLaunch_½c
 (
 cuda_·ck‘_t
@@ -3365,11 +11001,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-526 
+611 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-527 
+612 
 ·ck‘
 ->
 »t_ex_v®
@@ -3379,7 +11015,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-529 
+614 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3389,15 +11025,15 @@ NULL
 šdex
 );
 
-532  
+617  
 OK
 ;
 
-533 
+618 
 	}
 }
 
-535 
+620 
 	$nvbackCudaMemıy_½c
 (
 cuda_·ck‘_t
@@ -3407,11 +11043,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-537 
+622 
 	`p_debug
 ( "Packet content:‡rgs[0].argp (dst)= %p,‡rgs[1].argp (src)= %p\n",
 
-538 
+623 
 ·ck‘
 ->
 ¬gs
@@ -3419,7 +11055,7 @@ cuda_·ck‘_t
 ¬gp
 ,…acket->args[1].argp);
 
-539 
+624 
 	`p_debug
 Ğ"¬gs[2].¬gi=%ld,‡rgs[3].¬gi=%ld\n", 
 ·ck‘
@@ -3429,7 +11065,7 @@ cuda_·ck‘_t
 ¬gi
 ,…acket->args[3].argi);
 
-542 
+627 
 št64_t
  
 kšd
@@ -3441,7 +11077,7 @@ kšd
 ¬gi
 ;
 
-544 
+629 
 ·ck‘
 ->
 ¬gs
@@ -3449,11 +11085,11 @@ kšd
 ¬gi
 ) {
 
-545 
+630 
 cudaMemıyHo¡ToDeviû
 :
 
-546 
+631 
 ·ck‘
 ->
 m‘hod_id
@@ -3461,7 +11097,7 @@ m‘hod_id
 CUDA_MEMCPY_H2D
 ;
 
-547 
+632 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3471,7 +11107,7 @@ CUDA_MEMCPY_H2D
 ¬gui
 ,
 
-548 
+633 
 ·ck‘
 ->
 ¬gs
@@ -3483,11 +11119,11 @@ NULL
 šdex
 );
 
-550 
+635 
 cudaMemıyDeviûToHo¡
 :
 
-551 
+636 
 ·ck‘
 ->
 m‘hod_id
@@ -3495,7 +11131,7 @@ m‘hod_id
 CUDA_MEMCPY_D2H
 ;
 
-552 
+637 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3507,7 +11143,7 @@ NULL
 ¬gui
 ,
 
-553 
+638 
 ·ck‘
 ->
 ¬gs
@@ -3517,11 +11153,11 @@ NULL
 šdex
 );
 
-555 
+640 
 cudaMemıyDeviûToDeviû
 :
 
-556 
+641 
 ·ck‘
 ->
 m‘hod_id
@@ -3529,7 +11165,7 @@ m‘hod_id
 CUDA_MEMCPY_D2D
 ;
 
-557 
+642 
 ·ck‘
 ->
 æags
@@ -3537,7 +11173,7 @@ CUDA_MEMCPY_D2D
 CUDA_Cİyty³
 ;
 
-558 
+643 
 ·ck‘
 ->
 æags
@@ -3545,7 +11181,7 @@ CUDA_Cİyty³
 CUDA_Addrsh¬ed
 ;
 
-559 
+644 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3555,15 +11191,15 @@ NULL
 šdex
 );
 
-561 
+646 
 cudaMemıyHo¡ToHo¡
 :
 
-562 
+647 
 	`p_ü™iÿl
 ("Not implemented yet\n");
 
-563 
+648 
 ·ck‘
 ->
 »t_ex_v®
@@ -3573,13 +11209,13 @@ cudaMemıyHo¡ToHo¡
 cudaE¼ÜInv®idMemıyDœeùiÚ
 ;
 
-567 
+652 
 	`p_ü™iÿl
 Ğ"UnknowÀmemıy v®u%ld\n", 
 kšd
 );
 
-568 
+653 
 ·ck‘
 ->
 »t_ex_v®
@@ -3589,7 +11225,7 @@ kšd
 cudaE¼ÜInv®idMemıyDœeùiÚ
 ;
 
-572  (
+657  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3603,11 +11239,11 @@ OK
 ERROR
 ;
 
-573 
+658 
 	}
 }
 
-575 
+660 
 	$nvbackCudaTh»adSynchrÚize_½c
 (
 cuda_·ck‘_t
@@ -3617,11 +11253,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-576 
+661 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-577 
+662 
 ·ck‘
 ->
 »t_ex_v®
@@ -3631,7 +11267,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-579 
+664 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3641,7 +11277,7 @@ NULL
 šdex
 );
 
-581  (
+666  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3653,11 +11289,11 @@ OK
 ERROR
 ;
 
-582 
+667 
 	}
 }
 
-584 
+669 
 	$nvbackCudaTh»adEx™_½c
 (
 cuda_·ck‘_t
@@ -3667,11 +11303,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-585 
+670 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-586 
+671 
 ·ck‘
 ->
 »t_ex_v®
@@ -3681,7 +11317,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-588 
+673 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3691,15 +11327,15 @@ NULL
 šdex
 );
 
-592  
+677  
 OK
 ;
 
-593 
+678 
 	}
 }
 
-595 
+680 
 	$nvbackCudaMemıyToSymbŞ_½c
 (
 cuda_·ck‘_t
@@ -3709,11 +11345,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-596 
+681 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-597 
+682 
 ·ck‘
 ->
 »t_ex_v®
@@ -3723,7 +11359,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-599 (
+684 (
 cudaMemıyKšd
 è
 ·ck‘
@@ -3733,11 +11369,11 @@ cudaMemıyKšd
 ¬gi
 ) {
 
-600 
+685 
 cudaMemıyHo¡ToDeviû
 :
 
-602 
+687 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3747,7 +11383,7 @@ cudaMemıyHo¡ToDeviû
 ¬gp
 ,
 
-603 
+688 
 ·ck‘
 ->
 ¬gs
@@ -3759,11 +11395,11 @@ NULL
 šdex
 );
 
-605 
+690 
 cudaMemıyDeviûToDeviû
 :
 
-606 
+691 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3773,7 +11409,7 @@ NULL
 šdex
 );
 
-609 
+694 
 	`p_ü™iÿl
 ("UnsuµÜ‹d memıy dœeùiÚ: %ld\n", 
 ·ck‘
@@ -3783,11 +11419,11 @@ NULL
 ¬gi
 );
 
-610  
+695  
 ERROR
 ;
 
-613  (
+698  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3801,11 +11437,11 @@ OK
 ERROR
 ;
 
-614 
+699 
 	}
 }
 
-616 
+701 
 	$nvbackCudaMemıyFromSymbŞ_½c
 (
 cuda_·ck‘_t
@@ -3815,11 +11451,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-617 
+702 
 	`p_debug
 ("CUDA_ERROR=%d before RPC on method %d\n",
 
-618 
+703 
 ·ck‘
 ->
 »t_ex_v®
@@ -3829,7 +11465,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-620 (
+705 (
 cudaMemıyKšd
 è
 ·ck‘
@@ -3839,11 +11475,11 @@ cudaMemıyKšd
 ¬gi
 ) {
 
-621 
+706 
 cudaMemıyDeviûToDeviû
 :
 
-622 
+707 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3853,11 +11489,11 @@ NULL
 šdex
 );
 
-624 
+709 
 cudaMemıyDeviûToHo¡
 :
 
-625 
+710 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3869,7 +11505,7 @@ NULL
 ¬gp
 ,
 
-626 
+711 
 ·ck‘
 ->
 ¬gs
@@ -3879,7 +11515,7 @@ NULL
 šdex
 );
 
-629 
+714 
 	`p_ü™iÿl
 ("__ERROR__: unsuµÜ‹d memıy dœeùiÚ: %ld\n", 
 ·ck‘
@@ -3889,11 +11525,11 @@ NULL
 ¬gi
 );
 
-630  
+715  
 ERROR
 ;
 
-633  (
+718  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3907,11 +11543,11 @@ OK
 ERROR
 ;
 
-634 
+719 
 	}
 }
 
-636 
+721 
 	$__nvback_cudaRegi¡”F©Bš¬y_½c
 (
 cuda_·ck‘_t
@@ -3921,11 +11557,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-637 
+722 
 	`p_debug
 ("CUDA_ERROR=%u before RPC on method %d\n",
 
-638 
+723 
 ·ck‘
 ->
 »t_ex_v®
@@ -3935,11 +11571,11 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-640 
+725 
 	`p_debug
 ( "pPackedFat,…acket->args[0].argp, size = %p, %ld\n",
 
-641 
+726 
 ·ck‘
 ->
 ¬gs
@@ -3949,7 +11585,7 @@ m‘hod_id
 ¬gi
 );
 
-643 
+728 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -3961,13 +11597,13 @@ m‘hod_id
 ¬gi
 ,
 
-644 
+729 
 NULL
 , 0, 
 šdex
 );
 
-646  (
+731  (
 ·ck‘
 ->
 »t_ex_v®
@@ -3981,11 +11617,11 @@ OK
 ERROR
 ;
 
-647 
+732 
 	}
 }
 
-649 
+734 
 	$__nvback_cudaRegi¡”FunùiÚ_½c
 (
 cuda_·ck‘_t
@@ -3995,11 +11631,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-650 
+735 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-651 
+736 
 ·ck‘
 ->
 »t_ex_v®
@@ -4009,7 +11645,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-652 
+737 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -4021,13 +11657,13 @@ m‘hod_id
 ¬gi
 ,
 
-653 
+738 
 NULL
 , 0, 
 šdex
 );
 
-655  (
+740  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4041,11 +11677,11 @@ OK
 ERROR
 ;
 
-656 
+741 
 	}
 }
 
-658 
+743 
 	$__nvback_cudaRegi¡”V¬_½c
 (
 cuda_·ck‘_t
@@ -4055,11 +11691,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-659 
+744 
 	`p_debug
 ( "CUDA_ERROR=%d before RPC on method %d\n",
 
-660 
+745 
 ·ck‘
 ->
 »t_ex_v®
@@ -4069,7 +11705,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-661 
+746 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -4081,13 +11717,13 @@ m‘hod_id
 ¬gi
 ,
 
-662 
+747 
 NULL
 , 0, 
 šdex
 );
 
-664  (
+749  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4101,11 +11737,11 @@ OK
 ERROR
 ;
 
-665 
+750 
 	}
 }
 
-667 
+752 
 	$__nvback_cudaUÄegi¡”F©Bš¬y_½c
 (
 cuda_·ck‘_t
@@ -4115,11 +11751,11 @@ cuda_·ck‘_t
 šdex
 ) {
 
-668 
+753 
 	`p_debug
 ("CUDA_ERROR=%d before RPC on method %d\n",
 
-669 
+754 
 ·ck‘
 ->
 »t_ex_v®
@@ -4129,7 +11765,7 @@ cuda_·ck‘_t
 m‘hod_id
 );
 
-670 
+755 
 	`l_do_cuda_½c
 (
 ·ck‘
@@ -4139,15 +11775,15 @@ NULL
 šdex
 );
 
-674  
+759  
 OK
 ;
 
-675 
+760 
 	}
 }
 
-681 
+766 
 	$nvbackCudaG‘DeviûCouÁ_¤v
 (
 cuda_·ck‘_t
@@ -4159,11 +11795,11 @@ cÚn_t
 pCÚn
 ) {
 
-682 
+767 
 devCouÁ
  = 0;
 
-685 
+770 
 ·ck‘
 ->
 »t_ex_v®
@@ -4175,7 +11811,7 @@ devCouÁ
 devCouÁ
 );
 
-686 
+771 
 ·ck‘
 ->
 ¬gs
@@ -4185,11 +11821,11 @@ devCouÁ
 devCouÁ
 ;
 
-688 
+773 
 	`p_debug
 ("CUDA_ERROR=%d for method id=%d‡fter calling method\n",
 
-689 
+774 
 ·ck‘
 ->
 »t_ex_v®
@@ -4199,15 +11835,15 @@ devCouÁ
 m‘hod_id
 );
 
-690  
+775  
 OK
 ;
 
-691 
+776 
 	}
 }
 
-693 
+778 
 	$nvbackCudaG‘DeviûPrİ”t›s_¤v
 (
 cuda_·ck‘_t
@@ -4219,7 +11855,7 @@ cÚn_t
 pCÚn
 ) {
 
-695 
+780 
 cudaDeviûPrİ
  * 
 ´İ
@@ -4227,7 +11863,7 @@ cudaDeviûPrİ
 NULL
 ;
 
-697 
+782 
 pCÚn
 ->
 »¥Ú£_d©a_size
@@ -4235,7 +11871,7 @@ pCÚn
 cudaDeviûPrİ
 );
 
-698 
+783 
 pCÚn
 ->
 pR¥Bufãr
@@ -4245,7 +11881,7 @@ pR¥Bufãr
 »¥Ú£_d©a_size
 );
 
-699 ià(
+784 ià(
 	`m®locCheck
 (
 pCÚn
@@ -4259,11 +11895,11 @@ NULL
 ERROR
 ) {
 
-700  
+785  
 ERROR
 ;
 
-702 
+787 
 ´İ
  = (
 cudaDeviûPrİ
@@ -4273,7 +11909,7 @@ pCÚn
 pR¥Bufãr
 ;
 
-704 
+789 
 ·ck‘
 ->
 »t_ex_v®
@@ -4281,7 +11917,7 @@ pR¥Bufãr
 ”r
 
 
-705 ğ
+790 ğ
 	`cudaG‘DeviûPrİ”t›s
 (
 ´İ
@@ -4293,7 +11929,7 @@ pR¥Bufãr
 ¬gi
 );
 
-709 
+794 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -4305,7 +11941,7 @@ pR¥Bufãr
 m‘hod_id
 );
 
-711  (
+796  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4317,11 +11953,11 @@ OK
 ERROR
 ;
 
-712 
+797 
 	}
 }
 
-714 
+799 
 	$nvbackCudaG‘Deviû_¤v
 (
 cuda_·ck‘_t
@@ -4333,19 +11969,19 @@ cÚn_t
 pCÚn
 ) {
 
-716 
+801 
 l2_ãedback_’abËd
  = 0;
 
-717 #ifdeà
+802 #ifdeà
 L2_FEEDBACK_ENABLED
 
 
-718 
+803 
 l2_ãedback_’abËd
  = 1;
 
-721 if(
+806 if(
 l2_ãedback_’abËd
  && 
 ·ck‘
@@ -4353,7 +11989,7 @@ l2_ãedback_’abËd
 is_ãedback_·ck‘
 )
 
-723 
+808 
 row
  = 
 ·ck‘
@@ -4361,7 +11997,7 @@ row
 ­p_ty³
 ;
 
-724 
+809 
 cŞ
  = 
 	`g‘_gpu_šdex
@@ -4373,7 +12009,7 @@ node
 devid
 );
 
-725 
+811 
 u¤_time
 [
 row
@@ -4383,7 +12019,7 @@ cŞ
 ·ck‘
 ->usr_time;
 
-726 
+812 
 sys_time
 [
 row
@@ -4393,7 +12029,7 @@ cŞ
 ·ck‘
 ->sys_time;
 
-727 
+813 
 tÙ®_executiÚ_time
 [
 row
@@ -4405,7 +12041,7 @@ cŞ
 tÙ®_ex_time
 ;
 
-728 
+814 
 k”Ãl_Ïunch_couÁ
 [
 row
@@ -4417,31 +12053,93 @@ cŞ
 cuda_k”Ãl_Ïunches
 ;
 
-729 
+815 
+tÙ®_k”Ãl_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->
+k”Ãl_time
+.
+tv_£c
+ + (·ck‘->k”Ãl_time.
+tv_u£c
+ * 0.000001);
+
+816 
+nÚ_k”Ãl_time
+[
+row
+][
+cŞ
+] = 
+·ck‘
+->nÚ_k”Ãl_time.
+tv_£c
+ + (·ck‘->nÚ_k”Ãl_time.
+tv_u£c
+ * 0.000001);
+
+818 
 gpu_utiz©iÚ
 [
 row
 ][
 cŞ
 ] = (
+tÙ®_k”Ãl_time
+[row][cŞ] )/ (
 ·ck‘
 ->
 sys_time
  +…ack‘->
 u¤_time
-è/ (·ck‘->
-tÙ®_ex_time
 );
 
-731 
+822 
+mem_async_utiz©iÚ
+[
+cŞ
+] =
+
+823 ((
+th»ad_couÁ_mem_async
+[0][
+cŞ
+] * 
+tÙ®_k”Ãl_time
+[0][cŞ] / 
+nÚ_k”Ãl_time
+[0][col])
+
+824 + (
+th»ad_couÁ_mem_async
+[1][
+cŞ
+] * 
+tÙ®_k”Ãl_time
+[1][cŞ] / 
+nÚ_k”Ãl_time
+[1][col]))
+
+825 / (
+th»ad_couÁ_mem_async
+[0][
+cŞ
+] +hread_count_mem_async[1][col]);
+
+827 
 deviû
  = 0;
 
-732 *
+828 *
 DEVICE_ASSIGNED
 ;
 
-735 
+831 
 ·ck‘
 ->
 »t_ex_v®
@@ -4449,7 +12147,7 @@ DEVICE_ASSIGNED
 ”r
  = 0;
 
-736 
+832 
 BACKEND_DEVICES
 =
 ·ck‘
@@ -4459,7 +12157,7 @@ BACKEND_DEVICES
 ¬gi
 ;
 
-739 if(!(
+835 if(!(
 DEVICE_ASSIGNED
 =
 	`±h»ad_g‘¥ecific
@@ -4467,13 +12165,13 @@ DEVICE_ASSIGNED
 sKey_DEVICE_ASSIGNED
 ))) {
 
-740 
+836 
 DEVICE_ASSIGNED
 =(*)
 	`ÿÎoc
 (1, ());
 
-741 
+837 
 	`±h»ad_£t¥ecific
 (
 sKey_DEVICE_ASSIGNED
@@ -4481,7 +12179,7 @@ DEVICE_ASSIGNED
 DEVICE_ASSIGNED
 );
 
-747 *
+844 *
 DEVICE_ASSIGNED
  = 
 ·ck‘
@@ -4493,7 +12191,7 @@ DEVICE_ASSIGNED
 	`g‘_Ãxt_deviû_RR
 ();
 
-748 
+845 
 	`´štf
 ("\n\n\n\ÂvbackCudaG‘Deviû_¤v: GOT DEV:%d********\n\n\n\n", 
 ·ck‘
@@ -4503,7 +12201,7 @@ DEVICE_ASSIGNED
 ¬gi
 );
 
-750 
+847 
 	`p_debug
 Ğ"Cu¼’ˆassigÃd deviû id = %ld\n", 
 ·ck‘
@@ -4513,11 +12211,11 @@ DEVICE_ASSIGNED
 ¬gi
  );
 
-751 
+848 
 	`p_debug
 ( "CUDA_ERROR=%d for method id=%d‡fter calling method\n",
 
-752 
+849 
 ·ck‘
 ->
 »t_ex_v®
@@ -4527,7 +12225,7 @@ DEVICE_ASSIGNED
 m‘hod_id
 );
 
-753  (
+850  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4539,11 +12237,11 @@ OK
 ERROR
 ;
 
-754 
+851 
 	}
 }
 
-756 
+853 
 	$nvbackCudaS‘Deviû_¤v
 (
 cuda_·ck‘_t
@@ -4555,7 +12253,7 @@ cÚn_t
 pCÚn
 ) {
 
-757 
+854 
 ·ck‘
 ->
 »t_ex_v®
@@ -4569,7 +12267,7 @@ pCÚn
 ¬gi
 );
 
-759 
+856 
 isLoÿl
  = 
 ·ck‘
@@ -4579,7 +12277,7 @@ isLoÿl
 ¬gi
 ;
 
-762 
+859 
 	`årštf
 (
 ¡d”r
@@ -4589,19 +12287,19 @@ __FUNCTION__
 isLoÿl
 );
 
-763 #ifdeà
+860 #ifdeà
 SCHED_FAIR_SHARE
 
 
-764 
+861 
 signum
  = 0;
 
-765 if(
+862 if(
 isLoÿl
  == 0)
 
-766 
+863 
 signum
  = 
 	`fs_add_queue
@@ -4617,7 +12315,7 @@ signum
 APP_TYPE_A
 );
 
-768 
+865 
 signum
  = 
 	`fs_add_queue
@@ -4633,7 +12331,7 @@ signum
 APP_TYPE_B
 );
 
-769 
+866 
 ·ck‘
 ->
 signo
@@ -4641,15 +12339,15 @@ signo
 signum
 ;
 
-772 #ifdeà
+869 #ifdeà
 SCHED_LAS
 
 
-773 if(
+870 if(
 isLoÿl
  == 0)
 
-774 
+871 
 ·ck‘
 ->
 signo
@@ -4665,7 +12363,7 @@ signo
 APP_TYPE_A
 );
 
-776 
+873 
 ·ck‘
 ->
 signo
@@ -4681,11 +12379,11 @@ signo
 APP_TYPE_B
 );
 
-779 if(
+876 if(
 isLoÿl
  == 0)
 
-781 
+878 
 max_´iÜ™y
  = 
 	`sched_g‘_´iÜ™y_max
@@ -4693,7 +12391,7 @@ max_´iÜ™y
 SCHED_RR
 );
 
-782 
+879 
 mš_´iÜ™y
  = 
 	`sched_g‘_´iÜ™y_mš
@@ -4701,13 +12399,13 @@ mš_´iÜ™y
 SCHED_RR
 );
 
-784 
+881 
 sched_·¿m
  
 ·¿m
 ;
 
-788 
+885 
 ·¿m
 .
 sched_´iÜ™y
@@ -4715,7 +12413,7 @@ sched_´iÜ™y
 max_´iÜ™y
 ;
 
-791 
+888 
 	`sched_£tscheduËr
 (0, 
 SCHED_RR
@@ -4723,7 +12421,7 @@ SCHED_RR
 ·¿m
 );
 
-792 
+889 
 cu¼_´io
  = 
 	`sched_g‘·¿m
@@ -4731,7 +12429,7 @@ cu¼_´io
 ·¿m
 );
 
-793 
+890 
 	`årštf
 (
 ¡d”r
@@ -4741,7 +12439,7 @@ cu¼_´io
 sched_´iÜ™y
 );
 
-798 
+895 
 	`p_debug
 ("S‘ deviû id = %ld\n", 
 ·ck‘
@@ -4751,7 +12449,7 @@ sched_´iÜ™y
 ¬gi
  );
 
-799 
+896 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -4763,7 +12461,7 @@ sched_´iÜ™y
 m‘hod_id
 );
 
-801  (
+898  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4775,11 +12473,11 @@ OK
 ERROR
 ;
 
-802 
+899 
 	}
 }
 
-804 
+901 
 	$nvbackCudaM®loc_¤v
 (
 cuda_·ck‘_t
@@ -4791,11 +12489,11 @@ cÚn_t
 pCÚn
 ) {
 
-812 
+909 
 	`´štf
 ("\nbefore devPtr %p, *devPtr %p, size %ld\n",
 
-813 &(
+910 &(
 ·ck‘
 ->
 ¬gs
@@ -4805,7 +12503,7 @@ pCÚn
 ¬gi
 );
 
-814 
+911 
 ·ck‘
 ->
 ¬gs
@@ -4815,7 +12513,7 @@ pCÚn
 NULL
 ;
 
-815 
+912 
 ·ck‘
 ->
 »t_ex_v®
@@ -4829,7 +12527,7 @@ NULL
 ¬gp
 ),
 
-816 
+913 
 ·ck‘
 ->
 ¬gs
@@ -4837,7 +12535,7 @@ NULL
 ¬gi
 );
 
-817 
+914 
 	`´štf
 ("‡á” devPŒ i %p, *devPŒ %p\n", &(
 ·ck‘
@@ -4847,7 +12545,7 @@ NULL
 ¬gp
 ),
 
-818 
+915 
 ·ck‘
 ->
 ¬gs
@@ -4855,7 +12553,7 @@ NULL
 ¬gp
 );
 
-820 
+917 
 	`p_debug
 ("devPŒ i %p",
 ·ck‘
@@ -4865,11 +12563,11 @@ NULL
 ¬gp
 );
 
-822 
+919 
 	`p_debug
 ( "CUDA_ERROR=%d for method id=%d‡fterƒxecution\n",
 
-823 
+920 
 ·ck‘
 ->
 »t_ex_v®
@@ -4879,7 +12577,7 @@ NULL
 m‘hod_id
 );
 
-825  (
+922  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4893,11 +12591,11 @@ OK
 ERROR
 ;
 
-826 
+923 
 	}
 }
 
-828 
+925 
 	$nvbackCudaF»e_¤v
 (
 cuda_·ck‘_t
@@ -4909,7 +12607,7 @@ cÚn_t
 pCÚn
 ) {
 
-829 
+926 
 	`p_debug
 ("devPŒ i %p\n",
 ·ck‘
@@ -4919,7 +12617,7 @@ pCÚn
 ¬gp
 );
 
-830 
+927 
 ·ck‘
 ->
 »t_ex_v®
@@ -4933,7 +12631,7 @@ pCÚn
 ¬gp
 );
 
-831 
+928 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -4945,7 +12643,7 @@ pCÚn
 m‘hod_id
 );
 
-832  (
+929  (
 ·ck‘
 ->
 »t_ex_v®
@@ -4957,11 +12655,11 @@ OK
 ERROR
 ;
 
-833 
+930 
 	}
 }
 
-835 
+932 
 	$nvbackCudaS‘upArgum’t_¤v
 (
 cuda_·ck‘_t
@@ -4973,7 +12671,7 @@ cÚn_t
 pCÚn
 ) {
 
-841 *
+938 *
 ¬g
  = (*è((*è
 pCÚn
@@ -4981,7 +12679,7 @@ pCÚn
 pReqBufãr
 );
 
-842 
+939 
 ·ck‘
 ->
 »t_ex_v®
@@ -4997,7 +12695,7 @@ pReqBufãr
 ¬gi
 ,
 
-843 
+940 
 ·ck‘
 ->
 ¬gs
@@ -5005,7 +12703,7 @@ pReqBufãr
 ¬gi
 );
 
-844 
+941 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5017,7 +12715,7 @@ pReqBufãr
 m‘hod_id
 );
 
-845  (
+942  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5031,11 +12729,11 @@ OK
 ERROR
 ;
 
-846 
+943 
 	}
 }
 
-848 
+945 
 	$nvbackCudaCÚfigu»C®l_¤v
 (
 cuda_·ck‘_t
@@ -5047,7 +12745,7 @@ cÚn_t
 pCÚn
 ) {
 
-849 
+946 
 ·ck‘
 ->
 »t_ex_v®
@@ -5061,7 +12759,7 @@ pCÚn
 ¬g_dim
 ,
 
-850 
+947 
 ·ck‘
 ->
 ¬gs
@@ -5071,7 +12769,7 @@ pCÚn
 ¬gi
 ,
 
-851 (
+948 (
 cudaSŒ—m_t
 è
 ·ck‘
@@ -5081,11 +12779,11 @@ cudaSŒ—m_t
 ¬gi
 );
 
-853 
+950 
 	`p_debug
 (
 
-855 
+952 
 ·ck‘
 ->
 ¬gs
@@ -5097,7 +12795,7 @@ x
 y
 ,
 
-856 
+953 
 ·ck‘
 ->
 ¬gs
@@ -5109,7 +12807,7 @@ z
 x
 ,
 
-857 
+954 
 ·ck‘
 ->
 ¬gs
@@ -5121,7 +12819,7 @@ y
 z
 ,
 
-858 
+955 
 ·ck‘
 ->
 ¬gs
@@ -5129,7 +12827,7 @@ z
 ¬gi
 ,…acket->args[3].argi);
 
-860 
+957 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5141,7 +12839,7 @@ z
 m‘hod_id
 );
 
-861  (
+958  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5155,11 +12853,11 @@ OK
 ERROR
 ;
 
-862 
+959 
 	}
 }
 
-864 
+961 
 	$nvbackCudaLaunch_¤v
 (
 cuda_·ck‘_t
@@ -5171,23 +12869,23 @@ cÚn_t
 pCÚn
 ) {
 
-865 
+962 
 i
 ;
 
-866 
+963 
 j
 ;
 
-867 cÚ¡ *
+964 cÚ¡ *
 ¬g
 ;
 
-868 
+965 
 found
  = 0;
 
-871 
+968 
 ¬g
  = (cÚ¡ *è
 ·ck‘
@@ -5197,7 +12895,7 @@ found
 ¬gı
 ;
 
-873 
+970 
 ·ck‘
 ->
 »t_ex_v®
@@ -5207,7 +12905,7 @@ found
 cudaE¼ÜLaunchFau»
 ;
 
-879 
+976 
 i
  = 0; i < 
 çtCInfoA¼
@@ -5215,7 +12913,7 @@ i
 Ën
 ; i++) {
 
-880 
+977 
 çtcubš_šfo_t
  * 
 p
@@ -5227,7 +12925,7 @@ p
 i
 );
 
-881 
+978 
 	`as£¹
 Ğ
 p
@@ -5235,7 +12933,7 @@ p
 NULL
  );
 
-883 
+980 
 j
  = 0; j < 
 p
@@ -5243,7 +12941,7 @@ p
 num_»g_âs
 ; j++) {
 
-884 ià(
+981 ià(
 p
 ->
 »g_âs
@@ -5257,11 +12955,11 @@ ho¡FEaddr
 ¬g
 ) {
 
-885 
+982 
 	`p_debug
 ( "function %p:%s\n",
 
-886 
+983 
 p
 ->
 »g_âs
@@ -5271,7 +12969,7 @@ j
 ho¡FEaddr
 ,
 
-887 
+984 
 p
 ->
 »g_âs
@@ -5281,7 +12979,7 @@ j
 ho¡Fun
 );
 
-888 
+985 
 ·ck‘
 ->
 »t_ex_v®
@@ -5299,15 +12997,91 @@ j
 ho¡Fun
 );
 
-889 
+986 if(
+p
+->
+»g_âs
+[
+j
+]->
+gDim
+)
+
+987 
+	`årštf
+(
+¡d”r
+,"LAUNCH gridDim %d\n",
+p
+->
+»g_âs
+[
+j
+]->
+gDim
+->
+x
+);
+
+988 if(
+p
+->
+»g_âs
+[
+j
+]->
+bDim
+)
+
+989 
+	`årštf
+(
+¡d”r
+,"LAUNCH blockDim %d\n",
+p
+->
+»g_âs
+[
+j
+]->
+bDim
+->
+x
+);
+
+990 if(
+p
+->
+»g_âs
+[
+j
+]->
+wSize
+)
+
+991 
+	`årštf
+(
+¡d”r
+,"LAUNCH wSiz%d\n",
+p
+->
+»g_âs
+[
+j
+]->
+wSize
+);
+
+1000 
 found
  = 1;
 
-893 ià(
+1004 ià(
 found
  == 1)
 
-897 
+1008 
 	`p_debug
 ("CUDA_ERROR=%d fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5319,7 +13093,7 @@ found
 m‘hod_id
 );
 
-899  (
+1010  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5333,11 +13107,11 @@ OK
 ERROR
 ;
 
-900 
+1011 
 	}
 }
 
-902 
+1013 
 	$nvbackCudaMemıy_¤v
 (
 cuda_·ck‘_t
@@ -5349,11 +13123,11 @@ cÚn_t
 pCÚn
 ) {
 
-903 
+1014 
 	`p_debug
 ( "Packet content:‡rgs[0].argp (dst)= %p,‡rgs[1].argp (src)= %p\n",
 
-904 
+1015 
 ·ck‘
 ->
 ¬gs
@@ -5361,7 +13135,7 @@ pCÚn
 ¬gp
 ,…acket->args[1].argp);
 
-905 
+1016 
 	`p_debug
 Ğ"¬gs[2].¬gi=%ld,‡rgs[3].¬gi=%ld\n", 
 ·ck‘
@@ -5371,33 +13145,33 @@ pCÚn
 ¬gi
 ,…acket->args[3].argi);
 
-907 
+1018 
 ·ck‘
 ->
 m‘hod_id
 ) {
 
-909 
+1020 
 CUDA_MEMCPY_H2H
 :
 
-911 
+1022 
 	`p_w¬n
 ( "Warning: CUDA_MEMCPY_H2H‚ot supported\n");
 
-912  
+1023  
 ERROR
 ;
 
-914 
+1025 
 CUDA_MEMCPY_H2D
 :
 
-915 
+1026 
 	`p_debug
 ("request_data_size = %d,„eceived count =%ld\n",
 
-916 
+1027 
 pCÚn
 ->
 »que¡_d©a_size
@@ -5409,7 +13183,7 @@ pCÚn
 ¬gi
 );
 
-917 
+1028 
 	`as£¹
 (
 pCÚn
@@ -5423,7 +13197,7 @@ pCÚn
 ¬gi
 );
 
-920 
+1031 
 ·ck‘
 ->
 ¬gs
@@ -5437,11 +13211,11 @@ pCÚn
 pReqBufãr
 );
 
-927 
+1038 
 CUDA_MEMCPY_D2H
 :
 
-928 
+1039 
 pCÚn
 ->
 »¥Ú£_d©a_size
@@ -5453,7 +13227,7 @@ pCÚn
 ¬gi
 ;
 
-929 
+1040 
 	`as£¹
 (
 pCÚn
@@ -5463,7 +13237,7 @@ pR¥Bufãr
 NULL
 );
 
-930 
+1041 
 pCÚn
 ->
 pR¥Bufãr
@@ -5473,7 +13247,7 @@ pR¥Bufãr
 »¥Ú£_d©a_size
 );
 
-931 ià(
+1042 ià(
 	`m®locCheck
 (
 pCÚn
@@ -5487,11 +13261,11 @@ NULL
 ERROR
 ) {
 
-932  
+1043  
 ERROR
 ;
 
-934 
+1045 
 ·ck‘
 ->
 ¬gs
@@ -5505,11 +13279,11 @@ pCÚn
 pR¥Bufãr
 ;
 
-941 
+1052 
 CUDA_MEMCPY_D2D
 :
 
-946 
+1057 
 ·ck‘
 ->
 »t_ex_v®
@@ -5523,7 +13297,7 @@ CUDA_MEMCPY_D2D
 ¬gui
 ,
 
-947 (*è
+1058 (*è
 ·ck‘
 ->
 ¬gs
@@ -5533,7 +13307,7 @@ CUDA_MEMCPY_D2D
 ¬gi
 ,
 
-948 
+1059 
 ·ck‘
 ->
 ¬gs
@@ -5541,7 +13315,7 @@ CUDA_MEMCPY_D2D
 ¬gi
 );
 
-950 
+1061 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5551,7 +13325,7 @@ CUDA_MEMCPY_D2D
 ”r
 ,
 
-951 
+1062 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5563,7 +13337,7 @@ CUDA_MEMCPY_D2D
 m‘hod_id
 );
 
-953  (
+1064  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5577,11 +13351,11 @@ OK
 ERROR
 ;
 
-954 
+1065 
 	}
 }
 
-956 
+1067 
 	$nvbackCudaTh»adSynchrÚize_¤v
 (
 cuda_·ck‘_t
@@ -5593,7 +13367,7 @@ cÚn_t
 pCÚn
 ) {
 
-957 
+1068 
 ·ck‘
 ->
 »t_ex_v®
@@ -5603,7 +13377,7 @@ pCÚn
 	`cudaTh»adSynchrÚize
 ();
 
-959 
+1070 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5613,7 +13387,7 @@ pCÚn
 ”r
 ,
 
-960 
+1071 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5625,7 +13399,7 @@ pCÚn
 m‘hod_id
 );
 
-962  (
+1073  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5639,11 +13413,11 @@ OK
 ERROR
 ;
 
-963 
+1074 
 	}
 }
 
-965 
+1076 
 	$nvbackCudaTh»adEx™_¤v
 (
 cuda_·ck‘_t
@@ -5655,7 +13429,7 @@ cÚn_t
 pCÚn
 ) {
 
-966 
+1077 
 ·ck‘
 ->
 »t_ex_v®
@@ -5665,7 +13439,7 @@ pCÚn
 	`cudaTh»adEx™
 ();
 
-970 
+1081 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5675,7 +13449,7 @@ pCÚn
 ”r
 ,
 
-971 
+1082 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5687,7 +13461,7 @@ pCÚn
 m‘hod_id
 );
 
-973  (
+1084  (
 ·ck‘
 ->
 »t_ex_v®
@@ -5701,11 +13475,11 @@ OK
 ERROR
 ;
 
-974 
+1085 
 	}
 }
 
-976 
+1087 
 	$nvbackCudaMemıyToSymbŞ_¤v
 (
 cuda_·ck‘_t
@@ -5717,7 +13491,7 @@ cÚn_t
 pCÚn
 ) {
 
-978 cÚ¡ * 
+1089 cÚ¡ * 
 ho¡V¬
  = (cÚ¡ *è
 ·ck‘
@@ -5727,7 +13501,7 @@ ho¡V¬
 ¬gı
 ;
 
-980 (
+1091 (
 cudaMemıyKšd
 è
 ·ck‘
@@ -5737,11 +13511,11 @@ cudaMemıyKšd
 ¬gi
 ) {
 
-981 
+1092 
 cudaMemıyHo¡ToDeviû
 :
 
-982 
+1093 
 	`p_debug
 ("pcÚn->»que¡_d©a_sizğ%d,…ack‘->couÁ = %ld\n", 
 pCÚn
@@ -5749,7 +13523,7 @@ pCÚn
 »que¡_d©a_size
 ,
 
-983 
+1094 
 ·ck‘
 ->
 ¬gs
@@ -5757,7 +13531,7 @@ pCÚn
 ¬r_¬gi
 [0]);
 
-985 
+1096 
 	`as£¹
 (()
 pCÚn
@@ -5771,7 +13545,7 @@ pCÚn
 ¬r_¬gi
 [0]);
 
-987 
+1098 
 ·ck‘
 ->
 ¬gs
@@ -5785,11 +13559,11 @@ pCÚn
 pReqBufãr
 );
 
-990 
+1101 
 cudaMemıyDeviûToDeviû
 :
 
-991 
+1102 
 ·ck‘
 ->
 »t_ex_v®
@@ -5799,11 +13573,11 @@ cudaMemıyDeviûToDeviû
 cudaE¼ÜNÙY‘Im¶em’‹d
 ;
 
-992 
+1103 
 	`p_ü™iÿl
 ("__ERROR__: cudaMemcpyDeviceToDevice‚ot supported\n");
 
-993 
+1104 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5813,7 +13587,7 @@ cudaE¼ÜNÙY‘Im¶em’‹d
 ”r
 ,
 
-994 
+1105 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5825,11 +13599,11 @@ cudaE¼ÜNÙY‘Im¶em’‹d
 m‘hod_id
 );
 
-995  
+1106  
 ERROR
 ;
 
-998 
+1109 
 ·ck‘
 ->
 »t_ex_v®
@@ -5839,11 +13613,11 @@ ERROR
 cudaE¼ÜInv®idMemıyDœeùiÚ
 ;
 
-999 
+1110 
 	`p_ü™iÿl
 ("__ERROR__: Invalid Memcpy direction\n");
 
-1000 
+1111 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5853,7 +13627,7 @@ cudaE¼ÜInv®idMemıyDœeùiÚ
 ”r
 ,
 
-1001 
+1112 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5865,15 +13639,15 @@ cudaE¼ÜInv®idMemıyDœeùiÚ
 m‘hod_id
 );
 
-1002  
+1113  
 ERROR
 ;
 
-1007 
+1118 
 idx
  = 0;
 
-1008 
+1119 
 çtcubš_šfo_t
  * 
 p
@@ -5887,7 +13661,7 @@ ho¡V¬
 idx
 );
 
-1010 ià(
+1121 ià(
 	`nuÎDebugChk±
 (
 p
@@ -5895,11 +13669,11 @@ p
 __FUNCTION__
 , "The hostVar has‚ot been found\n")
 
-1011 =ğ
+1122 =ğ
 TRUE
 ) {
 
-1012 
+1123 
 ·ck‘
 ->
 »t_ex_v®
@@ -5909,13 +13683,13 @@ TRUE
 cudaE¼ÜInv®idSymbŞ
 ;
 
-1014 
+1125 
 	`as£¹
 (
 idx
  > -1);
 
-1015 
+1126 
 	`as£¹
 (
 idx
@@ -5923,7 +13697,7 @@ idx
 MAX_REGISTERED_VARS
 );
 
-1025 
+1136 
 ·ck‘
 ->
 »t_ex_v®
@@ -5933,7 +13707,7 @@ MAX_REGISTERED_VARS
 	`cudaMemıyToSymbŞ
 (
 
-1026 
+1137 
 p
 ->
 v¬ŸbËs
@@ -5943,7 +13717,7 @@ idx
 dom0Ho¡Addr
 ,
 
-1028 (*è
+1139 (*è
 ·ck‘
 ->
 ¬gs
@@ -5951,7 +13725,7 @@ dom0Ho¡Addr
 ¬gui
 ,
 
-1029 
+1140 
 ·ck‘
 ->
 ¬gs
@@ -5959,7 +13733,7 @@ dom0Ho¡Addr
 ¬r_¬gi
 [0],
 
-1030 
+1141 
 ·ck‘
 ->
 ¬gs
@@ -5967,7 +13741,7 @@ dom0Ho¡Addr
 ¬r_¬gi
 [1],
 
-1031 
+1142 
 ·ck‘
 ->
 ¬gs
@@ -5975,7 +13749,7 @@ dom0Ho¡Addr
 ¬gi
 );
 
-1034 
+1145 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -5985,7 +13759,7 @@ dom0Ho¡Addr
 ”r
 ,
 
-1035 
+1146 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -5997,7 +13771,7 @@ dom0Ho¡Addr
 m‘hod_id
 );
 
-1037  
+1148  
 ·ck‘
 ->
 »t_ex_v®
@@ -6011,11 +13785,11 @@ OK
 ERROR
 ;
 
-1038 
+1149 
 	}
 }
 
-1040 
+1151 
 	$nvbackCudaMemıyFromSymbŞ_¤v
 (
 cuda_·ck‘_t
@@ -6027,7 +13801,7 @@ cÚn_t
 pCÚn
 ) {
 
-1042 cÚ¡ * 
+1153 cÚ¡ * 
 ho¡V¬
  = (cÚ¡ *è
 ·ck‘
@@ -6037,7 +13811,7 @@ ho¡V¬
 ¬gı
 ;
 
-1044 (
+1155 (
 cudaMemıyKšd
 è
 ·ck‘
@@ -6047,11 +13821,11 @@ cudaMemıyKšd
 ¬gi
 ) {
 
-1045 
+1156 
 cudaMemıyDeviûToHo¡
 :
 
-1046 
+1157 
 pCÚn
 ->
 »¥Ú£_d©a_size
@@ -6063,7 +13837,7 @@ pCÚn
 ¬r_¬gi
 [0];
 
-1047 
+1158 
 	`as£¹
 (
 pCÚn
@@ -6073,7 +13847,7 @@ pR¥Bufãr
 NULL
 );
 
-1048 
+1159 
 pCÚn
 ->
 pR¥Bufãr
@@ -6083,7 +13857,7 @@ pR¥Bufãr
 »¥Ú£_d©a_size
 );
 
-1049 ià(
+1160 ià(
 	`m®locCheck
 (
 pCÚn
@@ -6097,11 +13871,11 @@ NULL
 ERROR
 ) {
 
-1050  
+1161  
 ERROR
 ;
 
-1052 
+1163 
 ·ck‘
 ->
 ¬gs
@@ -6115,11 +13889,11 @@ pCÚn
 pR¥Bufãr
 ;
 
-1055 
+1166 
 cudaMemıyDeviûToDeviû
 :
 
-1056 
+1167 
 ·ck‘
 ->
 »t_ex_v®
@@ -6129,11 +13903,11 @@ cudaMemıyDeviûToDeviû
 cudaE¼ÜNÙY‘Im¶em’‹d
 ;
 
-1057 
+1168 
 	`p_ü™iÿl
 ("__ERROR__: cudaMemcpyDeviceToDevice‚ot supported\n");
 
-1058 
+1169 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -6143,7 +13917,7 @@ cudaE¼ÜNÙY‘Im¶em’‹d
 ”r
 ,
 
-1059 
+1170 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -6155,11 +13929,11 @@ cudaE¼ÜNÙY‘Im¶em’‹d
 m‘hod_id
 );
 
-1060  
+1171  
 ERROR
 ;
 
-1063 
+1174 
 ·ck‘
 ->
 »t_ex_v®
@@ -6169,11 +13943,11 @@ ERROR
 cudaE¼ÜInv®idMemıyDœeùiÚ
 ;
 
-1064 
+1175 
 	`p_ü™iÿl
 ("__ERROR__: Invalid Memcpy direction\n");
 
-1065 
+1176 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -6183,7 +13957,7 @@ cudaE¼ÜInv®idMemıyDœeùiÚ
 ”r
 ,
 
-1066 
+1177 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -6195,15 +13969,15 @@ cudaE¼ÜInv®idMemıyDœeùiÚ
 m‘hod_id
 );
 
-1067  
+1178  
 ERROR
 ;
 
-1072 
+1183 
 idx
  = 0;
 
-1073 
+1184 
 çtcubš_šfo_t
  * 
 p
@@ -6217,7 +13991,7 @@ ho¡V¬
 idx
 );
 
-1075 ià(
+1186 ià(
 	`nuÎDebugChk±
 (
 p
@@ -6225,11 +13999,11 @@ p
 __FUNCTION__
 , "The hostVar has‚ot been found\n")
 
-1076 =ğ
+1187 =ğ
 TRUE
 ) {
 
-1077 
+1188 
 ·ck‘
 ->
 »t_ex_v®
@@ -6239,13 +14013,13 @@ TRUE
 cudaE¼ÜInv®idSymbŞ
 ;
 
-1079 
+1190 
 	`as£¹
 (
 idx
  > -1);
 
-1080 
+1191 
 	`as£¹
 (
 idx
@@ -6253,7 +14027,7 @@ idx
 MAX_REGISTERED_VARS
 );
 
-1086 
+1197 
 ·ck‘
 ->
 »t_ex_v®
@@ -6263,7 +14037,7 @@ MAX_REGISTERED_VARS
 	`cudaMemıyFromSymbŞ
 (
 
-1087 (*è
+1198 (*è
 ·ck‘
 ->
 ¬gs
@@ -6271,7 +14045,7 @@ MAX_REGISTERED_VARS
 ¬gui
 ,
 
-1089 
+1200 
 p
 ->
 v¬ŸbËs
@@ -6281,7 +14055,7 @@ idx
 dom0Ho¡Addr
 ,
 
-1090 
+1201 
 ·ck‘
 ->
 ¬gs
@@ -6289,7 +14063,7 @@ dom0Ho¡Addr
 ¬r_¬gi
 [0],
 
-1091 
+1202 
 ·ck‘
 ->
 ¬gs
@@ -6297,7 +14071,7 @@ dom0Ho¡Addr
 ¬r_¬gi
 [1],
 
-1092 
+1203 
 ·ck‘
 ->
 ¬gs
@@ -6305,7 +14079,7 @@ dom0Ho¡Addr
 ¬gi
 );
 
-1095 
+1206 
 	`p_šfo
 Ğ"CUDA_ERROR=%d (%sèfÜ m‘hod id=%d\n", 
 ·ck‘
@@ -6315,7 +14089,7 @@ dom0Ho¡Addr
 ”r
 ,
 
-1096 
+1207 
 	`cudaG‘E¼ÜSŒšg
 (
 ·ck‘
@@ -6327,7 +14101,7 @@ dom0Ho¡Addr
 m‘hod_id
 );
 
-1098  
+1209  
 ·ck‘
 ->
 »t_ex_v®
@@ -6341,11 +14115,11 @@ OK
 ERROR
 ;
 
-1099 
+1210 
 	}
 }
 
-1106 
+1217 
 	$__nvback_cudaRegi¡”F©Bš¬y_¤v
 (
 cuda_·ck‘_t
@@ -6357,7 +14131,7 @@ cÚn_t
 mycÚn
 ) {
 
-1109 
+1220 
 çtcubš_šfo_t
  * 
 pF©CInfo
@@ -6365,13 +14139,13 @@ pF©CInfo
 NULL
 ;
 
-1113 ià(
+1224 ià(
 NULL
  =ğ
 çtCInfoA¼
 )
 
-1116 
+1227 
 çtCInfoA¼
  = 
 	`g_¬¿y_Ãw
@@ -6383,7 +14157,7 @@ TRUE
 çtcubš_šfo_t
 ));
 
-1119 
+1230 
 pF©CInfo
  = (
 çtcubš_šfo_t
@@ -6391,7 +14165,7 @@ pF©CInfo
 	`ÿÎoc
 (1, (fatcubin_info_t));
 
-1121 
+1232 
 	`nuÎEx™Chk±M®loc
 (
 pF©CInfo
@@ -6399,7 +14173,7 @@ pF©CInfo
 __FUNCTION__
 );
 
-1123 
+1234 
 pF©CInfo
 ->
 çtCubš
@@ -6409,11 +14183,11 @@ __cudaF©CudaBš¬y
 	`m®loc
 (
 
-1124 (
+1235 (
 __cudaF©CudaBš¬y
  ));
 
-1126 ià(
+1237 ià(
 	`m®locCheck
 (
 pF©CInfo
@@ -6427,13 +14201,13 @@ NULL
 ERROR
 )
 
-1127 
+1238 
 	`ex™
 (
 ERROR
 );
 
-1129 ià(
+1240 ià(
 	`uÅackF©Bš¬y
 (
 pF©CInfo
@@ -6447,15 +14221,15 @@ pReqBufãr
 ERROR
 ) {
 
-1130 
+1241 
 	`p_”rÜ
 ("Problems with unpacking fat binary. Exiting ... \n");
 
-1132 
+1243 
 	`p_debug
 ( "__OK__ No…roblem with unpacking fat binary\n");
 
-1137 
+1248 
 pF©CInfo
 ->
 çtCubšHªdË
@@ -6465,7 +14239,7 @@ pF©CInfo
 çtCubš
 );
 
-1144 
+1255 
 	`g_¬¿y_­³nd_v®
 (
 çtCInfoA¼
@@ -6473,7 +14247,7 @@ pF©CInfo
 pF©CInfo
 );
 
-1146 
+1257 
 ·ck‘
 ->
 ¬gs
@@ -6485,7 +14259,7 @@ pF©CInfo
 çtCubš
 ;
 
-1147 
+1258 
 ·ck‘
 ->
 »t_ex_v®
@@ -6497,7 +14271,7 @@ pF©CInfo
 çtCubšHªdË
 ;
 
-1149 
+1260 
 	`p_debug
 Ğ"FATCUBIN HANDLE:„egi¡”ed %p\n", 
 pF©CInfo
@@ -6505,7 +14279,7 @@ pF©CInfo
 çtCubšHªdË
 );
 
-1150 
+1261 
 	`p_debug
 Ğ"FATCUBIN:„egi¡”ed %p\n", 
 pF©CInfo
@@ -6513,15 +14287,15 @@ pF©CInfo
 çtCubš
 );
 
-1151  
+1262  
 OK
 ;
 
-1152 
+1263 
 	}
 }
 
-1154 
+1265 
 	$__nvback_cudaRegi¡”FunùiÚ_¤v
 (
 cuda_·ck‘_t
@@ -6533,7 +14307,7 @@ cÚn_t
 mycÚn
 ) {
 
-1155 
+1266 
 »g_func_¬gs_t
  * 
 pA
@@ -6541,7 +14315,7 @@ pA
 	`m®loc
 ((reg_func_args_t));
 
-1156 
+1267 
 çtcubš_šfo_t
  * 
 pFcI
@@ -6549,7 +14323,7 @@ pFcI
 NULL
 ;
 
-1158 
+1269 
 	`nuÎEx™Chk±M®loc
 ((*è
 pA
@@ -6557,7 +14331,7 @@ pA
 __FUNCTION__
 );
 
-1160 ià(
+1271 ià(
 	`uÅackRegFuncArgs
 (
 pA
@@ -6569,17 +14343,17 @@ pReqBufãr
 ERROR
 )
 
-1161 
+1272 
 	`p_w¬n
 ("Problems with unpacking‡rguments in function„egister\n");
 
-1163 
+1274 
 	`´štF©CIA¼ay
 (
 çtCInfoA¼
 );
 
-1166 
+1277 
 pFcI
  = 
 	`g_fcŸ_–em
@@ -6591,13 +14365,13 @@ pA
 çtCubšHªdË
 );
 
-1168 ià(
+1279 ià(
 NULL
  =ğ
 pFcI
 ) {
 
-1169 
+1280 
 	`p_w¬n
 ("__ERROR__: NÙ such f© cubš hªdË¸%p\n", 
 pA
@@ -6605,7 +14379,7 @@ pA
 çtCubšHªdË
 );
 
-1172 
+1283 
 	`p_debug
 ("FATCUBIN HANDLE:„eûived=%p, found=%p", 
 pA
@@ -6615,7 +14389,7 @@ pA
 pFcI
 ->fatCubinHandle);
 
-1174 
+1285 
 	`as£¹
 (
 pA
@@ -6625,7 +14399,7 @@ pA
 pFcI
 ->fatCubinHandle);
 
-1176 
+1287 
 	`l_´štRegFunArgs
 (
 pA
@@ -6635,7 +14409,7 @@ pA
 ho¡Fun
 ,
 
-1177 
+1288 
 pA
 ->
 deviûFun
@@ -6645,7 +14419,7 @@ deviûName
 th»ad_lim™
 ,
 
-1178 
+1289 
 pA
 ->
 tid
@@ -6659,7 +14433,7 @@ gDim
 wSize
 );
 
-1180 
+1291 
 	`__cudaRegi¡”FunùiÚ
 (
 pA
@@ -6669,7 +14443,7 @@ pA
 ho¡Fun
 ,
 
-1181 
+1292 
 pA
 ->
 deviûFun
@@ -6679,7 +14453,7 @@ deviûName
 th»ad_lim™
 ,
 
-1182 
+1293 
 pA
 ->
 tid
@@ -6693,7 +14467,7 @@ gDim
 wSize
 );
 
-1186 
+1297 
 	`as£¹
 (
 pFcI
@@ -6703,7 +14477,7 @@ num_»g_âs
 MAX_REGISTERED_FUNCS
 );
 
-1187 
+1298 
 pFcI
 ->
 »g_âs
@@ -6713,13 +14487,13 @@ num_»g_âs
 pA
 ;
 
-1188 
+1299 
 pFcI
 ->
 num_»g_âs
 ++;
 
-1190 
+1301 
 ·ck‘
 ->
 »t_ex_v®
@@ -6729,7 +14503,7 @@ num_»g_âs
 cudaSucûss
 ;
 
-1191 
+1302 
 	`p_debug
 Ğ"CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -6741,15 +14515,15 @@ cudaSucûss
 m‘hod_id
 );
 
-1193  
+1304  
 OK
 ;
 
-1194 
+1305 
 	}
 }
 
-1196 
+1307 
 	$__nvback_cudaRegi¡”V¬_¤v
 (
 cuda_·ck‘_t
@@ -6761,7 +14535,7 @@ cÚn_t
 mycÚn
 ) {
 
-1197 
+1308 
 »g_v¬_¬gs_t
  * 
 pA
@@ -6769,7 +14543,7 @@ pA
 	`m®loc
 ((reg_var_args_t));
 
-1198 
+1309 
 çtcubš_šfo_t
  * 
 pFcI
@@ -6777,7 +14551,7 @@ pFcI
 NULL
 ;
 
-1200 
+1311 
 	`nuÎEx™Chk±M®loc
 ((*è
 pA
@@ -6785,7 +14559,7 @@ pA
 __FUNCTION__
 );
 
-1202 ià(
+1313 ià(
 	`uÅackRegV¬
 (
 pA
@@ -6797,11 +14571,11 @@ pReqBufãr
 ERROR
 )
 
-1203 
+1314 
 	`p_”rÜ
 ("Problems with unpacking‡rguments in function„egister. Exiting ...\n");
 
-1206 
+1317 
 pFcI
  = 
 	`g_fcŸ_–em
@@ -6813,7 +14587,7 @@ pA
 çtCubšHªdË
 );
 
-1207 
+1318 
 	`p_debug
 ("num_»g_v¬s: %d\n", 
 pFcI
@@ -6821,13 +14595,13 @@ pFcI
 num_»g_v¬s
 );
 
-1209 ià(
+1320 ià(
 NULL
  =ğ
 pFcI
 )
 
-1210 
+1321 
 	`p_”rÜ
 ("NÙ such f© cubš hªdËr. Ex™šg %p\n", 
 pA
@@ -6835,11 +14609,11 @@ pA
 çtCubšHªdË
 );
 
-1212 
+1323 
 	`p_debug
 ("FATCUBIN HANDLE:„eceived=%p, found=%p\n",
 
-1213 
+1324 
 pA
 ->
 çtCubšHªdË
@@ -6847,7 +14621,7 @@ pA
 pFcI
 ->fatCubinHandle);
 
-1215 
+1326 
 	`as£¹
 (
 pA
@@ -6857,7 +14631,7 @@ pA
 pFcI
 ->fatCubinHandle);
 
-1217 
+1328 
 	`l_´štRegV¬
 (
 pA
@@ -6869,7 +14643,7 @@ ho¡V¬
 deviûAdd»ss
 ,
 
-1218 (cÚ¡ *è
+1329 (cÚ¡ *è
 pA
 ->
 deviûName
@@ -6881,13 +14655,13 @@ size
 cÚ¡ªt
 ,
 
-1219 
+1330 
 pA
 ->
 glob®
 );
 
-1221 
+1332 
 	`p_debug
 ("pA->dom0Ho¡Add¸befÜğ%p\n", 
 pA
@@ -6895,7 +14669,7 @@ pA
 dom0Ho¡Addr
 );
 
-1222 
+1333 
 	`__cudaRegi¡”V¬
 (
 pA
@@ -6907,7 +14681,7 @@ dom0Ho¡Addr
 deviûAdd»ss
 ,
 
-1223 (cÚ¡ *è
+1334 (cÚ¡ *è
 pA
 ->
 deviûName
@@ -6919,23 +14693,23 @@ size
 cÚ¡ªt
 ,
 
-1224 
+1335 
 pA
 ->
 glob®
 );
 
-1225 
+1336 
 	`p_debug
 ("pA->hostVar‡fter __cudaRegisterVar:…ointer = %p\n",
 
-1226 
+1337 
 pA
 ->
 dom0Ho¡Addr
 );
 
-1230 
+1341 
 	`as£¹
 (
 pFcI
@@ -6945,7 +14719,7 @@ num_»g_v¬s
 MAX_REGISTERED_VARS
 );
 
-1231 
+1342 
 pFcI
 ->
 v¬ŸbËs
@@ -6955,13 +14729,13 @@ num_»g_v¬s
 pA
 ;
 
-1232 
+1343 
 pFcI
 ->
 num_»g_v¬s
 ++;
 
-1234 
+1345 
 ·ck‘
 ->
 »t_ex_v®
@@ -6971,7 +14745,7 @@ num_»g_v¬s
 cudaSucûss
 ;
 
-1235 
+1346 
 	`p_debug
 ("CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -6981,21 +14755,21 @@ cudaSucûss
 ”r
 ,
 
-1236 
+1347 
 ·ck‘
 ->
 m‘hod_id
 );
 
-1238  
+1349  
 OK
 ;
 
-1239 
+1350 
 	}
 }
 
-1241 
+1352 
 	$__nvback_cudaUÄegi¡”F©Bš¬y_¤v
 (
 cuda_·ck‘_t
@@ -7007,7 +14781,7 @@ cÚn_t
 pCÚn
 ) {
 
-1244 ** 
+1355 ** 
 pFCHªdË
  = 
 ·ck‘
@@ -7017,29 +14791,29 @@ pFCHªdË
 ¬gdp
 ;
 
-1246 
+1357 
 çtcubš_šfo_t
  * 
 pFCI
 ;
 
-1247 
+1358 
 pFCIdx
 ;
 
-1249 
+1360 
 	`´štF©CIA¼ay
 (
 çtCInfoA¼
 );
 
-1250 
+1361 
 	`p_debug
 Ğ"ThFAT cubš hªdË we'vgÙ: %p\n", 
 pFCHªdË
 );
 
-1253 
+1364 
 pFCI
  = 
 	`g_fcŸ_–idx
@@ -7051,7 +14825,7 @@ pFCHªdË
 pFCIdx
 );
 
-1254 
+1365 
 	`as£¹
 (
 pFCI
@@ -7059,19 +14833,19 @@ pFCI
 NULL
 );
 
-1256 
+1367 
 	`__cudaUÄegi¡”F©Bš¬y
 (
 pFCHªdË
 );
 
-1258 
+1369 
 	`ş—nF©CubšInfo
 (
 pFCI
 );
 
-1261 
+1372 
 	`g_¬¿y_»move_šdex_ç¡
 (
 çtCInfoA¼
@@ -7079,7 +14853,7 @@ pFCI
 pFCIdx
 );
 
-1263 
+1374 
 ·ck‘
 ->
 »t_ex_v®
@@ -7089,7 +14863,7 @@ pFCIdx
 cudaSucûss
 ;
 
-1264 
+1375 
 	`p_debug
 ("CUDA_ERROR=%u fÜ m‘hod id=%d\n", 
 ·ck‘
@@ -7101,475 +14875,13 @@ cudaSucûss
 m‘hod_id
 );
 
-1266  
+1377  
 OK
 ;
 
-1267 
+1378 
 	}
 }
-
-	@remote_api_wrapper.h
-
-11 #iâdeà
-__REMOTE_CUDA_CALLS_WRAPPER_H
-
-
-12 
-	#__REMOTE_CUDA_CALLS_WRAPPER_H
-
-
-	)
-
-14 
-	~"·ck‘h—d”.h
-"
-
-15 
-	~"cÚÃùiÚ.h
-"
-
-42 
-l_do_cuda_½c
-Ğ
-cuda_·ck‘_t
- *
-pPack‘
-, *
-»qbuf
-,
-
-43 cÚ¡ 
-»qbuf_size
-,
-
-44 *
-r¥buf
-,
-
-45 cÚ¡ 
-r¥buf_size
-, 
-šdex
-);
-
-51 
-g‘_Ãxt_deviû_RR
-();
-
-52 
-g‘_Ãxt_deviû
-();
-
-53 
-g‘_Ãxt_weigh‹d_deviû
-();
-
-54 
-g‘_Ãxt_deviû_loÿl_´ef
-(
-loÿlho¡_id
-);
-
-55 
-dec_th»ad_couÁ_³r_deviû
-();
-
-64 
-nvbackCudaM®loc_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-65 
-nvbackCudaF»e_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-66 
-nvbackCudaG‘DeviûCouÁ_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-67 
-nvbackCudaG‘DeviûPrİ”t›s_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-68 
-nvbackCudaG‘Deviû_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-69 
-nvbackCudaS‘Deviû_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-70 
-nvbackCudaS‘upArgum’t_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-71 
-nvbackCudaCÚfigu»C®l_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-72 
-nvbackCudaLaunch_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-73 
-nvbackCudaMemıy_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-74 
-nvbackCudaMemıyToSymbŞ_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-75 
-nvbackCudaMemıyFromSymbŞ_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-76 
-nvbackCudaTh»adSynchrÚize_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-77 
-nvbackCudaTh»adEx™_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-78 
-__nvback_cudaRegi¡”F©Bš¬y_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-79 
-__nvback_cudaRegi¡”FunùiÚ_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-80 
-__nvback_cudaUÄegi¡”F©Bš¬y_½c
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-šdex
-);
-
-81 
-__nvback_cudaRegi¡”V¬_½c
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-šdex
-);
-
-86 
-nvbackCudaM®loc_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-87 
-nvbackCudaG‘DeviûCouÁ_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-88 
-nvbackCudaG‘DeviûPrİ”t›s_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- *
-pCÚn
-);
-
-89 
-nvbackCudaG‘Deviû_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-90 
-nvbackCudaS‘Deviû_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-91 
-nvbackCudaF»e_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-92 
-nvbackCudaS‘upArgum’t_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- *
-pCÚn
-);
-
-93 
-nvbackCudaCÚfigu»C®l_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- *
-pCÚn
-);
-
-94 
-nvbackCudaLaunch_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-95 
-nvbackCudaMemıy_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-96 
-nvbackCudaMemıyToSymbŞ_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-97 
-nvbackCudaMemıyFromSymbŞ_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-98 
-nvbackCudaTh»adSynchrÚize_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-99 
-nvbackCudaTh»adEx™_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-pCÚn
-);
-
-100 
-__nvback_cudaRegi¡”F©Bš¬y_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-mycÚn
-);
-
-101 
-__nvback_cudaRegi¡”FunùiÚ_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-mycÚn
-);
-
-102 
-__nvback_cudaUÄegi¡”F©Bš¬y_¤v
-(
-cuda_·ck‘_t
- *
-·ck‘
-, 
-cÚn_t
- * 
-mycÚn
-);
-
-103 
-__nvback_cudaRegi¡”V¬_¤v
-(
-cuda_·ck‘_t
- * 
-·ck‘
-, 
-cÚn_t
- * 
-mycÚn
-);
 
 	@remote_api_wrapper_back.c
 
@@ -17866,7 +25178,7 @@ __CUDA_REGISTER_FAT_BINARY
 :
 
 259 
-	`__nvback_cudaRegi¡”F©Bš¬y_¤v
+	`__nvback_cudaRegi¡”F©Bš¬y2_¤v
 (
 ½kt
 , 
@@ -18229,13 +25541,13 @@ __CFS_SCHED
 
 6 
 	#APP_TYPE_A_SHARE
- 1
+ 70
 
 	)
 
 7 
 	#APP_TYPE_B_SHARE
- 1
+ 30
 
 	)
 
@@ -18477,6 +25789,474 @@ befÜe
 aá”
 , 
 gpuid
+);
+
+	@../virtmem/cuda_vmem.h
+
+1 #iâdeà
+__CUDA_VMEM_H
+
+
+2 
+	#__CUDA_VMEM_H
+
+
+	)
+
+4 
+	~<¡dlib.h
+>
+
+5 
+	~<cuda.h
+>
+
+6 
+	~<cuda_ruÁime_­i.h
+>
+
+8 
+	#MAX_KERNELS
+ 10000
+
+	)
+
+9 
+	#MAX_MEMORY
+ 10000
+
+	)
+
+11 
+	#SUCCESS
+ 0
+
+	)
+
+12 
+	#FAILURE
+ 1
+
+	)
+
+13 
+	#KLAUNCH_NOT_PENDING
+ 2
+
+	)
+
+15 
+	evmem_¡©us
+
+
+17 
+	mD_INIT
+,
+
+18 
+	mD_READY
+,
+
+19 
+	mD_MODIFIED
+,
+
+20 
+	mD_IDLE
+,
+
+21 
+	mD_MEMWAIT
+,
+
+22 
+	mD_DEFERRED
+
+
+26 
+	smem_m­
+
+
+28 
+	mv®id
+;
+
+29 
+	mhªdË
+;
+
+30 ** 
+	mdev±r
+;
+
+31 ** 
+	maùu®_dev±r
+;
+
+32 * 
+	msw­
+;
+
+33 
+vmem_¡©us
+ 
+	m¡©us
+;
+
+34 
+size_t
+ 
+	msize
+;
+
+35 
+mem_m­
+ *
+	mÃxt
+;
+
+39 
+	sk”Ãl_¬g_node
+
+
+41 **
+	m¬g
+;
+
+42 
+size_t
+ 
+	msize
+;
+
+43 
+size_t
+ 
+	moff£t
+;
+
+44 
+mem_m­
+ * 
+	mvmem_±r
+;
+
+45 
+k”Ãl_¬g_node
+ *
+	mÃxt
+;
+
+48 
+	sk”Ãl_¬gs
+
+
+50 
+k”Ãl_¬g_node
+ *
+	mh—d
+;
+
+51 
+k”Ãl_¬g_node
+ *
+	m
+;
+
+54 
+	skm­_node
+
+
+56 
+	mv®id
+;
+
+57 
+	mÏunch_³ndšg
+;
+
+59 
+dim3
+ 
+	mgridDim
+;
+
+60 
+dim3
+ 
+	mblockDim
+;
+
+61 
+size_t
+ 
+	msh¬edMem
+;
+
+62 
+cudaSŒ—m_t
+ 
+	m¡»am
+;
+
+65 
+k”Ãl_¬gs
+ 
+	m¬g_li¡
+;
+
+68 * 
+	mfunc
+;
+
+71 
+	skm­
+
+
+73 
+km­_node
+ * 
+	mkobjeùs
+;
+
+74 
+	mšdex
+;
+
+77 
+mem_m­_š™
+(
+mem_m­
+ ** 
+bË
+);
+
+78 
+mem_m­_g‘_Ãxt_šdex
+(
+mem_m­
+ **
+bË
+, *
+glob®_šdex
+);
+
+79 
+mem_m­_ü—t
+(
+mem_m­
+ ** 
+bË
+, ** 
+dev±r
+, 
+size_t
+ 
+size
+);
+
+80 
+mem_m­_g‘_¡©us
+(
+mem_m­
+ ** 
+bË
+, ** 
+dev±r
+);
+
+81 
+mem_m­_upd©e_¡©us
+(
+mem_m­
+ ** 
+bË
+, ** 
+dev±r
+, 
+vmem_¡©us
+ 
+¡©us
+);
+
+82 
+mem_m­_d–‘e
+(
+mem_m­
+ ** 
+bË
+, **
+dev±r
+);
+
+83 
+mem_m­_upd©e_d©a
+(
+mem_m­
+ ** 
+bË
+, **
+dev±r
+, *
+¤c
+, 
+size_t
+ 
+size
+);
+
+84 ** 
+mem_m­_g‘_aùu®_dev±r
+(
+mem_m­
+ ** 
+bË
+, **
+dev±r
+);
+
+85 
+mem_m­
+ * 
+mem_m­_g‘_’Œy
+(mem_m­ ** 
+bË
+, **
+dev±r
+);
+
+86 
+mem_m­_´št
+(
+mem_m­
+ **
+bË
+);
+
+89 
+km­_š™
+(
+km­
+ * 
+bË
+);
+
+90 
+km­_add_cÚfig
+(
+km­
+ *
+bË
+, 
+dim3
+ 
+gridDim
+, dim3 
+blockDim
+, 
+size_t
+ 
+sh¬edMem
+, 
+cudaSŒ—m_t
+ 
+¡»am
+);
+
+91 
+km­_add_¬g
+(
+km­
+ *
+bË
+,*
+¬g
+, 
+size_t
+ 
+size
+, size_ˆ
+off£t
+, 
+mem_m­
+ ** 
+vmem_bË
+);
+
+92 
+km­_add_k”Ãl
+(
+km­
+ *
+bË
+, * 
+kfun
+);
+
+95 
+gvœt_·ge_š_dev±r
+(
+mem_m­
+ ** 
+bË
+, ** 
+dev±r
+);
+
+96 
+gvœt_·ge_out_dev±r
+(
+mem_m­
+ ** 
+bË
+, ** 
+dev±r
+);
+
+97 
+gvœt_·ge_š
+(
+mem_m­
+ ** 
+bË
+, mem_m­ * 
+row±r
+);
+
+98 
+gvœt_·ge_out
+(
+mem_m­
+ ** 
+bË
+, mem_m­ * 
+row±r
+);
+
+99 
+gvœt_·geout_®l
+(
+mem_m­
+ ** 
+bË
+);
+
+100 
+gvœt_·geš_®l
+(
+mem_m­
+ ** 
+bË
+);
+
+102 
+gvœt_cuda_Ïunch_šdex
+(
+km­
+ * 
+bË
+, 
+šdex
 );
 
 	@/usr/include/assert.h
@@ -89892,13 +97672,14 @@ __ASM_GENERIC_SOCKIOS_H
 .
 1
 /usr/include
-100
-2574
+102
+2623
 connection.c
 connection.h
 rconfig.h
 remote_api_wrapper.c
 remote_api_wrapper.h
+remote_api_wrapper_3dec.c
 remote_api_wrapper_back.c
 remote_api_wrapper_back.h
 remote_api_wrapper_orig.c
@@ -89908,6 +97689,7 @@ remote_packet.h
 remote_packet_types.h
 ../l2scheduler/fair_share_sched.h
 ../l2scheduler/las_scheduler.h
+../virtmem/cuda_vmem.h
 /usr/include/assert.h
 /usr/include/dlfcn.h
 /usr/include/errno.h

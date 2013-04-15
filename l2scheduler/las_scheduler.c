@@ -295,7 +295,6 @@ int las_register_process(pid_t process_id, int gpuid, int app_type, int to_mark)
 
 int las_start_scheduler()
 {
-	pthread_t thIDs[10];		/* This array size must be >= 2 * num_gpus */
 	int num_gpus = 2;
 	int thread_count = 2 * num_gpus;
 	int n = 0, i;
@@ -333,10 +332,10 @@ int las_start_scheduler()
 		fprintf(stderr,"In main :: listener ID : %llu, controller ID : %llu\n",thIDs[i],thIDs[i+1]);
 	}
 	
-	for(i = 0 ; i < thread_count ; i++)
-		pthread_join(thIDs[i], NULL);
+/*	for(i = 0 ; i < thread_count ; i++)
+		pthread_join(thIDs[i], NULL);*/
 
-	return 0;
+	return thread_count;
 }
 
 

@@ -36,6 +36,16 @@ void sem_cleanup_and_exit(int signo)
 	semctl(semid, 0, IPC_RMID);
 	exit(0);
 }
+
+void redirection_handler(int n, siginfo_t* info, void* k)
+{
+	int gpuid;
+	union sigval data = info->si_value;
+	gpuid = data.sival_int;
+	int idx = (2 * gpuid) + 1;
+	pthread_sigqueue(&thIDs[idx],SIGRTMIN,data);
+}
+
 /*
 int cpu_bind(const unsigned short cpu) 
 { 
@@ -115,7 +125,8 @@ void* fs_listen_thread(void *thid)
 		{
 			printf("CFSCHED ADD_Q pid: %d, share_unit: %lu\n", pcd.pid, pcd.share_unit) ;
 
-			signum = SIGRTMIN + Scheduler_Data.RT_signal_indx++;
+//			signum = SIGRTMIN + Scheduler_Data.RT_signal_indx++;
+			signum = SIGSCHED;
 
 			strcpy(target,CLIENT_READ_PATH);
 			sprintf(src,"%ld",pcd.pid);
@@ -138,11 +149,11 @@ void* fs_listen_thread(void *thid)
 			close(client_req_fifo);
 			if(!err)
 			{
+				// Sleep the backend process before registering
 				union sigval data;
-				//sleep the thread before adding it
 				data.sival_int = signum;
-				sigqueue(pcd.pid, signum, data);
-				fs_register_process(pcd.pid, signum, pcd.app_type, pcd.gpuid);
+				sigqueue(pcd.pid, SIGALRM, data);
+				fs_register_process(pcd.pid, signum, pcd.app_type, pcd.gpuid, pcd.share_unit);
 			}
 		}
 		else if((status > 0) && (pcd.action == REM_Q))
@@ -167,58 +178,6 @@ void* fs_listen_thread(void *thid)
 			unlink(write_target);
 			unlink(read_target);
 		}
-		else if((status > 0) && (pcd.action == NOTIFY_SCHED))
-		{
-			/* find the record for particular pid */
-			int i;
-			for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-			{
-				if((Scheduler_Data.process_list[i] == pcd.pid) && (*gpuid == Scheduler_Data.gpu_binding[i]))
-				{
-					struct timeval tmp;
-					pthread_mutex_lock(&mut);
-					tmp.tv_sec = Scheduler_Data.execution_time[i].tv_sec;
-					tmp.tv_usec = Scheduler_Data.execution_time[i].tv_usec;
-					timeradd(&tmp,&pcd.execution_time,&Scheduler_Data.execution_time[i]);
-					pthread_mutex_unlock(&mut);
-					// XXX - TFS cmnt start
-/*					unsigned long actual_ms = (pcd.execution_time.tv_sec) * 1000 + 
-									((pcd.execution_time.tv_usec + 500) / 1000);
-					unsigned long devoted_ms = Scheduler_Data.share_unit[i];
-					pthread_mutex_lock(&mut);
-					if(devoted_ms == 0)
-						Scheduler_Data.penalty_epochs[i] = 0;
-					else
-						Scheduler_Data.penalty_epochs[i] =  actual_ms / devoted_ms;
-					pthread_mutex_unlock(&mut);*/
-					// XXX - TFS cmnt end
-					break;
-				}
-			}
-		}
-/*		else if(pcd.action == GET_SIGNUM)
-		{
-			int signo = -1;
-			strcpy(target,CLIENT_READ_PATH);
-			sprintf(src,"%ld",pcd.pid);
-			strcat(target,src);
-			fprintf(stderr,"Writing signal at %s\n",target);
-
-			int i;
-			for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-			{
-				if(Scheduler_Data.process_list[i] == pcd.pid)
-				{
-					signo = Scheduler_Data.signal_num[i];
-					break;
-				}
-			}
-
-			mkfifo(target,0666);
-			client_resp_fifo = open(target, O_WRONLY);
-			write(client_resp_fifo, &signo, sizeof(int)) ;
-			close(client_resp_fifo);
-		}*/
 		else
 		{
 			printf("CFSCHED Illegal pcd read from pipe\n");
@@ -227,106 +186,47 @@ void* fs_listen_thread(void *thid)
 	return NULL;
 }
 
-void fs_calculate_timeslice(int gpuid)
+void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid, int share_unit)
 {
-	unsigned long actual_ms, devoted_ms;
-	int i, app_a_count = 0, app_b_count = 0;
-	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-	{
-		if(Scheduler_Data.gpu_binding[i] == gpuid)
-		{
-			devoted_ms = Scheduler_Data.share_unit[i];
-			pthread_mutex_lock(&mut);
-			actual_ms = (Scheduler_Data.execution_time[i].tv_sec) * 1000 + 
-					((Scheduler_Data.execution_time[i].tv_usec + 500) / 1000);
-			timerclear(&Scheduler_Data.execution_time[i]);
-			pthread_mutex_unlock(&mut);
-			// XXX - TFS cmnt start
-/*			if(devoted_ms != 0 && Scheduler_Data.penalty_epochs[i] == 0)
-				Scheduler_Data.penalty_epochs[i] = actual_ms / devoted_ms;*/
-			// XXX - TFS cmnt end
-			break;
-		}
-	}
-
-	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-	{
-		// XXX - TFS cmnt toggle start
-/*		int condition = (Scheduler_Data.valid[i]) && (Scheduler_Data.gpu_binding[i] == gpuid) 
-					&& (Scheduler_Data.penalty_epochs[i] == 0);*/
-		// XXX - TFS cmnt toggle end
-		int condition = Scheduler_Data.valid[i];
-		if(condition && Scheduler_Data.app_type[i] == APP_TYPE_A)
-			app_a_count++;
-		else if(condition && Scheduler_Data.app_type[i] == APP_TYPE_B)
-			app_b_count++;
-	}
-	float base_share = (float) EPOCH_LENGTH / (APP_TYPE_A_SHARE + APP_TYPE_B_SHARE);
-	unsigned long app_a_share, app_b_share;
-
-	if(app_a_count == 0  && app_b_count == 0)
-	{
-		app_a_share = 0;
-		app_b_share = 0;
-	}
-	else if(app_a_count == 0 && app_b_count != 0)
-	{
-		base_share = (float) EPOCH_LENGTH / (APP_TYPE_B_SHARE);
-		app_a_share = 0;
-		app_b_share = (float) EPOCH_LENGTH / (float) app_b_count;
-	}
-	else if(app_a_count != 0 && app_b_count == 0)
-	{	
-		base_share = (float) EPOCH_LENGTH / (APP_TYPE_A_SHARE);
-		app_b_share = 0;
-		app_a_share = (float) EPOCH_LENGTH / (float) app_a_count;
-	}
-	else
-	{
-		app_a_share = (base_share * APP_TYPE_A_SHARE) / (float) app_a_count;
-		app_b_share = (base_share * APP_TYPE_B_SHARE) / (float) app_b_count;
-	}
-	
-	fprintf(stderr,"CFSCHED GPU %d : a_count: %d, b_count: %d, a_share: %llu, b_share: %llu\n",
-			gpuid,app_a_count,app_b_count,app_a_share,app_b_share);
-
-	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-	{
-		if(Scheduler_Data.app_type[i] == APP_TYPE_A && (Scheduler_Data.gpu_binding[i] == gpuid))
-			Scheduler_Data.share_unit[i] = app_a_share;
-		else if(Scheduler_Data.app_type[i] == APP_TYPE_B && (Scheduler_Data.gpu_binding[i] == gpuid))
-			Scheduler_Data.share_unit[i] = app_b_share;
-	}
+	printf("CFSCHED process %d registered with scheduler, signum : %d, app_type %d\n",process_id, signum, app_type);
+	Scheduler_Data.process_list[Scheduler_Data.polling_thread_count] = process_id;
+	Scheduler_Data.share_unit[Scheduler_Data.polling_thread_count] = share_unit;	
+	Scheduler_Data.signal_num[Scheduler_Data.polling_thread_count] = signum;
+	Scheduler_Data.state[Scheduler_Data.polling_thread_count] = PROC_ACTIVE;
+	Scheduler_Data.app_type[Scheduler_Data.polling_thread_count] = app_type;	/* deprecated: ratio is present in share_unit */
+	Scheduler_Data.penalty_epochs[Scheduler_Data.polling_thread_count] = 0;
+	Scheduler_Data.gpu_binding[Scheduler_Data.polling_thread_count] = gpuid;
+	Scheduler_Data.polling_thread_count = (Scheduler_Data.polling_thread_count + 1) % MAX_CONTROLLER_COUNT;
 }
+
 
 void* fs_control_thread(void *attr)
 {
 	unsigned thid = 0, prev, i;
 	union sigval data;
 	sigset_t set, set1, set2;
-	struct timeval tp;
+	struct timeval tp, tp1, tv_alloc;
 	unsigned long share_unit;
 	int * bound_to_gpu = (int *)attr;
-
 	sigemptyset(&set);
-	for(i = SIGRTMIN; i <= SIGRTMAX; i++)
-		sigaddset(&set, SIGRTMIN);
+	sigaddset(&set, SIGRTMIN);
 
-	pthread_sigmask(SIG_BLOCK, &set, NULL);
+	sigprocmask(SIG_BLOCK, &set);
+
 	printf("CFSCHED Inside control thread\n");
-	sleep(10);
+	sleep(5);
 	struct timespec sl;
 	sl.tv_sec = 0;
 	sl.tv_nsec = 100;
 	//cpu_bind(0);
-
+	
 	while(1)
 	{
 	//	nanosleep(&sl,NULL);
 		if(!Scheduler_Data.polling_thread_count)
 			continue;
 
-		if((Scheduler_Data.valid[thid] == 0) || Scheduler_Data.gpu_binding[thid] != (*bound_to_gpu))
+		if((Scheduler_Data.state[thid] != PROC_ACTIVE) || Scheduler_Data.gpu_binding[thid] != (*bound_to_gpu))
 		{
 			prev = thid;
 			thid = (thid + 1) % MAX_CONTROLLER_COUNT;
@@ -349,8 +249,8 @@ void* fs_control_thread(void *attr)
 		}
 
 		pid_t process_id = Scheduler_Data.process_list[thid];
-		share_unit = Scheduler_Data.share_unit[thid];
-		int signum = Scheduler_Data.signal_num[thid];
+		tv_alloc = Scheduler_Data.allocated_time[thid];
+		int signum = SIGSCHED;
 
 		if(share_unit == 0)
 		{
@@ -367,25 +267,20 @@ void* fs_control_thread(void *attr)
 		sigaddset(&polling_thread_set, signum);
 
 		
-		gettimeofday(&tp, NULL); 
-		fprintf(stderr, "CFSCHED control thread starting process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp.tv_sec, tp.tv_usec);
  
 		//data.sival_ptr = (void *)(&polling_thread_set);
-		data.sival_int = signum;
-		sigqueue(process_id, signum, data);
-	
+		data.sival_ptr = (void *) &tv_alloc;
 
-	
-		struct timespec ts;
-		ts.tv_sec = 0;
-		ts.tv_nsec = share_unit * 1000000; // sleep for share_unit milliseconds
-		nanosleep(&ts,NULL);
-		//data.sival_ptr = (void *)(&polling_thread_set);
-		gettimeofday(&tp, NULL); 
-		fprintf(stderr, "CFSCHED control thread sleeping process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp.tv_sec, tp.tv_usec);
- 
-		data.sival_int = signum;
-		sigqueue(process_id, signum, data);   
+		gettimeofday(&tp, NULL);
+		fprintf(stderr, "CFSCHED control thread starting process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp.tv_sec, tp.tv_usec);
+
+		sigqueue(process_id, signum, data);
+		// TODO : Should process mask of SIGRTMIN be removed before waiting for it ?
+		int sig = sigwaitinfo(&set, NULL);
+		gettimeofday(&tp1, NULL); 
+		fprintf(stderr, "CFSCHED control thread rcvd end of interval process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp1.tv_sec, tp1.tv_usec);
+
+		timersub(&tp1, &tp, &Scheduler_Data.execution_time[thid]);
 
 		prev = thid;
 		thid = (thid + 1) % MAX_CONTROLLER_COUNT;
@@ -396,20 +291,68 @@ void* fs_control_thread(void *attr)
 	return NULL;
 }
 
-void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid)
+void fs_calculate_timeslice(int gpuid)
 {
-	printf("CFSCHED process %d registered with scheduler, signum : %d, app_type %d\n",process_id, signum, app_type);
-	Scheduler_Data.process_list[Scheduler_Data.polling_thread_count] = process_id;
-	//Scheduler_Data.share_unit[Scheduler_Data.polling_thread_count] = share_unit;	/* deprecated : we need to calculate this */
-	/* initially, set the share unit as zero. At the end of each epoch, recalculate everything */
-	Scheduler_Data.share_unit[Scheduler_Data.polling_thread_count] = 0;
-	Scheduler_Data.signal_num[Scheduler_Data.polling_thread_count] = signum;
-	Scheduler_Data.valid[Scheduler_Data.polling_thread_count] = 1;
-	Scheduler_Data.app_type[Scheduler_Data.polling_thread_count] = app_type;
-	Scheduler_Data.penalty_epochs[Scheduler_Data.polling_thread_count] = 0;
-	Scheduler_Data.gpu_binding[Scheduler_Data.polling_thread_count] = gpuid;
-	Scheduler_Data.polling_thread_count = (Scheduler_Data.polling_thread_count + 1) % MAX_CONTROLLER_COUNT;
+	int i, active_count = 0, total_shares = 0;
+	unsigned long actual_ms, devoted_ms;
+
+	pthread_mutex_lock(&sched_index_mut);
+
+	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+	{	
+
+		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_ACTIVE) 
+			&& (Scheduler_Data.penalty_epochs[i] == -1))
+		{
+			devoted_ms = (Scheduler_Data.allocated_time[i].tv_sec) * 1000 + 
+					((Scheduler_Data.allocated_time[i].tv_usec + 500) / 1000);
+
+			actual_ms = (Scheduler_Data.execution_time[i].tv_sec) * 1000 + 
+					((Scheduler_Data.execution_time[i].tv_usec + 500) / 1000);
+
+			if(devoted_ms != 0)
+				Scheduler_Data.penalty_epochs[i] = actual_ms / devoted_ms;
+		}
+
+		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_WAITING) 
+			&& (Scheduler_Data.penalty_epochs[i] == -1))
+		{
+			Scheduler_Data.state[i] = PROC_ACTIVE;
+		}
+
+		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_ACTIVE) 
+			&& (Scheduler_Data.penalty_epochs[i] == 0))
+		{
+			Scheduler_Data.penalty_epochs[i] = -1;
+		}
+
+		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_ACTIVE)) 
+		{
+			active_count++;
+			total_shares += Scheduler_Data.share_unit[i];
+		}
+	}
+
+	if(active_count == 0 || total_shares == 0)
+	{
+		pthread_mutex_unlock(&sched_index_mut);
+		return;
+	}
+
+	float base_share = (float) EPOCH_LENGTH / (float) active_count;
+	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+	{
+		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_ACTIVE)) 
+		{
+			unsigned float base_share = (float) EPOCH_LENGTH / (float) total_shares;
+			Scheduler_Data.allocated_time[i].tv_sec = 0;
+			Scheduler_Data.allocated_time[i].tv_usec = base_share * 1000;
+		}
+	}
+
+	pthread_mutex_unlock(&sched_index_mut);
 }
+
 
 void signal_block_all()
 {
@@ -418,7 +361,7 @@ void signal_block_all()
   union sigval data;
   
   sigemptyset(&set);
-  for(i = SIGRTMIN; i <= SIGRTMAX; i++)
+  for(i = SIGRTMIN + 1; i <= SIGRTMAX - 1; i++)
     sigaddset(&set, i);
  
   sigprocmask(SIG_BLOCK, &set, NULL);
@@ -428,12 +371,15 @@ void signal_block_all()
 int fs_start_scheduler()
 {
 	signal_block_all();
-	pthread_t thIDs[10];		/* This array size must be >= 2 * num_gpus */
 	int num_gpus = 2;
 	int thread_count = 2 * num_gpus;
 	int n = 0, i;
 	sigset_t set, set1, set2;
 	union sigval data;
+
+	FILE *fp = fopen(SCHED_PID_FILE_PATH,"w");
+	fprintf(fp, "%ld", getpid());
+	fclose(fp);
 
 	if((semid = semget(ftok(SEMKEYPATH, SEMKEYID), 1, 0666 | IPC_CREAT | IPC_EXCL )) == -1){
 		perror("semget failed");
@@ -445,8 +391,6 @@ int fs_start_scheduler()
 	struct sigaction act;
 	act.sa_handler = &sem_cleanup_and_exit;
 	sigemptyset(&act.sa_mask);
-	for(i = SIGRTMIN; i <= SIGRTMAX; i++)
-		sigaddset(&act.sa_mask, SIGRTMIN);
 	act.sa_flags = 0;
 
 	if(sigaction(SIGINT, &act, NULL) < 0)
@@ -454,6 +398,14 @@ int fs_start_scheduler()
 		printf("SIGINT handler registration failed. semaphores may not be cleared.\n");
 		return -1;
 	}
+
+	act.sa_handler = &redirection_handler;
+	sigaddset(&act.sa_mask,SIGRTMIN);
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGRTMAX, &act, NULL);
+
+	 for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+		 Scheduler_Data.state[i] = PROC_INACTIVE;
 
 	int * gpuid = NULL,j = 0;
 	
@@ -466,10 +418,10 @@ int fs_start_scheduler()
 		fprintf(stderr,"In main :: listener ID : %llu, controller ID : %llu\n",thIDs[i],thIDs[i+1]);
 	}
 	
-	for(i = 0 ; i < thread_count ; i++)
-		pthread_join(thIDs[i], NULL);
+/*	for(i = 0 ; i < thread_count ; i++)
+		pthread_join(thIDs[i], NULL);*/
 
-	return 0;
+	return thread_count;
 }
 
 

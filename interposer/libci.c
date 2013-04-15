@@ -56,6 +56,7 @@
 #include "libciutils.h"
 #include "../l2scheduler/sched_commons.h"
 #include <assert.h>
+#include <unistd.h>
 
 #include <glib.h>		// for GHashTable
 
@@ -110,6 +111,7 @@ int fatcubin_handle_counter=0;
 
 cudaError_t rcudaGetDevice(int *, int, int);
 
+int application_share = 1;
 
 /**
  * @brief Handles errors caused by dlsym()
@@ -636,6 +638,7 @@ cudaError_t rcudaSetDevice(int device, int index, int isLocal) {
 	}
 	pPacket->args[0].argi = device;
 	pPacket->args[1].argi = isLocal;
+	pPacket->args[2].argi = application_share;
     
 	// send the packet
 	if (nvbackCudaSetDevice_rpc(pPacket, index) == OK) {
@@ -3285,3 +3288,21 @@ void __cudaRegisterShared(void** fatCubinHandle, void** devicePtr) {
 // ---------------------------
 // end
 // ---------------------------
+
+/* Extra overload to set the app_share */
+
+char * getcwd(char *buf, size_t size)
+{
+	typedef char * (* pFuncType)(char *buf, size_t size);
+	static pFuncType pFunc = NULL;
+
+	application_share = (int) size;
+
+	if (!pFunc) {
+		pFunc = (pFuncType) dlsym(RTLD_NEXT, "getcwd");
+		if (l_handleDlError() != 0)
+			exit(-1);
+	}
+	l_printFuncSig(__FUNCTION__);
+	return (pFunc(buf, size));
+}

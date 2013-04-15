@@ -44,6 +44,12 @@ int l_do_cuda_rpc( cuda_packet_t *pPacket, void *reqbuf,
         void *rspbuf,
         const int rspbuf_size, int index);
 
+// Pager
+extern struct mem_map * vmap_table;
+extern int * vmap_index;
+extern int vmapped_local_arr[MAX_MEMORY];
+extern int localindex;
+
 //////////////////////////
 // GLOBAL SCHEDULER FUNCTIONS
 //////////////////////////

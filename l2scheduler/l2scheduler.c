@@ -7,17 +7,45 @@
 #include "fair_share_sched.h"
 #include "las_scheduler.h"
 
+
+pthread_t thIDs[10];	/* for schedulers */
+pthread_t pager_tid;
+
+void register_handlers()
+{
+	;
+}
+
 int main()
 {
 	key_t shmkey;
 	int shmid;
 
+	int sched_thread_count;
+
+	register_handlers();
+
 	#ifdef SCHED_FAIR_SHARE
-	fs_start_scheduler();
+	sched_thread_count = fs_start_scheduler();
 	#endif
 
 	#ifdef SCHED_LAS
-	las_start_scheduler();
+	sched_thread_count = las_start_scheduler();
 	#endif
+
+	/* Pager must start after schedulers. A signal handler is being registered in fs_start_scheduler()
+	 * which must be done before we create any pthreads */
+	#ifdef PAGER
+	start_pager();
+	#endif
+
+	#ifdef PAGER
+	pthread_join(pager_tid,NULL);
+	#endif
+
+	int i;
+	for(i = 0 ; i < sched_thread_count ; i++)
+		pthread_join(thIDs[i],NULL);
+
 	return 0;
 }
