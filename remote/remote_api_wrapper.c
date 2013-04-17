@@ -1087,7 +1087,11 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	// a kind of 'host' memory on the remote side. Need to return to this
 	// issue later
 	
-	int semid = getsemaphore(ftok(SEMKEYPATH,GMT_KEYID));
+	int semid;
+	if((semid = semget(ftok(SEMKEYPATH, GMT_KEYID), 1, 0666)) == -1) {
+		perror("semget failed");
+	        return -1;
+	}
 
 	printf("\nbefore devPtr %p, *devPtr %p, size %ld\n",
 			&(packet->args[0].argp), packet->args[0].argp, packet->args[1].argi);

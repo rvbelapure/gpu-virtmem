@@ -435,11 +435,11 @@ ADDR_ALREADY_MAPPED	include/packetheader.h	69;"	d
 ADDR_UNMAPPED	include/packetheader.h	70;"	d
 ADD_Q	backend/scheduler.c	25;"	d	file:
 ADD_Q	l2scheduler/cfs_scheduler.h	15;"	d
-ADD_Q	l2scheduler/sched_commons.h	34;"	d
+ADD_Q	l2scheduler/sched_commons.h	38;"	d
 ADMISSION_PORT	remote/rconfig.h	19;"	d
-APP_TYPE_A	l2scheduler/sched_commons.h	46;"	d
+APP_TYPE_A	l2scheduler/sched_commons.h	50;"	d
 APP_TYPE_A_SHARE	l2scheduler/fair_share_sched.h	6;"	d
-APP_TYPE_B	l2scheduler/sched_commons.h	47;"	d
+APP_TYPE_B	l2scheduler/sched_commons.h	51;"	d
 APP_TYPE_B_SHARE	l2scheduler/fair_share_sched.h	7;"	d
 BACKEND_DEVICES	interposer/libciutils.c	/^int BACKEND_DEVICES=0;$/;"	v
 BACKEND_DEVICES	remote/remote_api_wrapper.c	/^int BACKEND_DEVICES;$/;"	v
@@ -450,10 +450,10 @@ BACKEND_NODES	interposer/libciutils.c	/^int BACKEND_NODES=0;$/;"	v
 BACKEND_NODES	interposer/libciutils_back.c	/^int BACKEND_NODES=0;$/;"	v
 CITUILS_H_	interposer/libciutils.h	10;"	d
 CLIENT_READ_PATH	l2scheduler/cfs_scheduler.h	8;"	d
-CLIENT_READ_PATH	l2scheduler/sched_commons.h	24;"	d
-CLIENT_SIGGET_PATH	l2scheduler/sched_commons.h	25;"	d
+CLIENT_READ_PATH	l2scheduler/sched_commons.h	25;"	d
+CLIENT_SIGGET_PATH	l2scheduler/sched_commons.h	26;"	d
 CLIENT_WRITE_PATH	l2scheduler/cfs_scheduler.h	7;"	d
-CLIENT_WRITE_PATH	l2scheduler/sched_commons.h	23;"	d
+CLIENT_WRITE_PATH	l2scheduler/sched_commons.h	24;"	d
 CONFIG_H_	include/config.h	10;"	d
 CONNECTION_H_	remote/connection.h	10;"	d
 CUDA_Addrmapped	include/packetheader.h	61;"	d
@@ -651,7 +651,7 @@ DBG_WARNING_STR	include/debug.h	34;"	d
 DEBUG	include/debug.h	15;"	d
 DEBUG_H_	include/debug.h	11;"	d
 DEVICES_IN_NODE	interposer/libci.c	/^int DEVICES_IN_NODE[MAX_BACKEND_NODES];$/;"	v
-DEVICES_PER_NODE	interposer/libci.c	62;"	d	file:
+DEVICES_PER_NODE	interposer/libci.c	63;"	d	file:
 DEVICES_PER_NODE	interposer/libci_back.c	61;"	d	file:
 DEV_RR	remote/remote_api_wrapper.c	/^int DEV_RR=0;$/;"	v
 DEV_RR	remote/remote_api_wrapper_3dec.c	/^int DEV_RR=0;$/;"	v
@@ -664,7 +664,7 @@ D_INIT	virtmem/cuda_vmem.h	/^	D_INIT,		\/\/ device mem is malloc'ed, but no data
 D_MEMWAIT	virtmem/cuda_vmem.h	/^	D_MEMWAIT,	\/\/ device mem is not allocated. But data exists with vmem system. - must call host2device copy before cudaLaunch$/;"	e	enum:vmem_status
 D_MODIFIED	virtmem/cuda_vmem.h	/^	D_MODIFIED,	\/\/ device mem allocated, data present on device, but may be out of sync with vmem system - cudaLaunch allowed$/;"	e	enum:vmem_status
 D_READY	virtmem/cuda_vmem.h	/^	D_READY,	\/\/ device mem allocated and data copied on device, in sync with vmem system - cudaLaunch allowed$/;"	e	enum:vmem_status
-EPOCH_LENGTH	l2scheduler/sched_commons.h	43;"	d
+EPOCH_LENGTH	l2scheduler/sched_commons.h	47;"	d
 ERROR	include/debug.h	109;"	d
 FAILURE	virtmem/cuda_vmem.h	12;"	d
 FATBIN_2_PTX	include/cudaFatBinary.h	/^    FATBIN_2_PTX = 0x1$/;"	e	enum:FatBin2EntryType
@@ -679,9 +679,9 @@ GDateMonth	interposer/libci.s	/^GDateMonth g_date_get_month (const GDate *date);
 GDateWeekday	interposer/libci.s	/^GDateWeekday g_date_get_weekday (const GDate *date);$/;"	l
 GDateYear	interposer/libci.s	/^GDateYear g_date_get_year (const GDate *date);$/;"	l
 GDir	interposer/libci.s	/^GDir * g_dir_open (const gchar *path,$/;"	l
-GET_L2_DATA	l2scheduler/sched_commons.h	39;"	d
-GET_PRIORITY	l2scheduler/sched_commons.h	38;"	d
-GET_SIGNUM	l2scheduler/sched_commons.h	37;"	d
+GET_L2_DATA	l2scheduler/sched_commons.h	43;"	d
+GET_PRIORITY	l2scheduler/sched_commons.h	42;"	d
+GET_SIGNUM	l2scheduler/sched_commons.h	41;"	d
 GFileError	interposer/libci.s	/^GFileError g_file_error_from_errno (gint err_no);$/;"	l
 GHook	interposer/libci.s	/^GHook * g_hook_ref (GHookList *hook_list,$/;"	l
 GIConv	interposer/libci.s	/^GIConv g_iconv_open (const gchar *to_codeset,$/;"	l
@@ -710,9 +710,9 @@ GList	interposer/libci.s	/^GList * g_queue_find_custom (GQueue *queue,$/;"	l
 GLogFunc	interposer/libci.s	/^GLogFunc g_log_set_default_handler (GLogFunc log_func,$/;"	l
 GLogLevelFlags	interposer/libci.s	/^GLogLevelFlags g_log_set_always_fatal (GLogLevelFlags fatal_mask);$/;"	l
 GLogLevelFlags	interposer/libci.s	/^GLogLevelFlags g_log_set_fatal_mask (const gchar *log_domain,$/;"	l
-GMT_KEYID	l2scheduler/sched_commons.h	30;"	d
-GMT_SHM_INDEX_KEY	l2scheduler/sched_commons.h	32;"	d
-GMT_SHM_KEY	l2scheduler/sched_commons.h	31;"	d
+GMT_KEYID	l2scheduler/sched_commons.h	33;"	d
+GMT_SHM_INDEX_KEY	l2scheduler/sched_commons.h	35;"	d
+GMT_SHM_KEY	l2scheduler/sched_commons.h	34;"	d
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_default (void);$/;"	l
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_new (void);$/;"	l
 GMainContext	interposer/libci.s	/^GMainContext *g_main_context_ref (GMainContext *context);$/;"	l
@@ -857,15 +857,15 @@ G_TRAVERSE_LEAVES	interposer/libci.s	/^  G_TRAVERSE_LEAVES = 1 << 0,$/;"	d
 G_TRAVERSE_MASK	interposer/libci.s	/^  G_TRAVERSE_MASK = 0x03,$/;"	d
 G_TRAVERSE_NON_LEAFS	interposer/libci.s	/^  G_TRAVERSE_NON_LEAFS = G_TRAVERSE_NON_LEAVES$/;"	d
 G_TRAVERSE_NON_LEAVES	interposer/libci.s	/^  G_TRAVERSE_NON_LEAVES = 1 << 1,$/;"	d
-HOSTNAME_STRLEN	interposer/libci.c	71;"	d	file:
+HOSTNAME_STRLEN	interposer/libci.c	72;"	d	file:
 HOSTNAME_STRLEN	interposer/libciutils.c	23;"	d	file:
 HOSTNAME_STRLEN	interposer/libciutils_back.c	22;"	d	file:
 HOSTNAME_STRLEN	remote/rconfig.h	23;"	d
-IFRIT_ID	l2scheduler/sched_commons.h	50;"	d
+IFRIT_ID	l2scheduler/sched_commons.h	54;"	d
 INCOMING	remote/connection.h	/^    INCOMING,   \/\/ servicing a remote guest domain$/;"	e	enum:connection_type
 INVALID_PROCEESS	backend/scheduler.c	28;"	d	file:
 INVALID_PROCEESS	l2scheduler/cfs_scheduler.h	18;"	d
-INVALID_PROCEESS	l2scheduler/sched_commons.h	41;"	d
+INVALID_PROCEESS	l2scheduler/sched_commons.h	45;"	d
 IPPORT_BIFFUDP	interposer/libci.s	/^    IPPORT_BIFFUDP = 512,$/;"	d
 IPPORT_CMDSERVER	interposer/libci.s	/^    IPPORT_CMDSERVER = 514,$/;"	d
 IPPORT_DAYTIME	interposer/libci.s	/^    IPPORT_DAYTIME = 13,$/;"	d
@@ -925,18 +925,17 @@ L2_FEEDBACK_TYPE_EX_TIME	l2scheduler/sched_commons.h	12;"	d
 L2_FEEDBACK_TYPE_NONE	l2scheduler/sched_commons.h	10;"	d
 L2_FEEDBACK_TYPE_UTIL	l2scheduler/sched_commons.h	11;"	d
 LISTEN_PATH	l2scheduler/cfs_scheduler.h	6;"	d
-LISTEN_PATH	l2scheduler/sched_commons.h	22;"	d
+LISTEN_PATH	l2scheduler/sched_commons.h	23;"	d
 LOCAL_EXEC	interposer/libci.c	/^static int LOCAL_EXEC=1;  \/\/ by default local$/;"	v	file:
 LOCAL_EXEC	interposer/libci.s	/^ LOCAL_EXEC = l_getLocalFromConfig();$/;"	d
 LOCAL_EXEC	interposer/libci_back.c	/^static int LOCAL_EXEC=1;  \/\/ by default local$/;"	v	file:
 LOCAL_EXEC	interposer/libci_orig.c	/^static int LOCAL_EXEC=1;  \/\/ by default local$/;"	v	file:
-LOCAL_EXEC	libci.s	/^LOCAL_EXEC:$/;"	l
 MAX_ARGS	include/packetheader.h	35;"	d
-MAX_BACKEND_DEVICES	interposer/libci.c	73;"	d	file:
+MAX_BACKEND_DEVICES	interposer/libci.c	74;"	d	file:
 MAX_BACKEND_DEVICES	interposer/libciutils.c	25;"	d	file:
 MAX_BACKEND_DEVICES	remote/remote_api_wrapper.c	50;"	d	file:
 MAX_BACKEND_DEVICES	remote/remote_api_wrapper_3dec.c	48;"	d	file:
-MAX_BACKEND_NODES	interposer/libci.c	72;"	d	file:
+MAX_BACKEND_NODES	interposer/libci.c	73;"	d	file:
 MAX_BACKEND_NODES	interposer/libciutils.c	24;"	d	file:
 MAX_BACKEND_NODES	interposer/libciutils_back.c	23;"	d	file:
 MAX_BACKEND_NODES	remote/remote_api_wrapper.c	49;"	d	file:
@@ -946,7 +945,7 @@ MAX_CONTROLLER_COUNT	backend/scheduler.c	18;"	d	file:
 MAX_CONTROLLER_COUNT	l2scheduler/cfs_scheduler.h	4;"	d
 MAX_CONTROLLER_COUNT	l2scheduler/sched_commons.h	20;"	d
 MAX_EXTRA_ARGS	remote/rconfig.h	41;"	d
-MAX_FATCUBIN_HANDLES	interposer/libci.c	74;"	d	file:
+MAX_FATCUBIN_HANDLES	interposer/libci.c	75;"	d	file:
 MAX_KERNELS	virtmem/cuda_vmem.h	8;"	d
 MAX_MEMORY	virtmem/cuda_vmem.h	9;"	d
 MAX_METHODS	include/method_id.h	/^    MAX_METHODS$/;"	e	enum:METHOD_ID
@@ -954,7 +953,7 @@ MAX_REGISTERED_FUNCS	include/fatcubininfo.h	21;"	d
 MAX_REGISTERED_SHARED	include/fatcubininfo.h	25;"	d
 MAX_REGISTERED_TEXS	include/fatcubininfo.h	24;"	d
 MAX_REGISTERED_VARS	include/fatcubininfo.h	23;"	d
-MAX_REGISTERED_VARS	interposer/libci.c	76;"	d	file:
+MAX_REGISTERED_VARS	interposer/libci.c	77;"	d	file:
 MAX_REGISTERED_VARS	interposer/libci_back.c	69;"	d	file:
 MAX_REGISTERED_VARS	interposer/libci_orig.c	68;"	d	file:
 MAX_REMOTE_BATCH_SIZE	remote/rconfig.h	42;"	d
@@ -980,17 +979,23 @@ MSG_TRYHARD	interposer/libci.s	/^    MSG_TRYHARD = MSG_DONTROUTE,$/;"	d
 MSG_WAITALL	interposer/libci.s	/^    MSG_WAITALL = 0x100,$/;"	d
 MU	remote/remote_api_wrapper.c	/^pthread_mutex_t MU=PTHREAD_MUTEX_INITIALIZER;$/;"	v
 MU	remote/remote_api_wrapper_3dec.c	/^pthread_mutex_t MU=PTHREAD_MUTEX_INITIALIZER;$/;"	v
-NOTIFY_SCHED	l2scheduler/sched_commons.h	36;"	d
+NOTIFY_SCHED	l2scheduler/sched_commons.h	40;"	d
 OK	include/debug.h	106;"	d
 OUTGOING	remote/connection.h	/^    OUTGOING    \/\/ offloading work to a remote machine$/;"	e	enum:connection_type
 P	backend/libcfsscheduler.c	/^static int P(int semID) { $/;"	f	file:
 P	interposer/semaphore_ops.c	/^static int P(int semID) { $/;"	f	file:
 PACKETHEADER_H_	include/packetheader.h	10;"	d
 PAGER	l2scheduler/sched_commons.h	8;"	d
+PAGER_FIFO_SEM_KEY	l2scheduler/sched_commons.h	36;"	d
+PAGER_LISTEN_PATH	l2scheduler/sched_commons.h	29;"	d
 PARTICLE_H	cuda-app/particle.h	2;"	d
 PER_XFER_MAX	remote/rconfig.h	38;"	d
 PRIORITY_HIGH	l2scheduler/las_scheduler.h	7;"	d
 PRIORITY_NORMAL	l2scheduler/las_scheduler.h	6;"	d
+PROC_ACTIVE	l2scheduler/sched_commons.h	60;"	d
+PROC_INACTIVE	l2scheduler/sched_commons.h	61;"	d
+PROC_PAGING	l2scheduler/sched_commons.h	62;"	d
+PROC_WAITING	l2scheduler/sched_commons.h	63;"	d
 PTHREAD_MUTEX_DEFAULT	interposer/libci.s	/^  PTHREAD_MUTEX_DEFAULT = PTHREAD_MUTEX_NORMAL$/;"	d
 PTHREAD_MUTEX_ERRORCHECK	interposer/libci.s	/^  PTHREAD_MUTEX_ERRORCHECK = PTHREAD_MUTEX_ERRORCHECK_NP,$/;"	d
 PTHREAD_MUTEX_NORMAL	interposer/libci.s	/^  PTHREAD_MUTEX_NORMAL = PTHREAD_MUTEX_TIMED_NP,$/;"	d
@@ -1010,7 +1015,7 @@ REMOTE_SERVICE_THREAD_BUFFER_SIZE	remote/rconfig.h	32;"	d
 REMOTE_THREAD_BACKLOG	remote/rconfig.h	29;"	d
 REM_Q	backend/scheduler.c	26;"	d	file:
 REM_Q	l2scheduler/cfs_scheduler.h	16;"	d
-REM_Q	l2scheduler/sched_commons.h	35;"	d
+REM_Q	l2scheduler/sched_commons.h	39;"	d
 RTLD_DI_CONFIGADDR	interposer/libci.s	/^    RTLD_DI_CONFIGADDR = 3,$/;"	d
 RTLD_DI_LINKMAP	interposer/libci.s	/^    RTLD_DI_LINKMAP = 2,$/;"	d
 RTLD_DI_LMID	interposer/libci.s	/^    RTLD_DI_LMID = 1,$/;"	d
@@ -1029,17 +1034,19 @@ RT_signal_indx	l2scheduler/cfs_scheduler.h	/^	unsigned RT_signal_indx;$/;"	m	str
 RT_signal_indx	l2scheduler/sched_commons.h	/^	unsigned RT_signal_indx;$/;"	m	struct:_scheduler_datastructure
 SCHED_ADMISSION_PORT	remote/rconfig.h	20;"	d
 SCHED_COMMONS_H	l2scheduler/sched_commons.h	2;"	d
-SCHED_DEF_FILE_PATH	l2scheduler/sched_commons.h	26;"	d
+SCHED_DEF_FILE_PATH	l2scheduler/sched_commons.h	27;"	d
+SCHED_PID_FILE_PATH	l2scheduler/sched_commons.h	28;"	d
 SCM_RIGHTS	interposer/libci.s	/^    SCM_RIGHTS = 0x01$/;"	d
 SEMKEYID	backend/scheduler.c	23;"	d	file:
 SEMKEYID	l2scheduler/cfs_scheduler.h	13;"	d
-SEMKEYID	l2scheduler/sched_commons.h	29;"	d
+SEMKEYID	l2scheduler/sched_commons.h	32;"	d
 SEMKEYPATH	backend/scheduler.c	22;"	d	file:
 SEMKEYPATH	l2scheduler/cfs_scheduler.h	12;"	d
-SEMKEYPATH	l2scheduler/sched_commons.h	28;"	d
+SEMKEYPATH	l2scheduler/sched_commons.h	31;"	d
 SEND	remote/rconfig.h	/^typedef enum direction { SEND, RECV } direction_t;$/;"	e	enum:direction
-SHIVA_ID	l2scheduler/sched_commons.h	51;"	d
+SHIVA_ID	l2scheduler/sched_commons.h	55;"	d
 SHUT_RD	interposer/libci.s	/^  SHUT_RD = 0,$/;"	d
+SIGSCHED	l2scheduler/sched_commons.h	21;"	d
 SOCK_DGRAM	interposer/libci.s	/^  SOCK_DGRAM = 2,$/;"	d
 SOCK_PACKET	interposer/libci.s	/^  SOCK_PACKET = 10$/;"	d
 SOCK_RAW	interposer/libci.s	/^  SOCK_RAW = 3,$/;"	d
@@ -1113,29 +1120,23 @@ __cudaFatVERSION	include/cudaFatBinary.h	1;"	d
 __cudaRegisterFatBinary	interposer/libci.c	/^void** __cudaRegisterFatBinary(void* fatC) {$/;"	f
 __cudaRegisterFatBinary	interposer/libci_back.c	/^void** __cudaRegisterFatBinary(void* fatC) {$/;"	f
 __cudaRegisterFatBinary	interposer/libci_orig.c	/^void** __cudaRegisterFatBinary(void* fatC) {$/;"	f
-__cudaRegisterFatBinary	libci.s	/^__cudaRegisterFatBinary:$/;"	l
 __cudaRegisterFunction	interposer/libci.c	/^void __cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 __cudaRegisterFunction	interposer/libci_back.c	/^void __cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 __cudaRegisterFunction	interposer/libci_orig.c	/^void __cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
-__cudaRegisterFunction	libci.s	/^__cudaRegisterFunction:$/;"	l
 __cudaRegisterShared	interposer/libci.c	/^void __cudaRegisterShared(void** fatCubinHandle, void** devicePtr) {$/;"	f
 __cudaRegisterShared	interposer/libci_back.c	/^void __cudaRegisterShared(void** fatCubinHandle, void** devicePtr) {$/;"	f
 __cudaRegisterShared	interposer/libci_orig.c	/^void __cudaRegisterShared(void** fatCubinHandle, void** devicePtr) {$/;"	f
-__cudaRegisterShared	libci.s	/^__cudaRegisterShared:$/;"	l
 __cudaRegisterTexture	interposer/libci.c	/^void __cudaRegisterTexture(void** fatCubinHandle,$/;"	f
 __cudaRegisterTexture	interposer/libci_back.c	/^void __cudaRegisterTexture(void** fatCubinHandle,$/;"	f
 __cudaRegisterTexture	interposer/libci_orig.c	/^void __cudaRegisterTexture(void** fatCubinHandle,$/;"	f
-__cudaRegisterTexture	libci.s	/^__cudaRegisterTexture:$/;"	l
 __cudaRegisterVar	interposer/libci.c	/^void __cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 __cudaRegisterVar	interposer/libci_back.c	/^void __cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 __cudaRegisterVar	interposer/libci_orig.c	/^void __cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
-__cudaRegisterVar	libci.s	/^__cudaRegisterVar:$/;"	l
 __cudaUnregisterFatBinary	interposer/libci.c	/^void __cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
 __cudaUnregisterFatBinary	interposer/libci_back.c	/^void __cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
 __cudaUnregisterFatBinary	interposer/libci_orig.c	/^void __cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
-__cudaUnregisterFatBinary	libci.s	/^__cudaUnregisterFatBinary:$/;"	l
-__dv	interposer/libci.c	197;"	d	file:
-__dv	interposer/libci.c	200;"	d	file:
+__dv	interposer/libci.c	199;"	d	file:
+__dv	interposer/libci.c	202;"	d	file:
 __dv	interposer/libci_back.c	173;"	d	file:
 __dv	interposer/libci_back.c	176;"	d	file:
 __dv	interposer/libci_orig.c	169;"	d	file:
@@ -1280,11 +1281,13 @@ address_len	remote/connection.h	/^    socklen_t           address_len;$/;"	m	str
 ae6153882252c7e3cf53c593ce05ced8	doxydoc/html/libci_8c.html	/^<a class="anchor" name="ae6153882252c7e3cf53c593ce05ced8"><\/a><!-- doxytag: member="libci.c::cudaThreadGetCacheConfig" ref="ae6153882252c7e3cf53c593ce05ced8" args="(enum cudaFuncCache *pCacheConfig)" -->$/;"	a
 af01054720fe70f3a111104f78d7d9d6	doxydoc/html/libci_8c.html	/^<a class="anchor" name="af01054720fe70f3a111104f78d7d9d6"><\/a><!-- doxytag: member="libci.c::cudaGetErrorString" ref="af01054720fe70f3a111104f78d7d9d6" args="(cudaError_t error)" -->$/;"	a
 aff814e10d37f2f18adce6dd1629e181	doxydoc/html/libci_8c.html	/^<a class="anchor" name="aff814e10d37f2f18adce6dd1629e181"><\/a><!-- doxytag: member="libci.c::pFatBinaryHandle" ref="aff814e10d37f2f18adce6dd1629e181" args="" -->$/;"	a
+allocated_time	l2scheduler/sched_commons.h	/^	struct timeval allocated_time[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure	typeref:struct:_scheduler_datastructure::timeval
 already_added	l2scheduler/cfs_scheduler.c	/^int already_added(process_credit_data pcd)$/;"	f
 already_added	l2scheduler/fair_share_sched.c	/^int already_added(process_credit_data pcd)$/;"	f
 app_type	include/packetheader.h	/^	int app_type;$/;"	m	struct:cuda_packet
 app_type	l2scheduler/sched_commons.h	/^	int app_type;$/;"	m	struct:_process_credit_data
 app_type	l2scheduler/sched_commons.h	/^	int app_type[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
+application_share	interposer/libci.c	/^int application_share = 1;$/;"	v
 arg	virtmem/cuda_vmem.h	/^	void **arg;$/;"	m	struct:kernel_arg_node
 arg_dim	include/packetheader.h	/^	dim3 arg_dim;      \/\/ This does increase the size of the union but what to do$/;"	m	union:args
 arg_list	virtmem/cuda_vmem.h	/^	struct kernel_args arg_list;$/;"	m	struct:kmap_node	typeref:struct:kmap_node::kernel_args
@@ -1523,19 +1526,15 @@ cross	cuda-app/particle.h	/^void cross(const Vec3 a, const Vec3 b, Vec3 *res)$/;
 cudaBindSurfaceToArray	interposer/libci.c	/^cudaError_t cudaBindSurfaceToArray($/;"	f
 cudaBindSurfaceToArray	interposer/libci_back.c	/^cudaError_t cudaBindSurfaceToArray($/;"	f
 cudaBindSurfaceToArray	interposer/libci_orig.c	/^cudaError_t cudaBindSurfaceToArray($/;"	f
-cudaBindSurfaceToArray	libci.s	/^cudaBindSurfaceToArray:$/;"	l
 cudaBindTexture	interposer/libci.c	/^cudaError_t cudaBindTexture(size_t *offset,$/;"	f
 cudaBindTexture	interposer/libci_back.c	/^cudaError_t cudaBindTexture(size_t *offset,$/;"	f
 cudaBindTexture	interposer/libci_orig.c	/^cudaError_t cudaBindTexture(size_t *offset,$/;"	f
-cudaBindTexture	libci.s	/^cudaBindTexture:$/;"	l
 cudaBindTexture2D	interposer/libci.c	/^cudaError_t cudaBindTexture2D(size_t *offset,$/;"	f
 cudaBindTexture2D	interposer/libci_back.c	/^cudaError_t cudaBindTexture2D(size_t *offset,$/;"	f
 cudaBindTexture2D	interposer/libci_orig.c	/^cudaError_t cudaBindTexture2D(size_t *offset,$/;"	f
-cudaBindTexture2D	libci.s	/^cudaBindTexture2D:$/;"	l
 cudaBindTextureToArray	interposer/libci.c	/^cudaError_t cudaBindTextureToArray($/;"	f
 cudaBindTextureToArray	interposer/libci_back.c	/^cudaError_t cudaBindTextureToArray($/;"	f
 cudaBindTextureToArray	interposer/libci_orig.c	/^cudaError_t cudaBindTextureToArray($/;"	f
-cudaBindTextureToArray	libci.s	/^cudaBindTextureToArray:$/;"	l
 cudaBoundaryModeClamp	interposer/libci.s	/^  cudaBoundaryModeClamp = 1,$/;"	d
 cudaBoundaryModeTrap	interposer/libci.s	/^  cudaBoundaryModeTrap = 2$/;"	d
 cudaBoundaryModeZero	interposer/libci.s	/^  cudaBoundaryModeZero = 0,$/;"	d
@@ -1546,29 +1545,24 @@ cudaChannelFormatKindUnsigned	interposer/libci.s	/^  cudaChannelFormatKindUnsign
 cudaChooseDevice	interposer/libci.c	/^cudaError_t cudaChooseDevice(int *device,$/;"	f
 cudaChooseDevice	interposer/libci_back.c	/^cudaError_t cudaChooseDevice(int *device,$/;"	f
 cudaChooseDevice	interposer/libci_orig.c	/^cudaError_t cudaChooseDevice(int *device,$/;"	f
-cudaChooseDevice	libci.s	/^cudaChooseDevice:$/;"	l
 cudaComputeModeDefault	interposer/libci.s	/^  cudaComputeModeDefault = 0,$/;"	d
 cudaComputeModeExclusive	interposer/libci.s	/^  cudaComputeModeExclusive = 1,$/;"	d
 cudaComputeModeProhibited	interposer/libci.s	/^  cudaComputeModeProhibited = 2$/;"	d
 cudaConfigureCall	interposer/libci.c	/^cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 cudaConfigureCall	interposer/libci_back.c	/^cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 cudaConfigureCall	interposer/libci_orig.c	/^cudaError_t cudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
-cudaConfigureCall	libci.s	/^cudaConfigureCall:$/;"	l
 cudaCreateChannelDesc	interposer/libci.c	/^struct cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z,$/;"	f
 cudaCreateChannelDesc	interposer/libci_back.c	/^struct cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z,$/;"	f
 cudaCreateChannelDesc	interposer/libci_orig.c	/^struct cudaChannelFormatDesc cudaCreateChannelDesc(int x, int y, int z,$/;"	f
-cudaCreateChannelDesc	libci.s	/^cudaCreateChannelDesc:$/;"	l
 cudaDriverGetVersion	interposer/libci.c	/^cudaError_t cudaDriverGetVersion(int *driverVersion) {$/;"	f
 cudaDriverGetVersion	interposer/libci_back.c	/^cudaError_t cudaDriverGetVersion(int *driverVersion) {$/;"	f
 cudaDriverGetVersion	interposer/libci_orig.c	/^cudaError_t cudaDriverGetVersion(int *driverVersion) {$/;"	f
-cudaDriverGetVersion	libci.s	/^cudaDriverGetVersion:$/;"	l
 cudaErrorAddressOfConstant	interposer/libci.s	/^  cudaErrorAddressOfConstant = 22,$/;"	d
 cudaErrorApiFailureBase	interposer/libci.s	/^  cudaErrorApiFailureBase = 10000$/;"	d
 cudaErrorCudartUnloading	interposer/libci.s	/^  cudaErrorCudartUnloading = 29,$/;"	d
 cudaErrorDL	interposer/libci.c	/^static cudaError_t cudaErrorDL = cudaErrorUnknown;$/;"	v	file:
 cudaErrorDL	interposer/libci_back.c	/^static cudaError_t cudaErrorDL = cudaErrorUnknown;$/;"	v	file:
 cudaErrorDL	interposer/libci_orig.c	/^static cudaError_t cudaErrorDL = cudaErrorUnknown;$/;"	v	file:
-cudaErrorDL	libci.s	/^cudaErrorDL:$/;"	l
 cudaErrorDevicesUnavailable	interposer/libci.s	/^  cudaErrorDevicesUnavailable = 46,$/;"	d
 cudaErrorDuplicateSurfaceName	interposer/libci.s	/^  cudaErrorDuplicateSurfaceName = 45,$/;"	d
 cudaErrorDuplicateTextureName	interposer/libci.s	/^  cudaErrorDuplicateTextureName = 44,$/;"	d
@@ -1738,102 +1732,78 @@ cudaError_t	interposer/libci.s	/^cudaError_t rcudaThreadSynchronize(int index){$
 cudaEventCreate	interposer/libci.c	/^cudaError_t cudaEventCreate(cudaEvent_t *event) {$/;"	f
 cudaEventCreate	interposer/libci_back.c	/^cudaError_t cudaEventCreate(cudaEvent_t *event) {$/;"	f
 cudaEventCreate	interposer/libci_orig.c	/^cudaError_t cudaEventCreate(cudaEvent_t *event) {$/;"	f
-cudaEventCreate	libci.s	/^cudaEventCreate:$/;"	l
 cudaEventCreateWithFlags	interposer/libci.c	/^cudaError_t cudaEventCreateWithFlags(cudaEvent_t *event,$/;"	f
 cudaEventCreateWithFlags	interposer/libci_back.c	/^cudaError_t cudaEventCreateWithFlags(cudaEvent_t *event,$/;"	f
 cudaEventCreateWithFlags	interposer/libci_orig.c	/^cudaError_t cudaEventCreateWithFlags(cudaEvent_t *event,$/;"	f
-cudaEventCreateWithFlags	libci.s	/^cudaEventCreateWithFlags:$/;"	l
 cudaEventDestroy	interposer/libci.c	/^cudaError_t cudaEventDestroy(cudaEvent_t event) {$/;"	f
 cudaEventDestroy	interposer/libci_back.c	/^cudaError_t cudaEventDestroy(cudaEvent_t event) {$/;"	f
 cudaEventDestroy	interposer/libci_orig.c	/^cudaError_t cudaEventDestroy(cudaEvent_t event) {$/;"	f
-cudaEventDestroy	libci.s	/^cudaEventDestroy:$/;"	l
 cudaEventElapsedTime	interposer/libci.c	/^cudaError_t cudaEventElapsedTime(float *ms, cudaEvent_t start,$/;"	f
 cudaEventElapsedTime	interposer/libci_back.c	/^cudaError_t cudaEventElapsedTime(float *ms, cudaEvent_t start,$/;"	f
 cudaEventElapsedTime	interposer/libci_orig.c	/^cudaError_t cudaEventElapsedTime(float *ms, cudaEvent_t start,$/;"	f
-cudaEventElapsedTime	libci.s	/^cudaEventElapsedTime:$/;"	l
 cudaEventQuery	interposer/libci.c	/^cudaError_t cudaEventQuery(cudaEvent_t event) {$/;"	f
 cudaEventQuery	interposer/libci_back.c	/^cudaError_t cudaEventQuery(cudaEvent_t event) {$/;"	f
 cudaEventQuery	interposer/libci_orig.c	/^cudaError_t cudaEventQuery(cudaEvent_t event) {$/;"	f
-cudaEventQuery	libci.s	/^cudaEventQuery:$/;"	l
 cudaEventRecord	interposer/libci.c	/^cudaError_t cudaEventRecord(cudaEvent_t event, cudaStream_t stream$/;"	f
 cudaEventRecord	interposer/libci_back.c	/^cudaError_t cudaEventRecord(cudaEvent_t event, cudaStream_t stream$/;"	f
 cudaEventRecord	interposer/libci_orig.c	/^cudaError_t cudaEventRecord(cudaEvent_t event, cudaStream_t stream$/;"	f
-cudaEventRecord	libci.s	/^cudaEventRecord:$/;"	l
 cudaEventSynchronize	interposer/libci.c	/^cudaError_t cudaEventSynchronize(cudaEvent_t event) {$/;"	f
 cudaEventSynchronize	interposer/libci_back.c	/^cudaError_t cudaEventSynchronize(cudaEvent_t event) {$/;"	f
 cudaEventSynchronize	interposer/libci_orig.c	/^cudaError_t cudaEventSynchronize(cudaEvent_t event) {$/;"	f
-cudaEventSynchronize	libci.s	/^cudaEventSynchronize:$/;"	l
 cudaFree	interposer/libci.c	/^cudaError_t cudaFree(void * devPtr) {$/;"	f
 cudaFree	interposer/libci_back.c	/^cudaError_t cudaFree(void * devPtr) {$/;"	f
 cudaFree	interposer/libci_orig.c	/^cudaError_t cudaFree(void * devPtr) {$/;"	f
-cudaFree	libci.s	/^cudaFree:$/;"	l
 cudaFreeArray	interposer/libci.c	/^cudaError_t cudaFreeArray(struct cudaArray * array) {$/;"	f
 cudaFreeArray	interposer/libci_back.c	/^cudaError_t cudaFreeArray(struct cudaArray * array) {$/;"	f
 cudaFreeArray	interposer/libci_orig.c	/^cudaError_t cudaFreeArray(struct cudaArray * array) {$/;"	f
-cudaFreeArray	libci.s	/^cudaFreeArray:$/;"	l
 cudaFreeHost	interposer/libci.c	/^cudaError_t cudaFreeHost(void * ptr) {$/;"	f
 cudaFreeHost	interposer/libci_back.c	/^cudaError_t cudaFreeHost(void * ptr) {$/;"	f
 cudaFreeHost	interposer/libci_orig.c	/^cudaError_t cudaFreeHost(void * ptr) {$/;"	f
-cudaFreeHost	libci.s	/^cudaFreeHost:$/;"	l
 cudaFuncCachePreferL1	interposer/libci.s	/^  cudaFuncCachePreferL1 = 2$/;"	d
 cudaFuncCachePreferNone	interposer/libci.s	/^  cudaFuncCachePreferNone = 0,$/;"	d
 cudaFuncCachePreferShared	interposer/libci.s	/^  cudaFuncCachePreferShared = 1,$/;"	d
 cudaFuncGetAttributes	interposer/libci.c	/^cudaError_t cudaFuncGetAttributes(struct cudaFuncAttributes *attr,$/;"	f
 cudaFuncGetAttributes	interposer/libci_back.c	/^cudaError_t cudaFuncGetAttributes(struct cudaFuncAttributes *attr,$/;"	f
 cudaFuncGetAttributes	interposer/libci_orig.c	/^cudaError_t cudaFuncGetAttributes(struct cudaFuncAttributes *attr,$/;"	f
-cudaFuncGetAttributes	libci.s	/^cudaFuncGetAttributes:$/;"	l
 cudaFuncSetCacheConfig	interposer/libci.c	/^cudaError_t cudaFuncSetCacheConfig(const char *func,$/;"	f
 cudaFuncSetCacheConfig	interposer/libci_back.c	/^cudaError_t cudaFuncSetCacheConfig(const char *func,$/;"	f
 cudaFuncSetCacheConfig	interposer/libci_orig.c	/^cudaError_t cudaFuncSetCacheConfig(const char *func,$/;"	f
-cudaFuncSetCacheConfig	libci.s	/^cudaFuncSetCacheConfig:$/;"	l
 cudaGetChannelDesc	interposer/libci.c	/^cudaError_t cudaGetChannelDesc(struct cudaChannelFormatDesc *desc,$/;"	f
 cudaGetChannelDesc	interposer/libci_back.c	/^cudaError_t cudaGetChannelDesc(struct cudaChannelFormatDesc *desc,$/;"	f
 cudaGetChannelDesc	interposer/libci_orig.c	/^cudaError_t cudaGetChannelDesc(struct cudaChannelFormatDesc *desc,$/;"	f
-cudaGetChannelDesc	libci.s	/^cudaGetChannelDesc:$/;"	l
 cudaGetDevice	interposer/libci.c	/^cudaError_t cudaGetDevice(int *device) {$/;"	f
 cudaGetDevice	interposer/libci_back.c	/^cudaError_t cudaGetDevice(int *device) {$/;"	f
 cudaGetDevice	interposer/libci_orig.c	/^cudaError_t cudaGetDevice(int *device) {$/;"	f
-cudaGetDevice	libci.s	/^cudaGetDevice:$/;"	l
 cudaGetDeviceCount	interposer/libci.c	/^cudaError_t cudaGetDeviceCount(int *count) {$/;"	f
 cudaGetDeviceCount	interposer/libci_back.c	/^cudaError_t cudaGetDeviceCount(int *count) {$/;"	f
 cudaGetDeviceCount	interposer/libci_orig.c	/^cudaError_t cudaGetDeviceCount(int *count) {$/;"	f
-cudaGetDeviceCount	libci.s	/^cudaGetDeviceCount:$/;"	l
 cudaGetDeviceProperties	interposer/libci.c	/^cudaError_t cudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
 cudaGetDeviceProperties	interposer/libci_back.c	/^cudaError_t cudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
 cudaGetDeviceProperties	interposer/libci_orig.c	/^cudaError_t cudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
-cudaGetDeviceProperties	libci.s	/^cudaGetDeviceProperties:$/;"	l
 cudaGetErrorString	interposer/libci.c	/^const char* cudaGetErrorString(cudaError_t error) {$/;"	f
 cudaGetErrorString	interposer/libci_back.c	/^const char* cudaGetErrorString(cudaError_t error) {$/;"	f
 cudaGetErrorString	interposer/libci_orig.c	/^const char* cudaGetErrorString(cudaError_t error) {$/;"	f
-cudaGetErrorString	libci.s	/^cudaGetErrorString:$/;"	l
 cudaGetExportTable	interposer/libci.c	/^cudaError_t cudaGetExportTable(const void **ppExportTable,$/;"	f
 cudaGetExportTable	interposer/libci_back.c	/^cudaError_t cudaGetExportTable(const void **ppExportTable,$/;"	f
 cudaGetExportTable	interposer/libci_orig.c	/^cudaError_t cudaGetExportTable(const void **ppExportTable,$/;"	f
-cudaGetExportTable	libci.s	/^cudaGetExportTable:$/;"	l
 cudaGetLastError	interposer/libci.c	/^cudaError_t cudaGetLastError(void) {$/;"	f
 cudaGetLastError	interposer/libci_back.c	/^cudaError_t cudaGetLastError(void) {$/;"	f
 cudaGetLastError	interposer/libci_orig.c	/^cudaError_t cudaGetLastError(void) {$/;"	f
-cudaGetLastError	libci.s	/^cudaGetLastError:$/;"	l
 cudaGetSurfaceReference	interposer/libci.c	/^cudaError_t cudaGetSurfaceReference($/;"	f
 cudaGetSurfaceReference	interposer/libci_back.c	/^cudaError_t cudaGetSurfaceReference($/;"	f
 cudaGetSurfaceReference	interposer/libci_orig.c	/^cudaError_t cudaGetSurfaceReference($/;"	f
-cudaGetSurfaceReference	libci.s	/^cudaGetSurfaceReference:$/;"	l
 cudaGetSymbolAddress	interposer/libci.c	/^cudaError_t cudaGetSymbolAddress(void **devPtr, const char *symbol) {$/;"	f
 cudaGetSymbolAddress	interposer/libci_back.c	/^cudaError_t cudaGetSymbolAddress(void **devPtr, const char *symbol) {$/;"	f
 cudaGetSymbolAddress	interposer/libci_orig.c	/^cudaError_t cudaGetSymbolAddress(void **devPtr, const char *symbol) {$/;"	f
-cudaGetSymbolAddress	libci.s	/^cudaGetSymbolAddress:$/;"	l
 cudaGetSymbolSize	interposer/libci.c	/^cudaError_t cudaGetSymbolSize(size_t *size, const char *symbol) {$/;"	f
 cudaGetSymbolSize	interposer/libci_back.c	/^cudaError_t cudaGetSymbolSize(size_t *size, const char *symbol) {$/;"	f
 cudaGetSymbolSize	interposer/libci_orig.c	/^cudaError_t cudaGetSymbolSize(size_t *size, const char *symbol) {$/;"	f
-cudaGetSymbolSize	libci.s	/^cudaGetSymbolSize:$/;"	l
 cudaGetTextureAlignmentOffset	interposer/libci.c	/^cudaError_t cudaGetTextureAlignmentOffset(size_t *offset,$/;"	f
 cudaGetTextureAlignmentOffset	interposer/libci_back.c	/^cudaError_t cudaGetTextureAlignmentOffset(size_t *offset,$/;"	f
 cudaGetTextureAlignmentOffset	interposer/libci_orig.c	/^cudaError_t cudaGetTextureAlignmentOffset(size_t *offset,$/;"	f
-cudaGetTextureAlignmentOffset	libci.s	/^cudaGetTextureAlignmentOffset:$/;"	l
 cudaGetTextureReference	interposer/libci.c	/^cudaError_t cudaGetTextureReference($/;"	f
 cudaGetTextureReference	interposer/libci_back.c	/^cudaError_t cudaGetTextureReference($/;"	f
 cudaGetTextureReference	interposer/libci_orig.c	/^cudaError_t cudaGetTextureReference($/;"	f
-cudaGetTextureReference	libci.s	/^cudaGetTextureReference:$/;"	l
 cudaGraphicsCubeFaceNegativeX	interposer/libci.s	/^  cudaGraphicsCubeFaceNegativeX = 0x01,$/;"	d
 cudaGraphicsCubeFaceNegativeY	interposer/libci.s	/^  cudaGraphicsCubeFaceNegativeY = 0x03,$/;"	d
 cudaGraphicsCubeFaceNegativeZ	interposer/libci.s	/^  cudaGraphicsCubeFaceNegativeZ = 0x05$/;"	d
@@ -1846,263 +1816,200 @@ cudaGraphicsMapFlagsWriteDiscard	interposer/libci.s	/^  cudaGraphicsMapFlagsWrit
 cudaGraphicsMapResources	interposer/libci.c	/^cudaError_t cudaGraphicsMapResources(int count,$/;"	f
 cudaGraphicsMapResources	interposer/libci_back.c	/^cudaError_t cudaGraphicsMapResources(int count,$/;"	f
 cudaGraphicsMapResources	interposer/libci_orig.c	/^cudaError_t cudaGraphicsMapResources(int count,$/;"	f
-cudaGraphicsMapResources	libci.s	/^cudaGraphicsMapResources:$/;"	l
 cudaGraphicsRegisterFlagsNone	interposer/libci.s	/^  cudaGraphicsRegisterFlagsNone = 0$/;"	d
 cudaGraphicsResourceGetMappedPointer	interposer/libci.c	/^cudaError_t cudaGraphicsResourceGetMappedPointer(void **devPtr,$/;"	f
 cudaGraphicsResourceGetMappedPointer	interposer/libci_back.c	/^cudaError_t cudaGraphicsResourceGetMappedPointer(void **devPtr,$/;"	f
 cudaGraphicsResourceGetMappedPointer	interposer/libci_orig.c	/^cudaError_t cudaGraphicsResourceGetMappedPointer(void **devPtr,$/;"	f
-cudaGraphicsResourceGetMappedPointer	libci.s	/^cudaGraphicsResourceGetMappedPointer:$/;"	l
 cudaGraphicsResourceSetMapFlags	interposer/libci.c	/^cudaError_t cudaGraphicsResourceSetMapFlags($/;"	f
 cudaGraphicsResourceSetMapFlags	interposer/libci_back.c	/^cudaError_t cudaGraphicsResourceSetMapFlags($/;"	f
 cudaGraphicsResourceSetMapFlags	interposer/libci_orig.c	/^cudaError_t cudaGraphicsResourceSetMapFlags($/;"	f
-cudaGraphicsResourceSetMapFlags	libci.s	/^cudaGraphicsResourceSetMapFlags:$/;"	l
 cudaGraphicsSubResourceGetMappedArray	interposer/libci.c	/^cudaError_t cudaGraphicsSubResourceGetMappedArray($/;"	f
 cudaGraphicsSubResourceGetMappedArray	interposer/libci_back.c	/^cudaError_t cudaGraphicsSubResourceGetMappedArray($/;"	f
 cudaGraphicsSubResourceGetMappedArray	interposer/libci_orig.c	/^cudaError_t cudaGraphicsSubResourceGetMappedArray($/;"	f
-cudaGraphicsSubResourceGetMappedArray	libci.s	/^cudaGraphicsSubResourceGetMappedArray:$/;"	l
 cudaGraphicsUnmapResources	interposer/libci.c	/^cudaError_t cudaGraphicsUnmapResources(int count,$/;"	f
 cudaGraphicsUnmapResources	interposer/libci_back.c	/^cudaError_t cudaGraphicsUnmapResources(int count,$/;"	f
 cudaGraphicsUnmapResources	interposer/libci_orig.c	/^cudaError_t cudaGraphicsUnmapResources(int count,$/;"	f
-cudaGraphicsUnmapResources	libci.s	/^cudaGraphicsUnmapResources:$/;"	l
 cudaGraphicsUnregisterResource	interposer/libci.c	/^cudaError_t cudaGraphicsUnregisterResource($/;"	f
 cudaGraphicsUnregisterResource	interposer/libci_back.c	/^cudaError_t cudaGraphicsUnregisterResource($/;"	f
 cudaGraphicsUnregisterResource	interposer/libci_orig.c	/^cudaError_t cudaGraphicsUnregisterResource($/;"	f
-cudaGraphicsUnregisterResource	libci.s	/^cudaGraphicsUnregisterResource:$/;"	l
 cudaHostAlloc	interposer/libci.c	/^cudaError_t cudaHostAlloc(void **pHost, size_t size, unsigned int flags) {$/;"	f
 cudaHostAlloc	interposer/libci_back.c	/^cudaError_t cudaHostAlloc(void **pHost, size_t size, unsigned int flags) {$/;"	f
 cudaHostAlloc	interposer/libci_orig.c	/^cudaError_t cudaHostAlloc(void **pHost, size_t size, unsigned int flags) {$/;"	f
-cudaHostAlloc	libci.s	/^cudaHostAlloc:$/;"	l
 cudaHostGetDevicePointer	interposer/libci.c	/^cudaError_t cudaHostGetDevicePointer(void **pDevice, void *pHost,$/;"	f
 cudaHostGetDevicePointer	interposer/libci_back.c	/^cudaError_t cudaHostGetDevicePointer(void **pDevice, void *pHost,$/;"	f
 cudaHostGetDevicePointer	interposer/libci_orig.c	/^cudaError_t cudaHostGetDevicePointer(void **pDevice, void *pHost,$/;"	f
-cudaHostGetDevicePointer	libci.s	/^cudaHostGetDevicePointer:$/;"	l
 cudaHostGetFlags	interposer/libci.c	/^cudaError_t cudaHostGetFlags(unsigned int *pFlags, void *pHost) {$/;"	f
 cudaHostGetFlags	interposer/libci_back.c	/^cudaError_t cudaHostGetFlags(unsigned int *pFlags, void *pHost) {$/;"	f
 cudaHostGetFlags	interposer/libci_orig.c	/^cudaError_t cudaHostGetFlags(unsigned int *pFlags, void *pHost) {$/;"	f
-cudaHostGetFlags	libci.s	/^cudaHostGetFlags:$/;"	l
 cudaLaunch	interposer/libci.c	/^cudaError_t cudaLaunch(const char *entry) {$/;"	f
 cudaLaunch	interposer/libci_back.c	/^cudaError_t cudaLaunch(const char *entry) {$/;"	f
 cudaLaunch	interposer/libci_orig.c	/^cudaError_t cudaLaunch(const char *entry) {$/;"	f
-cudaLaunch	libci.s	/^cudaLaunch:$/;"	l
 cudaLimitPrintfFifoSize	interposer/libci.s	/^    cudaLimitPrintfFifoSize = 0x01$/;"	d
 cudaLimitStackSize	interposer/libci.s	/^    cudaLimitStackSize = 0x00,$/;"	d
 cudaMalloc	interposer/libci.c	/^cudaError_t cudaMalloc(void **devPtr, size_t size) {$/;"	f
 cudaMalloc	interposer/libci_back.c	/^cudaError_t cudaMalloc(void **devPtr, size_t size) {$/;"	f
 cudaMalloc	interposer/libci_orig.c	/^cudaError_t cudaMalloc(void **devPtr, size_t size) {$/;"	f
-cudaMalloc	libci.s	/^cudaMalloc:$/;"	l
 cudaMalloc3D	interposer/libci.c	/^cudaError_t cudaMalloc3D(struct cudaPitchedPtr* pitchedDevPtr,$/;"	f
 cudaMalloc3D	interposer/libci_back.c	/^cudaError_t cudaMalloc3D(struct cudaPitchedPtr* pitchedDevPtr,$/;"	f
 cudaMalloc3D	interposer/libci_orig.c	/^cudaError_t cudaMalloc3D(struct cudaPitchedPtr* pitchedDevPtr,$/;"	f
-cudaMalloc3D	libci.s	/^cudaMalloc3D:$/;"	l
 cudaMalloc3DArray	interposer/libci.c	/^cudaError_t cudaMalloc3DArray(struct cudaArray** array,$/;"	f
 cudaMalloc3DArray	interposer/libci_back.c	/^cudaError_t cudaMalloc3DArray(struct cudaArray** array,$/;"	f
 cudaMalloc3DArray	interposer/libci_orig.c	/^cudaError_t cudaMalloc3DArray(struct cudaArray** array,$/;"	f
-cudaMalloc3DArray	libci.s	/^cudaMalloc3DArray:$/;"	l
 cudaMallocArray	interposer/libci.c	/^cudaError_t cudaMallocArray(struct cudaArray **array,$/;"	f
 cudaMallocArray	interposer/libci_back.c	/^cudaError_t cudaMallocArray(struct cudaArray **array,$/;"	f
 cudaMallocArray	interposer/libci_orig.c	/^cudaError_t cudaMallocArray(struct cudaArray **array,$/;"	f
-cudaMallocArray	libci.s	/^cudaMallocArray:$/;"	l
 cudaMallocHost	interposer/libci.c	/^cudaError_t cudaMallocHost(void **ptr, size_t size) {$/;"	f
 cudaMallocHost	interposer/libci_back.c	/^cudaError_t cudaMallocHost(void **ptr, size_t size) {$/;"	f
 cudaMallocHost	interposer/libci_orig.c	/^cudaError_t cudaMallocHost(void **ptr, size_t size) {$/;"	f
-cudaMallocHost	libci.s	/^cudaMallocHost:$/;"	l
 cudaMallocPitch	interposer/libci.c	/^cudaError_t cudaMallocPitch(void **devPtr, size_t *pitch, size_t width,$/;"	f
 cudaMallocPitch	interposer/libci_back.c	/^cudaError_t cudaMallocPitch(void **devPtr, size_t *pitch, size_t width,$/;"	f
 cudaMallocPitch	interposer/libci_orig.c	/^cudaError_t cudaMallocPitch(void **devPtr, size_t *pitch, size_t width,$/;"	f
-cudaMallocPitch	libci.s	/^cudaMallocPitch:$/;"	l
 cudaMemGetInfo	interposer/libci.c	/^cudaError_t cudaMemGetInfo(size_t *free, size_t *total) {$/;"	f
 cudaMemGetInfo	interposer/libci_back.c	/^cudaError_t cudaMemGetInfo(size_t *free, size_t *total) {$/;"	f
 cudaMemGetInfo	interposer/libci_orig.c	/^cudaError_t cudaMemGetInfo(size_t *free, size_t *total) {$/;"	f
-cudaMemGetInfo	libci.s	/^cudaMemGetInfo:$/;"	l
 cudaMemcpy	interposer/libci.c	/^cudaError_t cudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 cudaMemcpy	interposer/libci_back.c	/^cudaError_t cudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 cudaMemcpy	interposer/libci_orig.c	/^cudaError_t cudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
-cudaMemcpy	libci.s	/^cudaMemcpy:$/;"	l
 cudaMemcpy2D	interposer/libci.c	/^cudaError_t cudaMemcpy2D(void *dst, size_t dpitch, const void *src,$/;"	f
 cudaMemcpy2D	interposer/libci_back.c	/^cudaError_t cudaMemcpy2D(void *dst, size_t dpitch, const void *src,$/;"	f
 cudaMemcpy2D	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2D(void *dst, size_t dpitch, const void *src,$/;"	f
-cudaMemcpy2D	libci.s	/^cudaMemcpy2D:$/;"	l
 cudaMemcpy2DArrayToArray	interposer/libci.c	/^cudaError_t cudaMemcpy2DArrayToArray(struct cudaArray *dst,$/;"	f
 cudaMemcpy2DArrayToArray	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DArrayToArray(struct cudaArray *dst,$/;"	f
 cudaMemcpy2DArrayToArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DArrayToArray(struct cudaArray *dst,$/;"	f
-cudaMemcpy2DArrayToArray	libci.s	/^cudaMemcpy2DArrayToArray:$/;"	l
 cudaMemcpy2DAsync	interposer/libci.c	/^cudaError_t cudaMemcpy2DAsync(void *dst, size_t dpitch, const void *src,$/;"	f
 cudaMemcpy2DAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DAsync(void *dst, size_t dpitch, const void *src,$/;"	f
 cudaMemcpy2DAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DAsync(void *dst, size_t dpitch, const void *src,$/;"	f
-cudaMemcpy2DAsync	libci.s	/^cudaMemcpy2DAsync:$/;"	l
 cudaMemcpy2DFromArray	interposer/libci.c	/^cudaError_t cudaMemcpy2DFromArray(void *dst, size_t dpitch,$/;"	f
 cudaMemcpy2DFromArray	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DFromArray(void *dst, size_t dpitch,$/;"	f
 cudaMemcpy2DFromArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DFromArray(void *dst, size_t dpitch,$/;"	f
-cudaMemcpy2DFromArray	libci.s	/^cudaMemcpy2DFromArray:$/;"	l
 cudaMemcpy2DFromArrayAsync	interposer/libci.c	/^cudaError_t cudaMemcpy2DFromArrayAsync(void *dst, size_t dpitch,$/;"	f
 cudaMemcpy2DFromArrayAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DFromArrayAsync(void *dst, size_t dpitch,$/;"	f
 cudaMemcpy2DFromArrayAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DFromArrayAsync(void *dst, size_t dpitch,$/;"	f
-cudaMemcpy2DFromArrayAsync	libci.s	/^cudaMemcpy2DFromArrayAsync:$/;"	l
 cudaMemcpy2DToArray	interposer/libci.c	/^cudaError_t cudaMemcpy2DToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
 cudaMemcpy2DToArray	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
 cudaMemcpy2DToArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
-cudaMemcpy2DToArray	libci.s	/^cudaMemcpy2DToArray:$/;"	l
 cudaMemcpy2DToArrayAsync	interposer/libci.c	/^cudaError_t cudaMemcpy2DToArrayAsync(struct cudaArray *dst,$/;"	f
 cudaMemcpy2DToArrayAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpy2DToArrayAsync(struct cudaArray *dst,$/;"	f
 cudaMemcpy2DToArrayAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpy2DToArrayAsync(struct cudaArray *dst,$/;"	f
-cudaMemcpy2DToArrayAsync	libci.s	/^cudaMemcpy2DToArrayAsync:$/;"	l
 cudaMemcpy3D	interposer/libci.c	/^cudaError_t cudaMemcpy3D(const struct cudaMemcpy3DParms *p) {$/;"	f
 cudaMemcpy3D	interposer/libci_back.c	/^cudaError_t cudaMemcpy3D(const struct cudaMemcpy3DParms *p) {$/;"	f
 cudaMemcpy3D	interposer/libci_orig.c	/^cudaError_t cudaMemcpy3D(const struct cudaMemcpy3DParms *p) {$/;"	f
-cudaMemcpy3D	libci.s	/^cudaMemcpy3D:$/;"	l
 cudaMemcpy3DAsync	interposer/libci.c	/^cudaError_t cudaMemcpy3DAsync(const struct cudaMemcpy3DParms *p,$/;"	f
 cudaMemcpy3DAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpy3DAsync(const struct cudaMemcpy3DParms *p,$/;"	f
 cudaMemcpy3DAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpy3DAsync(const struct cudaMemcpy3DParms *p,$/;"	f
-cudaMemcpy3DAsync	libci.s	/^cudaMemcpy3DAsync:$/;"	l
 cudaMemcpyArrayToArray	interposer/libci.c	/^cudaError_t cudaMemcpyArrayToArray(struct cudaArray *dst,$/;"	f
 cudaMemcpyArrayToArray	interposer/libci_back.c	/^cudaError_t cudaMemcpyArrayToArray(struct cudaArray *dst,$/;"	f
 cudaMemcpyArrayToArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpyArrayToArray(struct cudaArray *dst,$/;"	f
-cudaMemcpyArrayToArray	libci.s	/^cudaMemcpyArrayToArray:$/;"	l
 cudaMemcpyAsync	interposer/libci.c	/^cudaError_t cudaMemcpyAsync(void *dst, const void *src, size_t count,$/;"	f
 cudaMemcpyAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpyAsync(void *dst, const void *src, size_t count,$/;"	f
 cudaMemcpyAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpyAsync(void *dst, const void *src, size_t count,$/;"	f
-cudaMemcpyAsync	libci.s	/^cudaMemcpyAsync:$/;"	l
 cudaMemcpyDeviceToDevice	interposer/libci.s	/^  cudaMemcpyDeviceToDevice = 3$/;"	d
 cudaMemcpyDeviceToHost	interposer/libci.s	/^  cudaMemcpyDeviceToHost = 2,$/;"	d
 cudaMemcpyFromArray	interposer/libci.c	/^cudaError_t cudaMemcpyFromArray(void *dst, const struct cudaArray *src,$/;"	f
 cudaMemcpyFromArray	interposer/libci_back.c	/^cudaError_t cudaMemcpyFromArray(void *dst, const struct cudaArray *src,$/;"	f
 cudaMemcpyFromArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpyFromArray(void *dst, const struct cudaArray *src,$/;"	f
-cudaMemcpyFromArray	libci.s	/^cudaMemcpyFromArray:$/;"	l
 cudaMemcpyFromArrayAsync	interposer/libci.c	/^cudaError_t cudaMemcpyFromArrayAsync(void *dst,$/;"	f
 cudaMemcpyFromArrayAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpyFromArrayAsync(void *dst,$/;"	f
 cudaMemcpyFromArrayAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpyFromArrayAsync(void *dst,$/;"	f
-cudaMemcpyFromArrayAsync	libci.s	/^cudaMemcpyFromArrayAsync:$/;"	l
 cudaMemcpyFromSymbol	interposer/libci.c	/^cudaError_t cudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 cudaMemcpyFromSymbol	interposer/libci_back.c	/^cudaError_t cudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 cudaMemcpyFromSymbol	interposer/libci_orig.c	/^cudaError_t cudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
-cudaMemcpyFromSymbol	libci.s	/^cudaMemcpyFromSymbol:$/;"	l
 cudaMemcpyFromSymbolAsync	interposer/libci.c	/^cudaError_t cudaMemcpyFromSymbolAsync(void *dst, const char *symbol,$/;"	f
 cudaMemcpyFromSymbolAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpyFromSymbolAsync(void *dst, const char *symbol,$/;"	f
 cudaMemcpyFromSymbolAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpyFromSymbolAsync(void *dst, const char *symbol,$/;"	f
-cudaMemcpyFromSymbolAsync	libci.s	/^cudaMemcpyFromSymbolAsync:$/;"	l
 cudaMemcpyHostToDevice	interposer/libci.s	/^  cudaMemcpyHostToDevice = 1,$/;"	d
 cudaMemcpyHostToHost	interposer/libci.s	/^  cudaMemcpyHostToHost = 0,$/;"	d
 cudaMemcpyToArray	interposer/libci.c	/^cudaError_t cudaMemcpyToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
 cudaMemcpyToArray	interposer/libci_back.c	/^cudaError_t cudaMemcpyToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
 cudaMemcpyToArray	interposer/libci_orig.c	/^cudaError_t cudaMemcpyToArray(struct cudaArray *dst, size_t wOffset,$/;"	f
-cudaMemcpyToArray	libci.s	/^cudaMemcpyToArray:$/;"	l
 cudaMemcpyToArrayAsync	interposer/libci.c	/^cudaError_t cudaMemcpyToArrayAsync(struct cudaArray *dst,$/;"	f
 cudaMemcpyToArrayAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpyToArrayAsync(struct cudaArray *dst,$/;"	f
 cudaMemcpyToArrayAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpyToArrayAsync(struct cudaArray *dst,$/;"	f
-cudaMemcpyToArrayAsync	libci.s	/^cudaMemcpyToArrayAsync:$/;"	l
 cudaMemcpyToSymbol	interposer/libci.c	/^cudaError_t cudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 cudaMemcpyToSymbol	interposer/libci_back.c	/^cudaError_t cudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 cudaMemcpyToSymbol	interposer/libci_orig.c	/^cudaError_t cudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
-cudaMemcpyToSymbol	libci.s	/^cudaMemcpyToSymbol:$/;"	l
 cudaMemcpyToSymbolAsync	interposer/libci.c	/^cudaError_t cudaMemcpyToSymbolAsync(const char *symbol, const void *src,$/;"	f
 cudaMemcpyToSymbolAsync	interposer/libci_back.c	/^cudaError_t cudaMemcpyToSymbolAsync(const char *symbol, const void *src,$/;"	f
 cudaMemcpyToSymbolAsync	interposer/libci_orig.c	/^cudaError_t cudaMemcpyToSymbolAsync(const char *symbol, const void *src,$/;"	f
-cudaMemcpyToSymbolAsync	libci.s	/^cudaMemcpyToSymbolAsync:$/;"	l
 cudaMemset	interposer/libci.c	/^cudaError_t cudaMemset(void *devPtr, int value, size_t count) {$/;"	f
 cudaMemset	interposer/libci_back.c	/^cudaError_t cudaMemset(void *devPtr, int value, size_t count) {$/;"	f
 cudaMemset	interposer/libci_orig.c	/^cudaError_t cudaMemset(void *devPtr, int value, size_t count) {$/;"	f
-cudaMemset	libci.s	/^cudaMemset:$/;"	l
 cudaMemset2D	interposer/libci.c	/^cudaError_t cudaMemset2D(void *devPtr, size_t pitch, int value,$/;"	f
 cudaMemset2D	interposer/libci_back.c	/^cudaError_t cudaMemset2D(void *devPtr, size_t pitch, int value,$/;"	f
 cudaMemset2D	interposer/libci_orig.c	/^cudaError_t cudaMemset2D(void *devPtr, size_t pitch, int value,$/;"	f
-cudaMemset2D	libci.s	/^cudaMemset2D:$/;"	l
 cudaMemset2DAsync	interposer/libci.c	/^cudaError_t cudaMemset2DAsync(void *devPtr, size_t pitch, int value,$/;"	f
 cudaMemset2DAsync	interposer/libci_back.c	/^cudaError_t cudaMemset2DAsync(void *devPtr, size_t pitch, int value,$/;"	f
 cudaMemset2DAsync	interposer/libci_orig.c	/^cudaError_t cudaMemset2DAsync(void *devPtr, size_t pitch, int value,$/;"	f
-cudaMemset2DAsync	libci.s	/^cudaMemset2DAsync:$/;"	l
 cudaMemset3D	interposer/libci.c	/^cudaError_t cudaMemset3D(struct cudaPitchedPtr pitchedDevPtr, int value,$/;"	f
 cudaMemset3D	interposer/libci_back.c	/^cudaError_t cudaMemset3D(struct cudaPitchedPtr pitchedDevPtr, int value,$/;"	f
 cudaMemset3D	interposer/libci_orig.c	/^cudaError_t cudaMemset3D(struct cudaPitchedPtr pitchedDevPtr, int value,$/;"	f
-cudaMemset3D	libci.s	/^cudaMemset3D:$/;"	l
 cudaMemset3DAsync	interposer/libci.c	/^cudaError_t cudaMemset3DAsync(struct cudaPitchedPtr pitchedDevPtr,$/;"	f
 cudaMemset3DAsync	interposer/libci_back.c	/^cudaError_t cudaMemset3DAsync(struct cudaPitchedPtr pitchedDevPtr,$/;"	f
 cudaMemset3DAsync	interposer/libci_orig.c	/^cudaError_t cudaMemset3DAsync(struct cudaPitchedPtr pitchedDevPtr,$/;"	f
-cudaMemset3DAsync	libci.s	/^cudaMemset3DAsync:$/;"	l
 cudaMemsetAsync	interposer/libci.c	/^cudaError_t cudaMemsetAsync(void *devPtr, int value, size_t count,$/;"	f
 cudaMemsetAsync	interposer/libci_back.c	/^cudaError_t cudaMemsetAsync(void *devPtr, int value, size_t count,$/;"	f
 cudaMemsetAsync	interposer/libci_orig.c	/^cudaError_t cudaMemsetAsync(void *devPtr, int value, size_t count,$/;"	f
-cudaMemsetAsync	libci.s	/^cudaMemsetAsync:$/;"	l
 cudaPeekAtLastError	interposer/libci.c	/^cudaError_t cudaPeekAtLastError(void) {$/;"	f
 cudaPeekAtLastError	interposer/libci_back.c	/^cudaError_t cudaPeekAtLastError(void) {$/;"	f
 cudaPeekAtLastError	interposer/libci_orig.c	/^cudaError_t cudaPeekAtLastError(void) {$/;"	f
-cudaPeekAtLastError	libci.s	/^cudaPeekAtLastError:$/;"	l
 cudaRuntimeGetVersion	interposer/libci.c	/^cudaError_t cudaRuntimeGetVersion(int *runtimeVersion) {$/;"	f
 cudaRuntimeGetVersion	interposer/libci_back.c	/^cudaError_t cudaRuntimeGetVersion(int *runtimeVersion) {$/;"	f
 cudaRuntimeGetVersion	interposer/libci_orig.c	/^cudaError_t cudaRuntimeGetVersion(int *runtimeVersion) {$/;"	f
-cudaRuntimeGetVersion	libci.s	/^cudaRuntimeGetVersion:$/;"	l
 cudaSetDevice	interposer/libci.c	/^cudaError_t cudaSetDevice(int device) {$/;"	f
 cudaSetDevice	interposer/libci_back.c	/^cudaError_t cudaSetDevice(int device) {$/;"	f
 cudaSetDevice	interposer/libci_orig.c	/^cudaError_t cudaSetDevice(int device) {$/;"	f
-cudaSetDevice	libci.s	/^cudaSetDevice:$/;"	l
 cudaSetDeviceFlags	interposer/libci.c	/^cudaError_t cudaSetDeviceFlags(unsigned int flags) {$/;"	f
 cudaSetDeviceFlags	interposer/libci_back.c	/^cudaError_t cudaSetDeviceFlags(unsigned int flags) {$/;"	f
 cudaSetDeviceFlags	interposer/libci_orig.c	/^cudaError_t cudaSetDeviceFlags(unsigned int flags) {$/;"	f
-cudaSetDeviceFlags	libci.s	/^cudaSetDeviceFlags:$/;"	l
 cudaSetDoubleForDevice	interposer/libci.c	/^cudaError_t cudaSetDoubleForDevice(double *d) {$/;"	f
 cudaSetDoubleForDevice	interposer/libci_back.c	/^cudaError_t cudaSetDoubleForDevice(double *d) {$/;"	f
 cudaSetDoubleForDevice	interposer/libci_orig.c	/^cudaError_t cudaSetDoubleForDevice(double *d) {$/;"	f
-cudaSetDoubleForDevice	libci.s	/^cudaSetDoubleForDevice:$/;"	l
 cudaSetDoubleForHost	interposer/libci.c	/^cudaError_t cudaSetDoubleForHost(double *d) {$/;"	f
 cudaSetDoubleForHost	interposer/libci_back.c	/^cudaError_t cudaSetDoubleForHost(double *d) {$/;"	f
 cudaSetDoubleForHost	interposer/libci_orig.c	/^cudaError_t cudaSetDoubleForHost(double *d) {$/;"	f
-cudaSetDoubleForHost	libci.s	/^cudaSetDoubleForHost:$/;"	l
 cudaSetValidDevices	interposer/libci.c	/^cudaError_t cudaSetValidDevices(int *device_arr, int len) {$/;"	f
 cudaSetValidDevices	interposer/libci_back.c	/^cudaError_t cudaSetValidDevices(int *device_arr, int len) {$/;"	f
 cudaSetValidDevices	interposer/libci_orig.c	/^cudaError_t cudaSetValidDevices(int *device_arr, int len) {$/;"	f
-cudaSetValidDevices	libci.s	/^cudaSetValidDevices:$/;"	l
 cudaSetupArgument	interposer/libci.c	/^cudaError_t cudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
 cudaSetupArgument	interposer/libci_back.c	/^cudaError_t cudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
 cudaSetupArgument	interposer/libci_orig.c	/^cudaError_t cudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
-cudaSetupArgument	libci.s	/^cudaSetupArgument:$/;"	l
 cudaStreamCreate	interposer/libci.c	/^cudaError_t cudaStreamCreate(cudaStream_t *pStream) {$/;"	f
 cudaStreamCreate	interposer/libci_back.c	/^cudaError_t cudaStreamCreate(cudaStream_t *pStream) {$/;"	f
 cudaStreamCreate	interposer/libci_orig.c	/^cudaError_t cudaStreamCreate(cudaStream_t *pStream) {$/;"	f
-cudaStreamCreate	libci.s	/^cudaStreamCreate:$/;"	l
 cudaStreamDestroy	interposer/libci.c	/^cudaError_t cudaStreamDestroy(cudaStream_t stream) {$/;"	f
 cudaStreamDestroy	interposer/libci_back.c	/^cudaError_t cudaStreamDestroy(cudaStream_t stream) {$/;"	f
 cudaStreamDestroy	interposer/libci_orig.c	/^cudaError_t cudaStreamDestroy(cudaStream_t stream) {$/;"	f
-cudaStreamDestroy	libci.s	/^cudaStreamDestroy:$/;"	l
 cudaStreamQuery	interposer/libci.c	/^cudaError_t cudaStreamQuery(cudaStream_t stream) {$/;"	f
 cudaStreamQuery	interposer/libci_back.c	/^cudaError_t cudaStreamQuery(cudaStream_t stream) {$/;"	f
 cudaStreamQuery	interposer/libci_orig.c	/^cudaError_t cudaStreamQuery(cudaStream_t stream) {$/;"	f
-cudaStreamQuery	libci.s	/^cudaStreamQuery:$/;"	l
 cudaStreamSynchronize	interposer/libci.c	/^cudaError_t cudaStreamSynchronize(cudaStream_t stream) {$/;"	f
 cudaStreamSynchronize	interposer/libci_back.c	/^cudaError_t cudaStreamSynchronize(cudaStream_t stream) {$/;"	f
 cudaStreamSynchronize	interposer/libci_orig.c	/^cudaError_t cudaStreamSynchronize(cudaStream_t stream) {$/;"	f
-cudaStreamSynchronize	libci.s	/^cudaStreamSynchronize:$/;"	l
 cudaStreamWaitEvent	interposer/libci.c	/^cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t event,$/;"	f
 cudaStreamWaitEvent	interposer/libci_back.c	/^cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t event,$/;"	f
 cudaStreamWaitEvent	interposer/libci_orig.c	/^cudaError_t cudaStreamWaitEvent(cudaStream_t stream, cudaEvent_t event,$/;"	f
-cudaStreamWaitEvent	libci.s	/^cudaStreamWaitEvent:$/;"	l
 cudaSuccess	interposer/libci.s	/^  cudaSuccess = 0,$/;"	d
 cudaThreadExit	interposer/libci.c	/^cudaError_t cudaThreadExit(void) {$/;"	f
 cudaThreadExit	interposer/libci_back.c	/^cudaError_t cudaThreadExit(void) {$/;"	f
 cudaThreadExit	interposer/libci_orig.c	/^cudaError_t cudaThreadExit(void) {$/;"	f
-cudaThreadExit	libci.s	/^cudaThreadExit:$/;"	l
 cudaThreadGetCacheConfig	interposer/libci.c	/^cudaError_t cudaThreadGetCacheConfig(enum cudaFuncCache *pCacheConfig) {$/;"	f
 cudaThreadGetCacheConfig	interposer/libci_back.c	/^cudaError_t cudaThreadGetCacheConfig(enum cudaFuncCache *pCacheConfig) {$/;"	f
 cudaThreadGetCacheConfig	interposer/libci_orig.c	/^cudaError_t cudaThreadGetCacheConfig(enum cudaFuncCache *pCacheConfig) {$/;"	f
-cudaThreadGetCacheConfig	libci.s	/^cudaThreadGetCacheConfig:$/;"	l
 cudaThreadGetLimit	interposer/libci.c	/^cudaError_t cudaThreadGetLimit(size_t *pValue, enum cudaLimit limit) {$/;"	f
 cudaThreadGetLimit	interposer/libci_back.c	/^cudaError_t cudaThreadGetLimit(size_t *pValue, enum cudaLimit limit) {$/;"	f
 cudaThreadGetLimit	interposer/libci_orig.c	/^cudaError_t cudaThreadGetLimit(size_t *pValue, enum cudaLimit limit) {$/;"	f
-cudaThreadGetLimit	libci.s	/^cudaThreadGetLimit:$/;"	l
 cudaThreadSetCacheConfig	interposer/libci.c	/^cudaError_t cudaThreadSetCacheConfig(enum cudaFuncCache cacheConfig) {$/;"	f
 cudaThreadSetCacheConfig	interposer/libci_back.c	/^cudaError_t cudaThreadSetCacheConfig(enum cudaFuncCache cacheConfig) {$/;"	f
 cudaThreadSetCacheConfig	interposer/libci_orig.c	/^cudaError_t cudaThreadSetCacheConfig(enum cudaFuncCache cacheConfig) {$/;"	f
-cudaThreadSetCacheConfig	libci.s	/^cudaThreadSetCacheConfig:$/;"	l
 cudaThreadSetLimit	interposer/libci.c	/^cudaError_t cudaThreadSetLimit(enum cudaLimit limit, size_t value) {$/;"	f
 cudaThreadSetLimit	interposer/libci_back.c	/^cudaError_t cudaThreadSetLimit(enum cudaLimit limit, size_t value) {$/;"	f
 cudaThreadSetLimit	interposer/libci_orig.c	/^cudaError_t cudaThreadSetLimit(enum cudaLimit limit, size_t value) {$/;"	f
-cudaThreadSetLimit	libci.s	/^cudaThreadSetLimit:$/;"	l
 cudaThreadSynchronize	interposer/libci.c	/^cudaError_t cudaThreadSynchronize(void) {$/;"	f
 cudaThreadSynchronize	interposer/libci_back.c	/^cudaError_t cudaThreadSynchronize(void) {$/;"	f
 cudaThreadSynchronize	interposer/libci_orig.c	/^cudaError_t cudaThreadSynchronize(void) {$/;"	f
-cudaThreadSynchronize	libci.s	/^cudaThreadSynchronize:$/;"	l
 cudaUnbindTexture	interposer/libci.c	/^cudaError_t cudaUnbindTexture(const struct textureReference *texref) {$/;"	f
 cudaUnbindTexture	interposer/libci_back.c	/^cudaError_t cudaUnbindTexture(const struct textureReference *texref) {$/;"	f
 cudaUnbindTexture	interposer/libci_orig.c	/^cudaError_t cudaUnbindTexture(const struct textureReference *texref) {$/;"	f
-cudaUnbindTexture	libci.s	/^cudaUnbindTexture:$/;"	l
 cuda_err	interposer/libci.c	/^static cudaError_t cuda_err = 0;$/;"	v	file:
 cuda_err	interposer/libci.s	/^  cuda_err = cudaErrorInvalidSymbol;$/;"	d
 cuda_err	interposer/libci.s	/^  cuda_err = cudaErrorMemoryAllocation;$/;"	d
@@ -2910,8 +2817,8 @@ freeRegVar	interposer/libciutils_back.c	/^int freeRegVar(reg_var_args_t *args){$
 freeRegVar	interposer/libciutils_orig.c	/^int freeRegVar(reg_var_args_t *args){$/;"	f
 freq	doxydoc/html/search.php	/^          $freq=$docInfo[$i]["freq"];$/;"	v
 freq	doxydoc/html/search.php	/^          $freq=readInt($file); $/;"	v
-fs_add_queue	backend/libl2scheduler.c	/^int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type)$/;"	f
-fs_add_queue	backend/libtruefairshare.c	/^int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type)$/;"	f
+fs_add_queue	backend/libl2scheduler.c	/^int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type, int share)$/;"	f
+fs_add_queue	backend/libtruefairshare.c	/^int fs_add_queue(pid_t process_id, unsigned int gpuid, unsigned long app_type, int share)$/;"	f
 fs_calculate_timeslice	l2scheduler/fair_share_sched.c	/^void fs_calculate_timeslice(int gpuid)$/;"	f
 fs_control_thread	l2scheduler/fair_share_sched.c	/^void* fs_control_thread(void *attr)$/;"	f
 fs_get_RTsignal	backend/libl2scheduler.c	/^int fs_get_RTsignal(pid_t process_id)$/;"	f
@@ -2921,7 +2828,7 @@ fs_notify_scheduler	backend/libl2scheduler.c	/^void fs_notify_scheduler(struct t
 fs_notify_scheduler	backend/libtruefairshare.c	/^void fs_notify_scheduler(struct timeval *before, struct timeval *after, int gpuid)$/;"	f
 fs_register_handler	backend/libl2scheduler.c	/^int fs_register_handler(int signum)$/;"	f
 fs_register_handler	backend/libtruefairshare.c	/^int fs_register_handler(int signum)$/;"	f
-fs_register_process	l2scheduler/fair_share_sched.c	/^void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid)$/;"	f
+fs_register_process	l2scheduler/fair_share_sched.c	/^void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid, int share_unit)$/;"	f
 fs_rem_queue	backend/libl2scheduler.c	/^int fs_rem_queue(pid_t process_id, int gpuid)$/;"	f
 fs_rem_queue	backend/libtruefairshare.c	/^int fs_rem_queue(pid_t process_id, int gpuid)$/;"	f
 fs_start_scheduler	l2scheduler/fair_share_sched.c	/^int fs_start_scheduler()$/;"	f
@@ -3158,6 +3065,7 @@ get_next_weighted_device_kernel_config_feedback	remote/remote_api_wrapper_3dec.c
 get_next_weighted_device_overall_utilization_feedback	remote/remote_api_wrapper.c	/^int get_next_weighted_device_overall_utilization_feedback(int nodeid)$/;"	f
 get_next_weighted_device_overall_utilization_feedback	remote/remote_api_wrapper_3dec.c	/^int get_next_weighted_device_overall_utilization_feedback(int nodeid)$/;"	f
 get_semaphore	interposer/semaphore_ops.c	/^int get_semaphore(key_t id)$/;"	f
+getcwd	interposer/libci.c	/^char * getcwd(char *buf, size_t size)$/;"	f
 gint	interposer/libci.s	/^gint *g_key_file_get_integer_list (GKeyFile *key_file,$/;"	l
 gint	interposer/libci.s	/^gint g_ascii_digit_value (gchar c) __attribute__((__const__));$/;"	l
 gint	interposer/libci.s	/^gint g_ascii_strcasecmp (const gchar *s1,$/;"	l
@@ -3210,6 +3118,7 @@ global	include/packetheader.h	/^	int global;$/;"	m	struct:__anon2
 glong	interposer/libci.s	/^glong g_utf8_pointer_to_offset (const gchar *str,$/;"	l
 glong	interposer/libci.s	/^glong g_utf8_strlen (const gchar *p,$/;"	l
 gmt_index	l2scheduler/pager.c	/^int * gmt_index;$/;"	v
+gmt_semid	l2scheduler/sched_commons.c	/^int semid, gmt_semid;$/;"	v
 gmt_table	l2scheduler/pager.c	/^struct mem_map * gmt_table;$/;"	v	typeref:struct:mem_map
 gpointer	interposer/libci.s	/^gpointer g_async_queue_pop (GAsyncQueue *queue);$/;"	l
 gpointer	interposer/libci.s	/^gpointer g_async_queue_pop_unlocked (GAsyncQueue *queue);$/;"	l
@@ -3254,6 +3163,8 @@ gpointer	interposer/libci.s	/^gpointer g_try_malloc (gulong n_bytes) __attribute
 gpointer	interposer/libci.s	/^gpointer g_try_malloc0 (gulong n_bytes) __attribute__((__malloc__));$/;"	l
 gpointer	interposer/libci.s	/^gpointer g_try_realloc (gpointer mem,$/;"	l
 gpointer	interposer/libci.s	/^gpointer g_tuples_index (GTuples *tuples,$/;"	l
+gpu_binding	backend/libl2scheduler.c	/^int gpu_binding;$/;"	v
+gpu_binding	backend/libtruefairshare.c	/^int gpu_binding;$/;"	v
 gpu_binding	l2scheduler/sched_commons.h	/^	int gpu_binding[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 gpu_utilization	remote/remote_api_wrapper.c	/^float gpu_utilization[2][4] = { {1}, {1} };$/;"	v
 gpu_utilization	remote/remote_api_wrapper_3dec.c	/^float gpu_utilization[2][4] = { {1} };$/;"	v
@@ -4316,19 +4227,15 @@ l2_feedback_type	remote/remote_api_wrapper.c	/^int l2_feedback_type = L2_FEEDBAC
 l__cudaRegisterFatBinary	interposer/libci.c	/^void** l__cudaRegisterFatBinary(void* fatC) {$/;"	f
 l__cudaRegisterFatBinary	interposer/libci_back.c	/^void** l__cudaRegisterFatBinary(void* fatC) {$/;"	f
 l__cudaRegisterFatBinary	interposer/libci_orig.c	/^void** l__cudaRegisterFatBinary(void* fatC) {$/;"	f
-l__cudaRegisterFatBinary	libci.s	/^l__cudaRegisterFatBinary:$/;"	l
 l__cudaRegisterFunction	interposer/libci.c	/^void l__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 l__cudaRegisterFunction	interposer/libci_back.c	/^void l__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 l__cudaRegisterFunction	interposer/libci_orig.c	/^void l__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
-l__cudaRegisterFunction	libci.s	/^l__cudaRegisterFunction:$/;"	l
 l__cudaRegisterVar	interposer/libci.c	/^void l__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 l__cudaRegisterVar	interposer/libci_back.c	/^void l__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 l__cudaRegisterVar	interposer/libci_orig.c	/^void l__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
-l__cudaRegisterVar	libci.s	/^l__cudaRegisterVar:$/;"	l
 l__cudaUnregisterFatBinary	interposer/libci.c	/^void l__cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
 l__cudaUnregisterFatBinary	interposer/libci_back.c	/^void l__cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
 l__cudaUnregisterFatBinary	interposer/libci_orig.c	/^void l__cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
-l__cudaUnregisterFatBinary	libci.s	/^l__cudaUnregisterFatBinary:$/;"	l
 l_cleanUpConn	remote/remote_api_wrapper.c	/^int l_cleanUpConn(conn_t * pConn, const int exit_code) {$/;"	f
 l_cleanUpConn	remote/remote_api_wrapper_3dec.c	/^int l_cleanUpConn(conn_t * pConn, const int exit_code) {$/;"	f
 l_cleanUpConn	remote/remote_api_wrapper_back.c	/^int l_cleanUpConn(conn_t * pConn, const int exit_code) {$/;"	f
@@ -4393,7 +4300,6 @@ l_getUint3PtrPktSize	interposer/libciutils_orig.c	/^inline int l_getUint3PtrPktS
 l_handleDlError	interposer/libci.c	/^int l_handleDlError() {$/;"	f
 l_handleDlError	interposer/libci_back.c	/^int l_handleDlError() {$/;"	f
 l_handleDlError	interposer/libci_orig.c	/^int l_handleDlError() {$/;"	f
-l_handleDlError	libci.s	/^l_handleDlError:$/;"	l
 l_packCubin	interposer/libciutils.c	/^int l_packCubin(char * pDst, const __cudaFatCubinEntry * pEntry, int n){$/;"	f
 l_packCubin	interposer/libciutils_back.c	/^int l_packCubin(char * pDst, const __cudaFatCubinEntry * pEntry, int n){$/;"	f
 l_packCubin	interposer/libciutils_orig.c	/^int l_packCubin(char * pDst, const __cudaFatCubinEntry * pEntry, int n){$/;"	f
@@ -4450,11 +4356,9 @@ l_printFatBinary	interposer/libciutils_orig.c	/^void l_printFatBinary(__cudaFatC
 l_printFuncSig	interposer/libci.c	/^int l_printFuncSig(const char* pSignature) {$/;"	f
 l_printFuncSig	interposer/libci_back.c	/^int l_printFuncSig(const char* pSignature) {$/;"	f
 l_printFuncSig	interposer/libci_orig.c	/^int l_printFuncSig(const char* pSignature) {$/;"	f
-l_printFuncSig	libci.s	/^l_printFuncSig:$/;"	l
 l_printFuncSigImpl	interposer/libci.c	/^int l_printFuncSigImpl(const char* pSignature) {$/;"	f
 l_printFuncSigImpl	interposer/libci_back.c	/^int l_printFuncSigImpl(const char* pSignature) {$/;"	f
 l_printFuncSigImpl	interposer/libci_orig.c	/^int l_printFuncSigImpl(const char* pSignature) {$/;"	f
-l_printFuncSigImpl	libci.s	/^l_printFuncSigImpl:$/;"	l
 l_printGPtrArr	interposer/libciutils.c	/^void  l_printGPtrArr(gpointer key, gpointer value, gpointer user_data){$/;"	f
 l_printGPtrArr	interposer/libciutils_back.c	/^void  l_printGPtrArr(gpointer key, gpointer value, gpointer user_data){$/;"	f
 l_printGPtrArr	interposer/libciutils_orig.c	/^void  l_printGPtrArr(gpointer key, gpointer value, gpointer user_data){$/;"	f
@@ -4473,11 +4377,9 @@ l_printSymbolE	interposer/libciutils_orig.c	/^void l_printSymbolE(__cudaFatSymbo
 l_remoteInitMetThrReq	interposer/libci.c	/^int l_remoteInitMetThrReq(cuda_packet_t ** const pPacket,$/;"	f
 l_remoteInitMetThrReq	interposer/libci_back.c	/^int l_remoteInitMetThrReq(cuda_packet_t ** const pPacket,$/;"	f
 l_remoteInitMetThrReq	interposer/libci_orig.c	/^int l_remoteInitMetThrReq(cuda_packet_t ** const pPacket,$/;"	f
-l_remoteInitMetThrReq	libci.s	/^l_remoteInitMetThrReq:$/;"	l
 l_setMetThrReq	interposer/libci.c	/^int l_setMetThrReq(cuda_packet_t ** const pPacket, const uint16_t methodId){$/;"	f
 l_setMetThrReq	interposer/libci_back.c	/^int l_setMetThrReq(cuda_packet_t ** const pPacket, const uint16_t methodId){$/;"	f
 l_setMetThrReq	interposer/libci_orig.c	/^int l_setMetThrReq(cuda_packet_t ** const pPacket, const uint16_t methodId){$/;"	f
-l_setMetThrReq	libci.s	/^l_setMetThrReq:$/;"	l
 l_unpackChars	interposer/libciutils.c	/^inline char * l_unpackChars(char * pSrc, int size){$/;"	f
 l_unpackChars	interposer/libciutils_back.c	/^inline char * l_unpackChars(char * pSrc, int size){$/;"	f
 l_unpackChars	interposer/libciutils_orig.c	/^inline char * l_unpackChars(char * pSrc, int size){$/;"	f
@@ -4534,59 +4436,45 @@ launch_pending	virtmem/cuda_vmem.h	/^	int launch_pending;$/;"	m	struct:kmap_node
 lcudaConfigureCall	interposer/libci.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 lcudaConfigureCall	interposer/libci_back.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 lcudaConfigureCall	interposer/libci_orig.c	/^cudaError_t lcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
-lcudaConfigureCall	libci.s	/^lcudaConfigureCall:$/;"	l
 lcudaFree	interposer/libci.c	/^cudaError_t lcudaFree(void * devPtr) {$/;"	f
 lcudaFree	interposer/libci_back.c	/^cudaError_t lcudaFree(void * devPtr) {$/;"	f
 lcudaFree	interposer/libci_orig.c	/^cudaError_t lcudaFree(void * devPtr) {$/;"	f
-lcudaFree	libci.s	/^lcudaFree:$/;"	l
 lcudaGetDevice	interposer/libci_orig.c	/^cudaError_t lcudaGetDevice(int *device) {$/;"	f
 lcudaGetDeviceCount	interposer/libci_back.c	/^cudaError_t lcudaGetDeviceCount(int *count) {$/;"	f
 lcudaGetDeviceCount	interposer/libci_orig.c	/^cudaError_t lcudaGetDeviceCount(int *count) {$/;"	f
-lcudaGetDeviceCount	libci.s	/^lcudaGetDeviceCount:$/;"	l
 lcudaGetDeviceProperties	interposer/libci.c	/^cudaError_t lcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
 lcudaGetDeviceProperties	interposer/libci_back.c	/^cudaError_t lcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
 lcudaGetDeviceProperties	interposer/libci_orig.c	/^cudaError_t lcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
-lcudaGetDeviceProperties	libci.s	/^lcudaGetDeviceProperties:$/;"	l
 lcudaGetLastError	interposer/libci.c	/^cudaError_t lcudaGetLastError(void) {$/;"	f
 lcudaGetLastError	interposer/libci_back.c	/^cudaError_t lcudaGetLastError(void) {$/;"	f
 lcudaGetLastError	interposer/libci_orig.c	/^cudaError_t lcudaGetLastError(void) {$/;"	f
-lcudaGetLastError	libci.s	/^lcudaGetLastError:$/;"	l
 lcudaLaunch	interposer/libci.c	/^cudaError_t lcudaLaunch(const char *entry) {$/;"	f
 lcudaLaunch	interposer/libci_back.c	/^cudaError_t lcudaLaunch(const char *entry) {$/;"	f
 lcudaLaunch	interposer/libci_orig.c	/^cudaError_t lcudaLaunch(const char *entry) {$/;"	f
-lcudaLaunch	libci.s	/^lcudaLaunch:$/;"	l
 lcudaMalloc	interposer/libci.c	/^cudaError_t lcudaMalloc(void **devPtr, size_t size) {$/;"	f
 lcudaMalloc	interposer/libci_back.c	/^cudaError_t lcudaMalloc(void **devPtr, size_t size) {$/;"	f
 lcudaMalloc	interposer/libci_orig.c	/^cudaError_t lcudaMalloc(void **devPtr, size_t size) {$/;"	f
-lcudaMalloc	libci.s	/^lcudaMalloc:$/;"	l
 lcudaMemcpy	interposer/libci.c	/^cudaError_t lcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 lcudaMemcpy	interposer/libci_back.c	/^cudaError_t lcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 lcudaMemcpy	interposer/libci_orig.c	/^cudaError_t lcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
-lcudaMemcpy	libci.s	/^lcudaMemcpy:$/;"	l
 lcudaMemcpyFromSymbol	interposer/libci.c	/^cudaError_t lcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 lcudaMemcpyFromSymbol	interposer/libci_back.c	/^cudaError_t lcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 lcudaMemcpyFromSymbol	interposer/libci_orig.c	/^cudaError_t lcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
-lcudaMemcpyFromSymbol	libci.s	/^lcudaMemcpyFromSymbol:$/;"	l
 lcudaMemcpyToSymbol	interposer/libci.c	/^cudaError_t lcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 lcudaMemcpyToSymbol	interposer/libci_back.c	/^cudaError_t lcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 lcudaMemcpyToSymbol	interposer/libci_orig.c	/^cudaError_t lcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
-lcudaMemcpyToSymbol	libci.s	/^lcudaMemcpyToSymbol:$/;"	l
 lcudaSetDevice	interposer/libci.c	/^cudaError_t lcudaSetDevice(int device) {$/;"	f
 lcudaSetDevice	interposer/libci_back.c	/^cudaError_t lcudaSetDevice(int device) {$/;"	f
 lcudaSetDevice	interposer/libci_orig.c	/^cudaError_t lcudaSetDevice(int device) {$/;"	f
-lcudaSetDevice	libci.s	/^lcudaSetDevice:$/;"	l
 lcudaSetupArgument	interposer/libci.c	/^cudaError_t lcudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
 lcudaSetupArgument	interposer/libci_back.c	/^cudaError_t lcudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
 lcudaSetupArgument	interposer/libci_orig.c	/^cudaError_t lcudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
-lcudaSetupArgument	libci.s	/^lcudaSetupArgument:$/;"	l
 lcudaThreadExit	interposer/libci.c	/^cudaError_t lcudaThreadExit(void) {$/;"	f
 lcudaThreadExit	interposer/libci_back.c	/^cudaError_t lcudaThreadExit(void) {$/;"	f
 lcudaThreadExit	interposer/libci_orig.c	/^cudaError_t lcudaThreadExit(void) {$/;"	f
-lcudaThreadExit	libci.s	/^lcudaThreadExit:$/;"	l
 lcudaThreadSynchronize	interposer/libci.c	/^cudaError_t lcudaThreadSynchronize(void) {$/;"	f
 lcudaThreadSynchronize	interposer/libci_back.c	/^cudaError_t lcudaThreadSynchronize(void) {$/;"	f
 lcudaThreadSynchronize	interposer/libci_orig.c	/^cudaError_t lcudaThreadSynchronize(void) {$/;"	f
-lcudaThreadSynchronize	libci.s	/^lcudaThreadSynchronize:$/;"	l
 length	include/cudaFatBinary.h	/^    unsigned long long int  length;$/;"	m	struct:__cudaFatCudaBinary2HeaderRec
 listen_thread	backend/scheduler.c	/^void* listen_thread(void *thid)$/;"	f
 listen_thread	l2scheduler/cfs_scheduler.c	/^void* listen_thread(void *thid)$/;"	f
@@ -4808,7 +4696,6 @@ p	interposer/libciutils.h	/^	int * p;$/;"	m	struct:__anon6
 pFatBinaryHandle	interposer/libci.c	/^void** pFatBinaryHandle = NULL;$/;"	v
 pFatBinaryHandle	interposer/libci_back.c	/^void** pFatBinaryHandle = NULL;$/;"	v
 pFatBinaryHandle	interposer/libci_orig.c	/^void** pFatBinaryHandle = NULL;$/;"	v
-pFatBinaryHandle	libci.s	/^pFatBinaryHandle:$/;"	l
 pFunc	interposer/libci.s	/^  pFunc = (pFuncType) dlsym(((void *) -1l), "__cudaRegisterFunction");$/;"	d
 pFunc	interposer/libci.s	/^  pFunc = (pFuncType) dlsym(((void *) -1l), "__cudaRegisterShared");$/;"	d
 pFunc	interposer/libci.s	/^  pFunc = (pFuncType) dlsym(((void *) -1l), "__cudaRegisterTexture");$/;"	d
@@ -4959,83 +4846,66 @@ r	cuda-app/particle.h	/^    float r;$/;"	m	struct:Particle
 r__cudaRegisterFatBinary	interposer/libci.c	/^void** r__cudaRegisterFatBinary(void* fatC, int index){$/;"	f
 r__cudaRegisterFatBinary	interposer/libci_back.c	/^void** r__cudaRegisterFatBinary(void* fatC, int index){$/;"	f
 r__cudaRegisterFatBinary	interposer/libci_orig.c	/^void** r__cudaRegisterFatBinary(void* fatC){$/;"	f
-r__cudaRegisterFatBinary	libci.s	/^r__cudaRegisterFatBinary:$/;"	l
 r__cudaRegisterFatBinary_4	interposer/libci.c	/^void** r__cudaRegisterFatBinary_4(void* fatC, int index){$/;"	f
 r__cudaRegisterFunction	interposer/libci.c	/^void r__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 r__cudaRegisterFunction	interposer/libci_back.c	/^void r__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
 r__cudaRegisterFunction	interposer/libci_orig.c	/^void r__cudaRegisterFunction(void** fatCubinHandle, const char* hostFun,$/;"	f
-r__cudaRegisterFunction	libci.s	/^r__cudaRegisterFunction:$/;"	l
 r__cudaRegisterVar	interposer/libci.c	/^void r__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 r__cudaRegisterVar	interposer/libci_back.c	/^void r__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
 r__cudaRegisterVar	interposer/libci_orig.c	/^void r__cudaRegisterVar(void **fatCubinHandle, char *hostVar,$/;"	f
-r__cudaRegisterVar	libci.s	/^r__cudaRegisterVar:$/;"	l
 r__cudaUnregisterFatBinary	interposer/libci.c	/^void r__cudaUnregisterFatBinary(void** fatCubinHandle, int index) {$/;"	f
 r__cudaUnregisterFatBinary	interposer/libci_back.c	/^void r__cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
 r__cudaUnregisterFatBinary	interposer/libci_orig.c	/^void r__cudaUnregisterFatBinary(void** fatCubinHandle) {$/;"	f
-r__cudaUnregisterFatBinary	libci.s	/^r__cudaUnregisterFatBinary:$/;"	l
 r__cudaUnregisterFatBinary2	interposer/libci.c	/^void r__cudaUnregisterFatBinary2(void** fatCubinHandle, int index) {$/;"	f
 rank	doxydoc/html/search.php	/^      $rank=$di["rank"];$/;"	v
 rcudaConfigureCall	interposer/libci.c	/^cudaError_t rcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 rcudaConfigureCall	interposer/libci_back.c	/^cudaError_t rcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
 rcudaConfigureCall	interposer/libci_orig.c	/^cudaError_t rcudaConfigureCall(dim3 gridDim, dim3 blockDim,$/;"	f
-rcudaConfigureCall	libci.s	/^rcudaConfigureCall:$/;"	l
 rcudaFree	interposer/libci.c	/^cudaError_t rcudaFree(void * devPtr, int index) {$/;"	f
 rcudaFree	interposer/libci_back.c	/^cudaError_t rcudaFree(void * devPtr, int index) {$/;"	f
 rcudaFree	interposer/libci_orig.c	/^cudaError_t rcudaFree(void * devPtr) {$/;"	f
-rcudaFree	libci.s	/^rcudaFree:$/;"	l
 rcudaGetDevice	interposer/libci.c	/^cudaError_t rcudaGetDevice(int *device, int index, int node_id) { $/;"	f
 rcudaGetDevice	interposer/libci_orig.c	/^cudaError_t rcudaGetDevice(int *device) {$/;"	f
 rcudaGetDeviceCount	interposer/libci.c	/^cudaError_t rcudaGetDeviceCount(int *count, int index) {$/;"	f
 rcudaGetDeviceCount	interposer/libci_back.c	/^cudaError_t rcudaGetDeviceCount(int *count) {$/;"	f
 rcudaGetDeviceCount	interposer/libci_orig.c	/^cudaError_t rcudaGetDeviceCount(int *count) {$/;"	f
-rcudaGetDeviceCount	libci.s	/^rcudaGetDeviceCount:$/;"	l
 rcudaGetDeviceProperties	interposer/libci.c	/^cudaError_t rcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device, int index) {$/;"	f
 rcudaGetDeviceProperties	interposer/libci_back.c	/^cudaError_t rcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
 rcudaGetDeviceProperties	interposer/libci_orig.c	/^cudaError_t rcudaGetDeviceProperties(struct cudaDeviceProp *prop, int device) {$/;"	f
-rcudaGetDeviceProperties	libci.s	/^rcudaGetDeviceProperties:$/;"	l
 rcudaGetLastError	interposer/libci.c	/^cudaError_t rcudaGetLastError(void) {$/;"	f
 rcudaGetLastError	interposer/libci_back.c	/^cudaError_t rcudaGetLastError(void) {$/;"	f
 rcudaGetLastError	interposer/libci_orig.c	/^cudaError_t rcudaGetLastError(void) {$/;"	f
-rcudaGetLastError	libci.s	/^rcudaGetLastError:$/;"	l
 rcudaLaunch	interposer/libci.c	/^cudaError_t rcudaLaunch(const char *entry, int index) {$/;"	f
 rcudaLaunch	interposer/libci_back.c	/^cudaError_t rcudaLaunch(const char *entry, int index) {$/;"	f
 rcudaLaunch	interposer/libci_orig.c	/^cudaError_t rcudaLaunch(const char *entry) {$/;"	f
-rcudaLaunch	libci.s	/^rcudaLaunch:$/;"	l
 rcudaMalloc	interposer/libci.c	/^cudaError_t rcudaMalloc(void **devPtr, size_t size, int index) {$/;"	f
 rcudaMalloc	interposer/libci_back.c	/^cudaError_t rcudaMalloc(void **devPtr, size_t size, int index) {$/;"	f
 rcudaMalloc	interposer/libci_orig.c	/^cudaError_t rcudaMalloc(void **devPtr, size_t size) {$/;"	f
-rcudaMalloc	libci.s	/^rcudaMalloc:$/;"	l
 rcudaMemcpy	interposer/libci.c	/^cudaError_t rcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 rcudaMemcpy	interposer/libci_back.c	/^cudaError_t rcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
 rcudaMemcpy	interposer/libci_orig.c	/^cudaError_t rcudaMemcpy(void *dst, const void *src, size_t count,$/;"	f
-rcudaMemcpy	libci.s	/^rcudaMemcpy:$/;"	l
 rcudaMemcpyFromSymbol	interposer/libci.c	/^cudaError_t rcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 rcudaMemcpyFromSymbol	interposer/libci_back.c	/^cudaError_t rcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
 rcudaMemcpyFromSymbol	interposer/libci_orig.c	/^cudaError_t rcudaMemcpyFromSymbol(void *dst, const char *symbol,$/;"	f
-rcudaMemcpyFromSymbol	libci.s	/^rcudaMemcpyFromSymbol:$/;"	l
 rcudaMemcpyToSymbol	interposer/libci.c	/^cudaError_t rcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 rcudaMemcpyToSymbol	interposer/libci_back.c	/^cudaError_t rcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
 rcudaMemcpyToSymbol	interposer/libci_orig.c	/^cudaError_t rcudaMemcpyToSymbol(const char *symbol, const void *src,$/;"	f
-rcudaMemcpyToSymbol	libci.s	/^rcudaMemcpyToSymbol:$/;"	l
 rcudaSetDevice	interposer/libci.c	/^cudaError_t rcudaSetDevice(int device, int index, int isLocal) {$/;"	f
 rcudaSetDevice	interposer/libci_back.c	/^cudaError_t rcudaSetDevice(int device, int index) {$/;"	f
 rcudaSetDevice	interposer/libci_orig.c	/^cudaError_t rcudaSetDevice(int device) {$/;"	f
-rcudaSetDevice	libci.s	/^rcudaSetDevice:$/;"	l
 rcudaSetupArgument	interposer/libci.c	/^cudaError_t rcudaSetupArgument(const void *arg, size_t size, size_t offset, int index) {$/;"	f
 rcudaSetupArgument	interposer/libci_back.c	/^cudaError_t rcudaSetupArgument(const void *arg, size_t size, size_t offset, int index) {$/;"	f
 rcudaSetupArgument	interposer/libci_orig.c	/^cudaError_t rcudaSetupArgument(const void *arg, size_t size, size_t offset) {$/;"	f
-rcudaSetupArgument	libci.s	/^rcudaSetupArgument:$/;"	l
 rcudaThreadExit	interposer/libci.c	/^cudaError_t rcudaThreadExit(int index) {$/;"	f
 rcudaThreadExit	interposer/libci_back.c	/^cudaError_t rcudaThreadExit(void) {$/;"	f
 rcudaThreadExit	interposer/libci_orig.c	/^cudaError_t rcudaThreadExit(void) {$/;"	f
-rcudaThreadExit	libci.s	/^rcudaThreadExit:$/;"	l
 rcudaThreadSynchronize	interposer/libci.c	/^cudaError_t rcudaThreadSynchronize(int index){$/;"	f
 rcudaThreadSynchronize	interposer/libci_back.c	/^cudaError_t rcudaThreadSynchronize(int index){$/;"	f
 rcudaThreadSynchronize	interposer/libci_orig.c	/^cudaError_t rcudaThreadSynchronize(void){$/;"	f
-rcudaThreadSynchronize	libci.s	/^rcudaThreadSynchronize:$/;"	l
 readHeader	doxydoc/html/search.php	/^function readHeader($file)$/;"	f
 readInt	doxydoc/html/search.php	/^function readInt($file)$/;"	f
 readString	doxydoc/html/search.php	/^function readString($file)$/;"	f
+redirection_handler	l2scheduler/fair_share_sched.c	/^void redirection_handler(int n, siginfo_t* info, void* k)$/;"	f
 ref	include/packetheader.h	/^	uint32_t ref;       \/\/ need to maintain grant ref for ending foreign access$/;"	m	struct:tf_arg
 regHostVarsTab	interposer/libci.c	/^static GHashTable * regHostVarsTab = NULL;$/;"	v	file:
 regHostVarsTab	interposer/libci.s	/^   regHostVarsTab = ((void *)0);$/;"	d
@@ -5050,6 +4920,7 @@ reg_texs	include/packetheader.h	/^	reg_tex_args_t *reg_texs;$/;"	m	union:args
 reg_var_args_t	include/packetheader.h	/^} reg_var_args_t;$/;"	t	typeref:struct:__anon2
 reg_vars	include/packetheader.h	/^	reg_var_args_t *reg_vars;$/;"	m	union:args
 register_handler	backend/libcfsscheduler.c	/^int register_handler(int signum)$/;"	f
+register_handlers	l2scheduler/l2scheduler.c	/^void register_handlers()$/;"	f
 register_process	backend/scheduler.c	/^void register_process(pid_t process_id, int signum, unsigned long share_unit)$/;"	f
 register_process	l2scheduler/cfs_scheduler.c	/^void register_process(pid_t process_id, int signum, unsigned long share_unit)$/;"	f
 rem_queue	backend/libcfsscheduler.c	/^int rem_queue(pid_t process_id)$/;"	f
@@ -5084,6 +4955,7 @@ ret_extra	include/packetheader.h	/^typedef union ret_extra {$/;"	u
 ret_extra_t	include/packetheader.h	/^} ret_extra_t;$/;"	t	typeref:union:ret_extra
 rpkt_t	remote/remote_packet_types.h	/^typedef cuda_packet_t rpkt_t;$/;"	t
 rpkts	remote/remote_packet_types.h	/^    rpkt_t rpkts[MAX_REMOTE_BATCH_SIZE];$/;"	m	struct:remote_packet_stream
+sched_index_mut	l2scheduler/sched_commons.c	/^pthread_mutex_t sched_index_mut = PTHREAD_MUTEX_INITIALIZER;$/;"	v
 scheduler_data	backend/scheduler.c	/^}scheduler_data;$/;"	t	typeref:struct:_scheduler_datastructure	file:
 scheduler_data	l2scheduler/cfs_scheduler.h	/^}scheduler_data;$/;"	t	typeref:struct:_scheduler_datastructure
 scheduler_data	l2scheduler/sched_commons.h	/^}scheduler_data;$/;"	t	typeref:struct:_scheduler_datastructure
@@ -5098,7 +4970,7 @@ semid	backend/libtruefairshare.c	/^int semid;$/;"	v
 semid	backend/scheduler.c	/^int semid;$/;"	v
 semid	l2scheduler/cfs_scheduler.c	/^int semid;$/;"	v
 semid	l2scheduler/fair_share_sched.c	/^int semid;$/;"	v
-semid	l2scheduler/sched_commons.c	/^int semid;$/;"	v
+semid	l2scheduler/sched_commons.c	/^int semid, gmt_semid;$/;"	v
 sends_l2_feedback	l2scheduler/sched_commons.h	/^	int sends_l2_feedback[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 share_unit	backend/scheduler.c	/^	unsigned long share_unit;$/;"	m	struct:_process_credit_data	file:
 share_unit	backend/scheduler.c	/^	unsigned long share_unit[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure	file:
@@ -5117,6 +4989,8 @@ signal_num	backend/scheduler.c	/^	int signal_num[MAX_CONTROLLER_COUNT];$/;"	m	st
 signal_num	l2scheduler/cfs_scheduler.h	/^	int signal_num[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 signal_num	l2scheduler/sched_commons.h	/^	int signal_num[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 signo	include/packetheader.h	/^	int signo;$/;"	m	struct:cuda_packet
+sigschedulehandler	backend/libl2scheduler.c	/^void sigschedulehandler(int signo)$/;"	f
+sigschedulehandler	backend/libtruefairshare.c	/^void sigschedulehandler(int signo)$/;"	f
 size	include/packetheader.h	/^	int size;$/;"	m	struct:__anon2
 size	include/packetheader.h	/^	uint16_t size;      \/\/ size from offset, if it goes beyond a page,$/;"	m	struct:tf_arg
 size	interposer/libciutils.h	/^	int size;$/;"	m	struct:__anon6
@@ -5135,6 +5009,7 @@ start_pager	l2scheduler/pager.c	/^void start_pager()$/;"	f
 start_scheduler	l2scheduler/cfs_scheduler.c	/^int start_scheduler()$/;"	f
 statIdx	doxydoc/html/search.php	/^        $statIdx = readInt($file);$/;"	v
 statInfo	doxydoc/html/search.php	/^        $statInfo = &$statsList[$count];$/;"	v
+state	l2scheduler/sched_commons.h	/^	int state[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 static	interposer/libci.s	/^static GHashTable * regHostVarsTab = ((void *)0);$/;"	l
 static	interposer/libci.s	/^static cudaError_t cudaErrorDL = cudaErrorUnknown;$/;"	l
 static	interposer/libci.s	/^static cudaError_t cuda_err = 0;$/;"	l
@@ -5686,7 +5561,6 @@ usr_time	remote/remote_api_wrapper_3dec.c	/^float usr_time[2][4] = { {0} };$/;"	
 v	cuda-app/particle.h	/^    Vec3 v;$/;"	m	struct:Particle
 v	doxydoc/html/search.php	/^  \/\/  $v = (($v & 0xfc00) ^ ($v << 6) ^ $c) & 0xffff;$/;"	v
 valid	l2scheduler/cfs_scheduler.h	/^	int valid[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
-valid	l2scheduler/sched_commons.h	/^	int valid[MAX_CONTROLLER_COUNT];$/;"	m	struct:_scheduler_datastructure
 valid	remote/connection.h	/^    int                 valid;      \/\/ true if this structure is associated with a live connection$/;"	m	struct:connection
 valid	virtmem/cuda_vmem.h	/^	int valid;$/;"	m	struct:kmap_node
 valid	virtmem/cuda_vmem.h	/^	int valid;$/;"	m	struct:mem_map

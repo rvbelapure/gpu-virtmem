@@ -7,7 +7,7 @@ pthread_mutex_t map_mut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t sched_index_mut = PTHREAD_MUTEX_INITIALIZER;
 pthread_rwlock_t las_lock = PTHREAD_RWLOCK_INITIALIZER;
-int semid;
+int semid, gmt_semid;
 FILE *map_file;
 
 int node_id = IFRIT_ID;

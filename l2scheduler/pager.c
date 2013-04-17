@@ -48,6 +48,9 @@ void start_pager()
 
 	gmt_table = (struct mem_map *) shmat(shmid, NULL, SHM_R | SHM_W);
 	gmt_index = (int *) shmat(shmindex, NULL, SHM_R | SHM_W);
+
+	mem_map_init(&gmt_table);
+	*gmt_index = 0;
 	
 	// TODO : Add cleanup later
 /*	struct sigaction act;
@@ -69,6 +72,16 @@ void start_pager()
 
 void * pager_thread(void *arg)
 {
+	mkfifo(PAGER_LISTEN_PATH, 0666);
+	int listen_fifo = open(PAGER_LISTEN_PATH, O_RDWR);
+
+        struct timespec sl;
+        sl.tv_nsec = 1000;
+        sl.tv_sec = 0;
+
+	int status;
 	while(1)
-		sleep(1);
+	{
+		nanosleep(&sl, NULL);		// Just to make sure it doesn't hog cpu
+	}
 }

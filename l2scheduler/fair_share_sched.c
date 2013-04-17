@@ -165,7 +165,7 @@ void* fs_listen_thread(void *thid)
 				if((pcd.pid == Scheduler_Data.process_list[i]) && (*gpuid == Scheduler_Data.gpu_binding[i]))
 				{
 					Scheduler_Data.process_list[i] = INVALID_PROCEESS;
-					Scheduler_Data.valid[i] = 0;
+					Scheduler_Data.state[i] = PROC_INACTIVE;
 					break;
 				}
 			} 

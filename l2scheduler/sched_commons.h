@@ -26,12 +26,14 @@
 #define CLIENT_SIGGET_PATH  "/tmp/gpu-dipanjan/GPU_SIGNUM_"
 #define SCHED_DEF_FILE_PATH "/tmp/gpu-dipanjan/l2sched_mapping.txt"
 #define SCHED_PID_FILE_PATH "/tmp/gpu-dipanjan/l2sched_pid.txt"
+#define PAGER_LISTEN_PATH   "/tmp/gpu-dipanjan/GPU_PAGER_LISTEN"
 
 #define SEMKEYPATH "/dev/null"  /* Path used on ftok for semget key  */
 #define SEMKEYID 1              /* Id used on ftok for semget key    */
 #define GMT_KEYID 2		/* Id for sem on GMT */
 #define GMT_SHM_KEY 3
 #define GMT_SHM_INDEX_KEY 4
+#define PAGER_FIFO_SEM_KEY	/* key used to get sem for writing in pager fifo */
 
 #define ADD_Q 10
 #define REM_Q 11
