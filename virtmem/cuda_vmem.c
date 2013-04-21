@@ -1,43 +1,136 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <cuda.h>
+#include <cuda_runtime_api.h>
 #include "cuda_vmem.h"
+#include "method_id.h"
 
 /* Initialize memory map. */
-void mem_map_init(struct mem_map ** table)
+void mem_map_init(struct mem_map ** table, int size)
 {
 	fprintf(stderr,"VMEM vmem system initialized\n");
-	*table = NULL;
+	for(int i = 0 ; i < size ; i++)
+	{
+		*table[i]->valid = 0;
+		*table[i]->devptr = NULL;
+		*table[i]->actual_devptr = NULL;
+		*table[i]->swap = NULL;
+		*table[i]->handle = i;
+		*table[i]->size = 0;
+		*table[i]->status = D_NOALLOC;
+	}
 }
 
-/* This creates an entry in the memory map for each device pointer. */
-void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size)
+/* This creates an entry in the memory map for each device pointer at given index in the table. */
+int mem_map_creat(struct mem_map ** table, void ** devptr, size_t size, int index)
 {
-	struct mem_map *new_node = (struct mem_map *) malloc(sizeof(struct mem_map));
-	new_node->devptr = (void **) malloc(sizeof(void *));
-	new_node->actual_devptr = (void **) malloc(sizeof(void *));
-	*(new_node->devptr) = *devptr;
-	*(new_node->actual_devptr) = *devptr;
-	new_node->swap = (void *) malloc(size);
-	new_node->status = D_INIT;
-	new_node->size = size;
-	new_node->next = NULL;
-
-	fprintf(stderr,"VMEM new vmem entry, devptr = %p\n",*devptr);
-
-	if(*table == NULL)
-		*table = new_node;
+	struct mem_map *new_node = table[index];
+	if(cudaMalloc(&new_node->actual_devptr, size) == cudaSuccess)
+		new_node->status = D_INIT;
 	else
 	{
-		struct mem_map * iter = *table;
-		while(iter->next)
-			iter = iter->next;
-		iter->next = new_node;
+		new_node->status = D_NOALLOC;
+		new_node->actual_devptr = NULL;
+	}
+	new_node->swap = (void *) malloc(size);
+	new_node->size = size;
+	devptr = (void **) malloc(sizeof(int *));
+	*devptr = &new_node->handle;
+	new_node->valid = 1;
+
+	fprintf(stderr,"VMEM new vmem entry, devptr = %p\n",*devptr);
+}
+
+/* Delete a row in the memory map */
+void mem_map_delete(struct mem_map ** table, int index)
+{
+	struct mem_map *node = table[i];
+
+	if(node->actual_devptr)
+		cudaFree(node->actual_devptr);
+
+	if(node->swap)
+		free(node->swap);
+
+	node->actual_devptr = NULL;
+	node->swap = NULL;
+	node->size = 0;
+	node->status = D_NOALLOC;
+	node->valid = 0;
+}
+
+/* Searches the entries at all given indexes and returns the index if the entry matches */
+int mem_map_find_entry(struct mem_map ** table, int *indexes, int len, void * devptr)
+{
+	struct mem_map *node;
+	for(int i = 0 ; i < len ; i++)
+	{
+		if((indexes[i] >= 0) && (devptr != NULL) && (devptr == &table[(indexes[i])]->handle))
+			return i;
+	}
+	return -1;
+}
+
+/* memcpy : H2D, D2H */
+void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src, int size, int type)
+{
+	struct mem_map *node = table[index];
+	switch(type)
+	{
+		case CUDA_MEMCPY_H2D:
+			/* dest is actually ptr to handle, src has data */
+			memcpy(node->swap, src, size);
+			switch(node->status)
+			{
+				case D_INIT:
+				case D_READY:
+				case D_MODIFIED:
+					cudaMemcpy(node->actual_devptr, node->swap, size, cudaMemcpyHostToDevice);
+					node->status = D_READY;
+					break;
+				case D_NOALLOC:
+				case D_MEMWAIT:
+					node->status = D_MEMWAIT;
+					break;
+				case D_DEFERRED:
+					node->status = D_DEFERRED;
+					break;
+				default:
+			}
+			break;
+		case CUDA_MEMCPY_D2H:
+			/* dest is a host ptr. actual_devptr or swap has data depending on state */
+			switch(node->status)
+			{
+				case D_NOALLOC:
+				case D_INIT:
+					break;
+				case D_READY:
+				case D_MODIFIED:
+					cudaMemcpy(node->swap, node->actual_devptr, size, cudaMemcpyDeviceToHost);
+					memcpy(dest, node->swap, size);
+					node->status = D_READY;
+					break;
+				case D_MEMWAIT:
+					memcpy(dest, node->swap, size);
+					node->status = D_MEMWAIT;
+					break;
+				case D_DEFERRED:
+					memcpy(dest, node->swap, size);
+					node->status = D_DEFERRED;
+					break;
+				default:
+
+			}
+			break;
+		default:
 	}
 }
 
 /* Returns the status of the device memory pointed by devptr
  * according to enum vmem_status */
+ // TODO : Fix
 int mem_map_get_status(struct mem_map ** table, void ** devptr)
 {
 	fprintf(stderr,"VMEM in get status, devptr = %p\n",*devptr);
@@ -55,122 +148,6 @@ int mem_map_get_status(struct mem_map ** table, void ** devptr)
 	}
 	return -1;
 }
-
-/* Update the status of memory pointed by devptr */
-void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status)
-{
-	if(*table == NULL)
-		return;
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		if(*(iter->devptr) == *devptr)
-		{
-			iter->status = status;
-			break;
-		}
-		iter = iter->next;
-	}
-}
-
-/* Should be called when host to device memcpy is initialized by the program.
- * Stores the data being sent to the device in the swap area of virtual memory system */
-void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size)
-{
-
-	fprintf(stderr,"VMEM update data called, devptr = %p\n",*devptr);
-	if(*table == NULL)
-		return;
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		if(*(iter->devptr) == *devptr)
-		{
-			memcpy(iter->swap, src, size);
-			fprintf(stderr,"VMEM updated data, devptr = %p\n",*devptr);
-			break;
-		}
-		iter = iter->next;
-	}
-
-}
-
-/* Get translation from devptr to actual_devptr.
- * The program knows devptr. But the actual device pointer might be different due
- * to the extra virtual memory abstaction layer */
-void ** mem_map_get_actual_devptr(struct mem_map ** table, void ** devptr)
-{
-	fprintf(stderr, "VMEM Searching actual device ptrs...\n");
-	if(*table == NULL)
-		return NULL;
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		fprintf(stderr,"VMEM %p == %p ?\n",*(iter->devptr), *devptr);
-		if(*(iter->devptr) == *devptr)
-			return iter->actual_devptr;
-		iter = iter->next;
-	}
-	return NULL;
-}
-
-/* Delete a row in the memory map */
-void mem_map_delete(struct mem_map ** table, void **devptr)
-{
-	if(*table == NULL)
-		return;
-	
-	struct mem_map * iter = *table, *prev;
-
-	while(iter)
-	{
-		if(*(iter->devptr) == *devptr)
-		{
-			if(iter == *table)
-				*table = iter->next;
-			else
-				prev->next = iter->next;
-
-			free(iter->devptr);
-			free(iter->actual_devptr);
-			free(iter->swap);
-			free(iter);
-			break;
-		}
-		prev = iter;
-		iter = iter->next;
-	}
-}
-
-/* Returns pointer to the row of memory map, identified by devptr */
-struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr)
-{
-	if(*table == NULL)
-		return NULL;
-	
-	struct mem_map * iter = *table;
-
-	while(iter)
-	{
-		if(*(iter->devptr) == *devptr)
-			return iter;
-		iter = iter->next;
-	}
-	return NULL;
-}
-
-/* Print complete memory map */
-void mem_map_print(struct mem_map ** table) /* sample test method */
-{
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		fprintf(stderr,"VMEM devptr = %p, actual devptr = %p, status = %d, size = %d, swap = %p\n",
-				*(iter->devptr),*iter->actual_devptr,iter->status,iter->size,iter->swap);
-		iter = iter->next;
-	}
-}
-
 
 /* ===================================================================================*/
 

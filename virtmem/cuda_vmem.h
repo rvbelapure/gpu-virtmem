@@ -14,25 +14,24 @@
 
 enum vmem_status
 {
-	D_INIT,		// device mem is malloc'ed, but no data available on either device or with vmem system
+	D_NOALLOC,	// device mem not allocated, no data available
+	D_INIT,		// device mem allocated, but no data available on either device or with vmem system
 	D_READY,	// device mem allocated and data copied on device, in sync with vmem system - cudaLaunch allowed
 	D_MODIFIED,	// device mem allocated, data present on device, but may be out of sync with vmem system - cudaLaunch allowed
-	D_IDLE,		// device mem allowed, data on device and host, may be out of sync, kernel execution complete
-	D_MEMWAIT,	// device mem is not allocated. But data exists with vmem system. - must call host2device copy before cudaLaunch
+//	D_IDLE,		// device mem allocated, data on device and host, may be out of sync, kernel execution complete
+	D_MEMWAIT,	// device mem not allocated. But data exists with vmem system. - must call host2device copy before cudaLaunch
 	D_DEFERRED	// device mem not allocated & can not allocate, data with vmem system, cudaLaunch request received
 
 };
 
 struct mem_map
 {
-	int valid;
-	int handle;
-	void ** devptr;
-	void ** actual_devptr;
-	void * swap;
-	enum vmem_status status;
-	size_t size;
-	struct mem_map *next;
+	int valid;			// if the entry is valid
+	int handle;			// return address of this as a devptr to application
+	void * actual_devptr;		// actual devptr
+	void * swap;			// host swap space
+	size_t size;			// size of the requested memory
+	enum vmem_status status;	// takes one of the values in enum vmem_status
 };
 
 
@@ -75,11 +74,15 @@ struct kmap
 };
 
 void mem_map_init(struct mem_map ** table);
-void mem_map_get_next_index(struct mem_map **table, struct *global_index);
 void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size);
+void mem_map_delete(struct mem_map ** table, void **devptr);
+int mem_map_find_entry(struct mem_map ** table, int *indexes, int len, void * devptr);
+void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src, int size, int type);
+
+
+void mem_map_get_next_index(struct mem_map **table, struct *global_index);
 int mem_map_get_status(struct mem_map ** table, void ** devptr);
 void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status);
-void mem_map_delete(struct mem_map ** table, void **devptr);
 void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size);
 void ** mem_map_get_actual_devptr(struct mem_map ** table, void **devptr);
 struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr);

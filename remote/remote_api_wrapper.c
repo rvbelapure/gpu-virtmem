@@ -1087,14 +1087,27 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	// a kind of 'host' memory on the remote side. Need to return to this
 	// issue later
 	
+
+
+	#ifdef PAGER
+
 	int semid;
 	if((semid = semget(ftok(SEMKEYPATH, GMT_KEYID), 1, 0666)) == -1) {
 		perror("semget failed");
 	        return -1;
 	}
 
-	printf("\nbefore devPtr %p, *devPtr %p, size %ld\n",
-			&(packet->args[0].argp), packet->args[0].argp, packet->args[1].argi);
+	P(semid);
+	int myindex = *vmap_index;
+	(*vmap_index)++;
+	V(semid);
+	mem_map_creat((struct mem_map **) packet->vmmap,
+		&(packet->args[0].argp), packet->args[1].argi, myindex);
+	vmapped_local_arr[localindex++] = myindex;
+	packet->ret_ex_val.err = cudaSuccess;
+
+	#else
+
 	packet->args[0].argp = NULL;
 	packet->ret_ex_val.err = cudaMalloc(&(packet->args[0].argp),
 			packet->args[1].argi);
@@ -1106,23 +1119,36 @@ int nvbackCudaMalloc_srv(cuda_packet_t * packet, conn_t * pConn) {
 	p_debug( "CUDA_ERROR=%d for method id=%d after execution\n",
 			packet->ret_ex_val.err, packet->method_id);
 
-	int i;
-	P(semid);
-	int myindex = *vmap_index;
-	(*vmap_index)++;
-	V(semid);
-	mem_map_creat((struct mem_map **) packet->vmmap,&(packet->args[0].argp),packet->args[1].argi);		// TODO : create at myindex
-	vmapped_local_arr[localindex++] = myindex;
+	#endif
 
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
 
 int nvbackCudaFree_srv(cuda_packet_t *packet, conn_t *pConn) {
+
+	#ifdef PAGER
+
+	/* Search for element using vmapped_local_arr to make searches faster */
+	int id = mem_map_find_entry((struct mem_map **) packet->vmmap, vmapped_local_arr, localindex, packet->args[0].argp);
+	if(id > 0)
+	{
+		mem_map_delete((struct mem_map **) packet->vmmap, vmapped_local_arr[id]);
+		packet->ret_ex_val.err = cudaSuccess;
+		vmapped_local_arr[id] = -1;
+	}
+	else
+	{
+		fprintf(stderr, "nvbackCudaFree_srv ---> can not find devptr in local index list\n");
+	}
+
+	#else
+
 	p_debug("devPtr is %p\n",packet->args[0].argp);
 	packet->ret_ex_val.err = cudaFree(packet->args[0].argp);
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
-	if(packet->ret_ex_val.err == 0)
-		mem_map_delete((struct mem_map **) packet->vmmap,&(packet->args[0].argp));
+
+	#endif
+
 	return (packet->ret_ex_val.err == 0) ? OK : ERROR;
 }
 
@@ -1272,20 +1298,30 @@ int nvbackCudaMemcpy_srv(cuda_packet_t *packet, conn_t * pConn) {
 		break;
 	}
 
+	#ifdef PAGER
+	
+	int id;
+	if(packet->method_id == CUDA_MEMCPY_H2D)
+		id = mem_map_find_entry((struct mem_map **) packet->vmmap, vmapped_local_arr, localindex, (void *) packet->args[0].argui);
+	else if(packet->method_id == CUDA_MEMCPY_D2H)
+		id = mem_map_find_entry((struct mem_map **) packet->vmmap, vmapped_local_arr, localindex, (void *) packet->args[1].argui);
+	
+	// TODO : CUDA_MEMCPY_D2D is not yet supported by vmem
+
+	mem_map_memcpy((struct mem_map **) packet->vmmap, vmapped_local_arr[id], 
+		(void *) packet->args[0].argui, (void *) packet->args[1].argui, packet->args[2].argi, packet->method_id);
+	packet->ret_ex_val.err = cudaSuccess;
+
+	#else
+
 	packet->ret_ex_val.err = cudaMemcpy((void *) packet->args[0].argui,
 			(void *) packet->args[1].argui, packet->args[2].argi,
 			packet->args[3].argi);
 
+	#endif
+
 	p_info( "CUDA_ERROR=%d (%s) for method id=%d\n", packet->ret_ex_val.err,
 			cudaGetErrorString(packet->ret_ex_val.err), packet->method_id);
-	//GVirt code	
-	switch(packet->method_id)
-	{
-		case CUDA_MEMCPY_H2D:
-			mem_map_update_data((struct mem_map **) packet->vmmap,(void **) &(packet->args[0].argui), (void *) packet->args[1].argui,packet->args[2].argi);
-			mem_map_update_status((struct mem_map **) packet->vmmap, (void **) &(packet->args[0].argui), D_READY);
-			break;
-	}
 
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
