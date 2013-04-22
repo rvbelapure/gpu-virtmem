@@ -46,6 +46,15 @@ void redirection_handler(int n, siginfo_t* info, void* k)
 	pthread_sigqueue(&thIDs[idx],SIGRTMIN,data);
 }
 
+void redirection_handler2(int n, siginfo_t* info, void* k)
+{
+	int gpuid;
+	union sigval data = info->si_value;
+	gpuid = data.sival_int;
+	int idx = (2 * gpuid) + 1;
+	pthread_sigqueue(&thIDs[idx],(SIGRTMAX - 2),data);
+}
+
 /*
 int cpu_bind(const unsigned short cpu) 
 { 
@@ -210,7 +219,7 @@ void* fs_control_thread(void *attr)
 	int * bound_to_gpu = (int *)attr;
 	sigemptyset(&set);
 	sigaddset(&set, SIGRTMIN);
-
+	sigaddset(&set, (SIGRTMAX - 2));
 	sigprocmask(SIG_BLOCK, &set);
 
 	printf("CFSCHED Inside control thread\n");
@@ -277,6 +286,11 @@ void* fs_control_thread(void *attr)
 		sigqueue(process_id, signum, data);
 		// TODO : Should process mask of SIGRTMIN be removed before waiting for it ?
 		int sig = sigwaitinfo(&set, NULL);
+		if(sig == (SIGRTMAX - 2))
+		{
+			/* The process has now initiated paging mechanism, we should no longer schedule it */
+			Scheduler_Data.state[i] = PROC_PAGING;
+		}
 		gettimeofday(&tp1, NULL); 
 		fprintf(stderr, "CFSCHED control thread rcvd end of interval process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp1.tv_sec, tp1.tv_usec);
 
@@ -403,6 +417,9 @@ int fs_start_scheduler()
 	sigaddset(&act.sa_mask,SIGRTMIN);
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGRTMAX, &act, NULL);
+
+	act.sa_handler = &redirection_handler2;
+	sigaction(SIGPAGE, &act, NULL);
 
 	 for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
 		 Scheduler_Data.state[i] = PROC_INACTIVE;

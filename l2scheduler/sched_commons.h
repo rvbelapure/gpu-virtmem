@@ -19,6 +19,7 @@
 
 #define MAX_CONTROLLER_COUNT 500
 #define SIGSCHED SIGRTMIN
+#define SIGPAGE  (SIGRTMAX-1)
 
 #define LISTEN_PATH 	 "/tmp/gpu-dipanjan/GPU_LISTEN_"
 #define CLIENT_WRITE_PATH "/tmp/gpu-dipanjan/GPU_CWRITE_"
@@ -27,13 +28,14 @@
 #define SCHED_DEF_FILE_PATH "/tmp/gpu-dipanjan/l2sched_mapping.txt"
 #define SCHED_PID_FILE_PATH "/tmp/gpu-dipanjan/l2sched_pid.txt"
 #define PAGER_LISTEN_PATH   "/tmp/gpu-dipanjan/GPU_PAGER_LISTEN"
+#define PCLIENT_FIFO  "/tmp/gpu-dipanjan/GPU_PCLIENT_"
 
 #define SEMKEYPATH "/dev/null"  /* Path used on ftok for semget key  */
 #define SEMKEYID 1              /* Id used on ftok for semget key    */
 #define GMT_KEYID 2		/* Id for sem on GMT */
 #define GMT_SHM_KEY 3
 #define GMT_SHM_INDEX_KEY 4
-#define PAGER_FIFO_SEM_KEY	/* key used to get sem for writing in pager fifo */
+#define PAGER_FIFO_SEM_KEY 5	/* key used to get sem for writing in pager fifo */
 
 #define ADD_Q 10
 #define REM_Q 11

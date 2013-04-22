@@ -3,8 +3,17 @@
 #include <stdlib.h>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <signal.h>
 #include "cuda_vmem.h"
 #include "method_id.h"
+#include "../l2scheduler/sched_commons.h"
+#include "../l2scheduler/pager.h"
+#include "semaphore_ops.h"
 
 /* Initialize memory map. */
 void mem_map_init(struct mem_map ** table, int size)
@@ -19,6 +28,7 @@ void mem_map_init(struct mem_map ** table, int size)
 		*table[i]->handle = i;
 		*table[i]->size = 0;
 		*table[i]->status = D_NOALLOC;
+		*table[i]->pid = getpid();
 	}
 }
 
@@ -128,27 +138,6 @@ void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src,
 	}
 }
 
-/* Returns the status of the device memory pointed by devptr
- * according to enum vmem_status */
- // TODO : Fix
-int mem_map_get_status(struct mem_map ** table, void ** devptr)
-{
-	fprintf(stderr,"VMEM in get status, devptr = %p\n",*devptr);
-	if(*table == NULL)
-		return -1;
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		if(*(iter->devptr) == *devptr)
-		{
-			fprintf(stderr,"VMEM status is %d, devptr = %p\n",iter->status,*devptr);
-			return iter->status;
-		}
-		iter = iter->next;
-	}
-	return -1;
-}
-
 /* ===================================================================================*/
 
 /* Consider a kernel launch --->   kernel<<<gdim,bdim>>>(arg1,arg2);
@@ -193,14 +182,14 @@ void kmap_add_config(struct kmap *table, dim3 gridDim, dim3 blockDim, size_t sha
 /* To be called on invocation of cudaSetupArgument. Will be called multiple times, 
  * viz. equal to the number of arguments to the kernel, for each kernel objects.
  * All arguments may not be device pointers. */
-void kmap_add_arg(struct kmap *table,void **arg, size_t size, size_t offset, struct mem_map ** vmem_table)
+void kmap_add_arg(struct kmap *table,void **arg, size_t size, size_t offset, int vindex)
 {
 	struct kernel_arg_node * node = (struct kernel_arg_node *) malloc(sizeof(struct kernel_arg_node));
 	node->arg = (void **) malloc(sizeof(void *));
 	*(node->arg) = *((char **)arg);
 	node->size = size;
 	node->offset = offset;
-	node->vmem_ptr = mem_map_get_entry(vmem_table,(char **)arg);
+	node->mem_map_index = vindex;
 	node->next = NULL;
 	if((table->kobjects[table->index].arg_list.head == NULL) && (table->kobjects[table->index].arg_list.tail == NULL))
 		table->kobjects[table->index].arg_list.head = node;
@@ -210,163 +199,167 @@ void kmap_add_arg(struct kmap *table,void **arg, size_t size, size_t offset, str
 }
 
 /* Registers kernel entry with kernel object */
-void kmap_add_kernel(struct kmap *table, char * kfun)
+int kmap_add_kernel(struct kmap *table, char * kfun)
 {
 	table->kobjects[table->index].func = (char *) malloc(sizeof(*kfun));
 	memcpy(table->kobjects[table->index].func,kfun,sizeof(*kfun));
 	table->kobjects[table->index].valid = 1;
 	table->kobjects[table->index].launch_pending = 1;
-	table->index++;
+	return table->index++;
 }
 
 /* ========================================================================================= */
 
-/* Page in using a row ptr in memory map */
-int gvirt_page_in(struct mem_map ** table, struct mem_map * rowptr)
+/* Returns if paging is required or not. Fills pagein_request array with the mem_map indices
+   that require page in. reqsize will have length of this array. Remember to free them as
+   they are malloc'ed here. */
+int gvirt_is_paging_required(struct kmap *ktable, int kindex, struct mem_map ** mtable, int * pagein_request, int * reqsize)
 {
-	if((rowptr == NULL))
-		return SUCCESS;
-
-	struct mem_map * iter = rowptr;
-	enum vmem_status st = iter->status;
-	if((st == D_MEMWAIT) || (st == D_DEFERRED))
-	{
-		cudaMalloc(iter->actual_devptr,iter->size);
-		cudaMemcpy(*(iter->actual_devptr), iter->swap, iter->size, cudaMemcpyHostToDevice);
-		iter->status = D_READY;
-		fprintf(stderr,"VMEM paged in %p, new ptr %p,size %ld\n", *devptr, *(iter->actual_devptr), iter->size);
-		return SUCCESS;
-	}
-}
-
-/* Page out using a row ptr in memory map */
-int gvirt_page_out(struct mem_map ** table, struct mem_map * rowptr)
-{
-	if((rowptr == NULL))
-		return SUCCESS;
-
-	struct mem_map * iter = rowptr;
-	enum vmem_status st = iter->status;
-	if((st == D_READY) || (st == D_MODIFIED))
-	{
-		fprintf(stderr,"VMEM paging out %p, actual ptr %p,size %ld\n", *devptr, *(iter->actual_devptr), iter->size);
-		cudaMemcpy(iter->swap, *(iter->actual_devptr), iter->size, cudaMemcpyDeviceToHost);
-		cudaFree(*(iter->actual_devptr));
-		(*(iter->actual_devptr)) = NULL;
-		iter->status = D_MEMWAIT;
-		return SUCCESS;
-	}
-}
-
-
-/* Page in using a device ptr */
-int gvirt_page_in_devptr(struct mem_map ** table, void ** devptr)
-{
-	if((devptr == NULL) || (*devptr == NULL))
-		return SUCCESS;
-
-	struct mem_map * iter = *table;
+	int pagein_required = 0;
+	int reqarr[50], len;		// hoping that cuda kernel will not have more than 50 arguments
+	struct kernel_arg_node * iter = ktable->kobjects[kindex].arg_list.head;
+	len = 0;
 	while(iter)
 	{
-		if(*iter->devptr == *devptr)
+		if(iter->mem_map_index >= 0)
 		{
-			enum vmem_status st = iter->status;
-			if((st == D_MEMWAIT) || (st == D_DEFERRED))
+			struct mem_map * mnode = mtable[iter->mem_map_index];
+			if((mnode->valid) && ((mnode->status == D_MEMWAIT) || (mnode->status == D_DEFERRED)))
 			{
-				cudaMalloc(iter->actual_devptr,iter->size);
-				cudaMemcpy(*(iter->actual_devptr), iter->swap, iter->size, cudaMemcpyHostToDevice);
-				iter->status = D_READY;
-				fprintf(stderr,"VMEM paged in %p, new ptr %p,size %ld\n", *devptr, *(iter->actual_devptr), iter->size);
-				return SUCCESS;
+				pagein_required = 1;
+				reqarr[len++] = iter->mem_map_index;
 			}
 		}
 		iter = iter->next;
 	}
-	return FAILURE;
+
+	if(pagein_required)
+	{
+		pagein_request = (int *) malloc(len * sizeof(int));
+		reqsize = (int *) malloc(sizeof(int));
+	}
+
+	for(int i = 0 ; i < len ; i++)
+		pagein_request[i] = reqarr[i];
+	*reqsize = len;
+
+	return pagein_required;
 }
 
-/* Page out using a device ptr */
-int gvirt_page_out_devptr(struct mem_map ** table, void ** devptr)
+/* Page in all the pages needed by the launch. Indexes of the pages are specified in reqarr.
+   This function is to be called from nvbackcudaLaunch_srv()
+*/
+void gvirt_page_in(struct mem_map ** table, int * reqarr, int len)
 {
-	if((devptr == NULL) || (*devptr == NULL))
-		return SUCCESS;
+	/* 1. Stop the current scheduling timer */
+	struct itimerval it;
+	it.it_interval.tv_sec = 0;
+	it.it_interval.tv_usec = 0;
+	it.it_value.tv_sec = 0;
+	it.it_value.tv_usec = 0;
+	setitimer(ITIMER_REAL, &it, NULL);
 
-	struct mem_map * iter = *table;
-	while(iter)
-	{
-		if(*iter->devptr == *devptr)
-		{
-			enum vmem_status st = iter->status;
-			if((st == D_READY) || (st == D_MODIFIED))
-			{
-				fprintf(stderr,"VMEM paging out %p, actual ptr %p,size %ld\n", *devptr, *(iter->actual_devptr), iter->size);
-				cudaMemcpy(iter->swap, *(iter->actual_devptr), iter->size, cudaMemcpyDeviceToHost);
-				cudaFree(*(iter->actual_devptr));
-				(*(iter->actual_devptr)) = NULL;
-				iter->status = D_MEMWAIT;
-				return SUCCESS;
-			}
-		}
-		iter = iter->next;
+	/* 2. Notify Scheduler about the end of timer intervali, and not to schedule it anymore */
+	pid_t sched_pid;
+	union sigval 
+	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
+	fscanf(fp,"%ld",&sched_pid);
+	fclose(fp);
+	union sigval data;
+	data.sival_int = gpu_binding;
+	sigqueue(sched_pid, SIGPAGE, data);
+
+	/* 3. Notify pager about the page in requests */
+	char target[100];
+	sprintf(target, "%s%ld", PCLIENT_FIFO, getpid());
+	mkfifo(PAGER_LISTEN_PATH, 0666);
+	mkfifo(target, 0666);
+
+	struct pager_data pd;
+	pd.reqarr = reqarr;
+	pd.len = len;
+	pd.pid = getpid();
+	int semid;
+	if((semid = semget(ftok(SEMKEYPATH, SEMKEYID), 1, 0666)) == -1){
+		perror("semget failed");
+		return;
 	}
-	return FAILURE;
+	int server_fifo, client_fifo;
+	pthread_t pager_tid;
+	server_fifo = open(PAGER_LISTEN_PATH, O_WRONLY);
+	client_fifo = open(target, O_RDONLY);
+	P(semid);
+	write(server_fifo, &pd, sizeof(pd));
+	close(server_fifo);
+	V(semid);
+
+	/* 4. Wait for pager response */
+	read(client_fifo, &pager_tid, sizeof(pthread_t));
+	close(client_fifo);
+
+	/* 5. Page in everything */
+	for(int i = 0 ; i < len ; i++)
+	{
+		struct mem_map * node = table[reqarr[i]];
+		if((node->status == D_MEMWAIT) || (node->status == D_DEFERRED))
+		{
+			cudaMalloc(node->actual_devptr,node->size);
+			cudaMemcpy(*(node->actual_devptr), node->swap, node->size, cudaMemcpyHostToDevice);
+			node->status = D_READY;
+		}
+	}
+
+	/* 6. Notify pager that page in is complete */
+	sprintf(target, "%s%ld", PCLIENT_FIFO, pager_tid);
+	client_fifo = open(target, O_WRONLY);
+	int st = 1;
+	write(client_fifo, st, sizeof(st));
+	close(client_fifo);
+
+	/* 7. Pager will send a SIGALRM to this process now so that it sleeps */
 }
 
-void gvirt_pageout_all(struct mem_map ** table)	/* sample test method */
+/* This function only performs page out. Taking care of signaling with scheduler is part of handler's job
+   To be called from SIGPAGE handler (when executing) or from SIGSCHED handler (when sleeping)
+*/
+void gvirt_page_out(struct mem_map ** table)
 {
-	fprintf(stderr,"VMEM Paging out all the devptrs\n");
-	struct mem_map * iter = *table;
-	cudaDeviceSynchronize();
-	while(iter)
-	{
-		enum vmem_status st = iter->status;
-		if((st == D_READY) || (st == D_MODIFIED))
-		{
-			fprintf(stderr,"VMEM paging out %p, size %ld\n", *(iter->actual_devptr), iter->size);
-			cudaMemcpy(iter->swap, *(iter->actual_devptr), iter->size, cudaMemcpyDeviceToHost);
-			cudaFree(*(iter->actual_devptr));
-			(*(iter->actual_devptr)) = NULL;
-			iter->status = D_MEMWAIT;
-		}
-		iter = iter->next;
-	}
-}
+	/* 1. Get pageout request data from the pager */
+	char target[100];
+	sprintf(target, "%s%ld", PCLIENT_FIFO, getpid());
+	mkfifo(target, 0666);
 
-void gvirt_pagein_all(struct mem_map ** table) /* sample test method */
-{
-	fprintf(stderr,"VMEM Paging in all the devptrs\n");
-	struct mem_map * iter = *table;
-	cudaDeviceSynchronize();
-	while(iter)
+	struct pager_data pd;
+
+	int client_fifo = open(target, O_RDWR);
+	read(client_fifo, &pd, sizeof(pd));
+
+	/* 2. Page out the requested pages */
+	for(int i = 0 ; i < pd.len ; i++)
 	{
-		enum vmem_status st = iter->status;
-		if((st == D_MEMWAIT) || (st == D_DEFERRED))
+		struct mem_map * node = table[pd.reqarr[i]];
+		if((node->status == D_READY) || (node->status == D_MODIFIED))
 		{
-			cudaMalloc(iter->actual_devptr,iter->size);
-			cudaMemcpy(*(iter->actual_devptr), iter->swap, iter->size, cudaMemcpyHostToDevice);
-			iter->status = D_READY;
-			fprintf(stderr,"VMEM paged in %p, size %ld\n", *(iter->actual_devptr), iter->size);
+			cudaMemcpy(node->swap, node->actual_devptr, node->size, cudaMemcpyDeviceToHost);
+			cudaFree(node->actual_devptr);
+			node->actual_devptr = NULL;
+			node->status = D_MEMWAIT;
 		}
-		iter = iter->next;
 	}
+
+	/* 3. Notify pager about page out completion */
+	int st = 1;
+	write(client_fifo, &st, sizeof(st));
+	close(client_fifo);
+
+	/* 4. Pager will send a SIGALRM to sleep this process now */
 }
 
 /* Launch the kernel object specified by the given index */
-int gvirt_cuda_launch_index(struct kmap * ktab, struct mem_map ** mtab, int index)
+void gvirt_cuda_launch_index(struct kmap * ktab, int index, struct mem_map ** mtab)
 {
-	if(index >= ktab->index)
-		return FAILURE;
 	struct kmap_node * launch_node = ktab->kobjects[index];
-	if(!launch_node->launch_pending)
-		return KLAUNCH_NOT_PENDING;
-
-	/* Page in all the arguments */
-	struct kernel_arg_node * iter = launch_node->arg_list.head;
-	while(iter)
-	{
-		gvirt_page_in(mtab, iter->vmem_ptr);
-		iter = iter->next;
-	}
+	struct kernel_arg_node * iter;
 
 	/* Make ConfigureCall */
 	cudaConfigureCall(launch_node->gridDim, launch_node->blockDim, launch_node->sharedMem, launch_node->stream);
@@ -374,12 +367,11 @@ int gvirt_cuda_launch_index(struct kmap * ktab, struct mem_map ** mtab, int inde
 	void *arg;
 	while(iter)
 	{
-		if(iter->vmem_ptr)
-			arg = *iter->vmem_ptr->actual_devptr;
+		if(iter->mem_map_index >= 0)
+			arg = mtab[iter->mem_map_index]->actual_devptr;
 		else
 			arg = *iter->arg
 		cudaSetupArgument(&arg,iter->size,iter->offset);
 	}
 	cudaLaunch(launch_node->func);
-	return 0;
 }

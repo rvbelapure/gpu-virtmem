@@ -1159,31 +1159,42 @@ int nvbackCudaSetupArgument_srv(cuda_packet_t *packet, conn_t *pConn) {
 	// and may contribute to some bugs
 	//void *arg = (void*) ((char *)pConn->request_data_buffer + packet->ret_ex_val.data_unit);
 	void *arg = (void*) ((char *) pConn->pReqBuffer);
-	mem_map_print((struct mem_map **) packet->vmmap);
 	fprintf(stderr,"ARGSETUP arg from packet : %p\n",packet->args[0].argp);
 	fprintf(stderr, "ARGSETUP argument is arg :%p *arg : %p\n",arg,*((char **) arg));
-	// Vmem will update this arg if it is an devPtr
-	void ** actual_devptr = mem_map_get_actual_devptr((struct mem_map **) packet->vmmap, ((char **)arg));
-	if(actual_devptr)
-	{
-		fprintf(stderr, "VMEM argsetup, devptr found, old = %p, new = %p\n",*((char **) arg), *actual_devptr);
-		arg = actual_devptr;
-	}
-/*	packet->ret_ex_val.err = cudaSetupArgument(arg, packet->args[1].argi,
-			packet->args[2].argi); */
-//	kmap_add_config((struct kmap **) packet->kmap,
+
+	#ifdef PAGER
+
+		int id = mem_map_find_entry((struct mem_map **) packet->vmmap, vmapped_local_arr, localindex, *((char **)arg));
+		kmap_add_arg((struct kmap *) packet->kmap, (char **)arg, packet->args[1].argi, packet->args[2].argi,
+				vmapped_local_arr[id]);
+		packet->ret_ex_val.err = cudaSuccess;
+
+	#else
+
+		packet->ret_ex_val.err = cudaSetupArgument(arg, packet->args[1].argi,
+				packet->args[2].argi); 
+
+	#endif
+
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 	return (packet->ret_ex_val.err == cudaSuccess) ? OK : ERROR;
 }
 
 int nvbackCudaConfigureCall_srv(cuda_packet_t *packet, conn_t *pConn) {
-//	vmem_pagein_all((struct mem_map **) packet->vmmap);
 
-/*	packet->ret_ex_val.err = cudaConfigureCall(packet->args[0].arg_dim,
-			packet->args[1].arg_dim, packet->args[2].argi,
-			(cudaStream_t) packet->args[3].argi);*/
-	kmap_add_config((struct kmap **) packet->kmap, packet->args[0].arg_dim,packet->args[1].arg_dim,
+	#ifdef PAGER
+
+	kmap_add_config((struct kmap *) packet->kmap, packet->args[0].arg_dim,packet->args[1].arg_dim,
 				packet->args[2].argi,(cudaStream_t) packet->args[3].argi);
+	packet->ret_ex_val.err = cudaSuccess;
+
+	#else
+
+	packet->ret_ex_val.err = cudaConfigureCall(packet->args[0].arg_dim,
+			packet->args[1].arg_dim, packet->args[2].argi,
+			(cudaStream_t) packet->args[3].argi);
+
+	#endif
 
 	p_debug(
 			"After: gridDim(x,y,z)=%u, %u, %u; blockDim(x,y,z)=%u, %u, %u; sharedMem (size) = %ld; stream =%ld\n",
@@ -1220,7 +1231,26 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 				p_debug( "function %p:%s\n",
 						p->reg_fns[j]->hostFEaddr,
 						p->reg_fns[j]->hostFun);
+				/* Let us assume that this loop will launch only one kernel
+				   which will make it compliant with virtual memory functions */
+
+				#ifdef PAGER
+
+				int * reqarr, *len;
+				int kmapid = kmap_add_kernel((struct kmap *) packet->kmap,p->reg_fns[j]->hostFun);
+				int status = gvirt_is_paging_required((struct kmap *) packet->kmap, kmapid,
+						(struct mem_map **) packet->vmmap, reqarr, len);
+				if(status)
+					gvirt_page_in((struct mem_map **) packet->vmmap, reqarr, *len);
+				gvirt_cuda_launch_index((struct kmap *) packet->kmap, kmapid, (struct mem_map **) packet->vmmap);
+				packet->ret_ex_val.err = cudaSuccess;
+
+				#else
+
 				packet->ret_ex_val.err = cudaLaunch(p->reg_fns[j]->hostFun);
+
+				#endif
+
 				if(p->reg_fns[j]->gDim)
 					fprintf(stderr,"LAUNCH gridDim %d\n",p->reg_fns[j]->gDim->x);
 				if(p->reg_fns[j]->bDim)
@@ -1242,12 +1272,6 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 		if (found == 1)
 			break;
 	}
-
-	//test multiple gpu use in GVirt
-	vmem_pageout_all((struct mem_map ** ) packet->vmmap);
-	vmem_pagein_all((struct mem_map ** ) packet->vmmap);
-//	cudaSetDevice(1);
-	//vmem_pagein_all((struct mem_map ** ) packet->vmmap);
 
 	p_debug("CUDA_ERROR=%d for method id=%d\n", packet->ret_ex_val.err, packet->method_id);
 

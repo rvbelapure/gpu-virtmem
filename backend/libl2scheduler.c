@@ -16,9 +16,40 @@
 #include <wait.h>
 #include <string.h>
 #include "semaphore_ops.h"
+#include "../virtmem/cuda_vmem.h"
 
 int semid;
 int gpu_binding;
+
+static int P(int semID) 
+{
+	struct sembuf buff ;
+	buff.sem_num = 0 ;
+	buff.sem_op = -1 ;
+	buff.sem_flg = 0 ;
+	printf("CFSCHED In P operation\n");
+	if(semop(semID, &buff, 1) == -1)
+	{
+	perror("CFSCHED semop P operation error") ;
+	return 0 ;
+	}
+	return -1 ;
+}
+
+static int V(int semID) 
+{
+	struct sembuf buff ;
+	buff.sem_num = 0 ;
+	buff.sem_op = 1 ;
+	buff.sem_flg = 0 ;
+	if(semop(semID, &buff, 1) == -1)
+	{
+	perror("CFSCHED semop V operation error") ;
+	return 0 ;
+	}
+	return -1 ;
+}
+
 
 void mysignalhandler1(int n, siginfo_t* info, void* k)
 {
@@ -57,6 +88,7 @@ void sigschedulehandler(int signo)
 
 	sigemptyset(&set);
 	sigaddset(&set, SIGSCHED);
+	sigaddset(&set, SIGPAGE);
 
 	gettimeofday(&tp, NULL); 
 	fprintf(stderr, "CFSCHED Signal to sleep to process id: %d with signal id:%d time:%d sec %d usec\n", 
@@ -64,8 +96,16 @@ void sigschedulehandler(int signo)
 
 	/* Send wakeup signal to l2sched */
 	sigqueue(sched_pid, SIGRTMAX, data); 
-	/* SIGVTALRM received. Should sleep till next occurence of SIGSCHED */
+	/* SIGALRM received. Should sleep till next occurence of SIGSCHED */
 	signalid = sigwaitinfo(&set, &si);
+	if(signalid == SIGPAGE)
+	{
+		gvirt_page_out(vmap_table);
+		/* Allow the process to run momentarily. We expect SIGALRM from pager.
+		   Do not allow this handler to continue. It might happen that
+		   SIGALRM comes after the interval timer is set below. This will cause misbehavior */
+		return;
+	}
 	/* SIGSCHED received. Now we set up the timer and let the process execute till timer expires.
 	 * On timer expiry, this handler will be called again */
 	gettimeofday(&tp, NULL); 
@@ -81,6 +121,32 @@ void sigschedulehandler(int signo)
 	setitimer(ITIMER_REAL, &ti, NULL);
 }
 
+void sigpage_handler(int signo)
+{
+	/* Stop current running timer */
+	struct itimerval it;
+	it.it_interval.tv_sec = 0;
+	it.it_interval.tv_usec = 0;
+	it.it_value.tv_sec = 0;
+	it.it_value.tv_usec = 0;
+	setitimer(ITIMER_REAL, &it, NULL);
+
+	/* 2. Notify Scheduler about the end of timer intervali, and not to schedule it anymore */
+	pid_t sched_pid;
+	union sigval
+	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
+	fscanf(fp,"%ld",&sched_pid);
+	fclose(fp);
+	union sigval data;
+	data.sival_int = gpu_binding;
+	sigqueue(sched_pid, SIGPAGE, data);
+
+	/* 3. Pgeout everything */
+	gvirt_page_out(vmap_table);
+
+	/* 4. Will recv SIGALRM from pager to sleep the process */
+}
+
 
 int fs_register_handler(int signum)
 {
@@ -88,6 +154,7 @@ int fs_register_handler(int signum)
   sigemptyset(&set);
   sigaddset(&set, SIGSCHED);
   sigaddset(&set, SIGALRM);
+  sigaddset(&set, SIGPAGE);
   
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
@@ -101,6 +168,9 @@ int fs_register_handler(int signum)
       fprintf(stderr, "CFSCHED handler registration failed\n");
       return -1;
     }
+
+  act.sa_handler = &sigpage_handler;
+  sigaction(SIGPAGE, &act, NULL);
   return 0;
 }
 

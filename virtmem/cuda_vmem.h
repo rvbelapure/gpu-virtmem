@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define MAX_KERNELS 10000
 #define MAX_MEMORY  10000
@@ -21,7 +23,6 @@ enum vmem_status
 //	D_IDLE,		// device mem allocated, data on device and host, may be out of sync, kernel execution complete
 	D_MEMWAIT,	// device mem not allocated. But data exists with vmem system. - must call host2device copy before cudaLaunch
 	D_DEFERRED	// device mem not allocated & can not allocate, data with vmem system, cudaLaunch request received
-
 };
 
 struct mem_map
@@ -32,6 +33,7 @@ struct mem_map
 	void * swap;			// host swap space
 	size_t size;			// size of the requested memory
 	enum vmem_status status;	// takes one of the values in enum vmem_status
+	pid_t pid;			// pid of the process that own this node
 };
 
 
@@ -40,7 +42,7 @@ struct kernel_arg_node
 	void **arg;
 	size_t size;
 	size_t offset;
-	struct mem_map * vmem_ptr;
+	int mem_map_index;
 	struct kernel_arg_node *next;
 };
 
@@ -80,27 +82,15 @@ int mem_map_find_entry(struct mem_map ** table, int *indexes, int len, void * de
 void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src, int size, int type);
 
 
-void mem_map_get_next_index(struct mem_map **table, struct *global_index);
-int mem_map_get_status(struct mem_map ** table, void ** devptr);
-void mem_map_update_status(struct mem_map ** table, void ** devptr, enum vmem_status status);
-void mem_map_update_data(struct mem_map ** table, void **devptr, void *src, size_t size);
-void ** mem_map_get_actual_devptr(struct mem_map ** table, void **devptr);
-struct mem_map * mem_map_get_entry(struct mem_map ** table, void **devptr);
-void mem_map_print(struct mem_map **table);
-
-
 void kmap_init(struct kmap * table);
 void kmap_add_config(struct kmap *table, dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream);
 void kmap_add_arg(struct kmap *table,void *arg, size_t size, size_t offset, struct mem_map ** vmem_table);
-void kmap_add_kernel(struct kmap *table, char * kfun);
+int kmap_add_kernel(struct kmap *table, char * kfun);
 
+int gvirt_is_paging_required(struct kmap *ktable, int kindex, struct mem_map ** mtable, int * pagein_request, int * reqsize);
+void gvirt_page_in(struct mem_map ** table, int * reqarr, int len);
+void gvirt_page_out(struct mem_map ** table);
+void gvirt_cuda_launch_index(struct kmap * ktab, int index, struct mem_map ** mtab);
 
-int gvirt_page_in_devptr(struct mem_map ** table, void ** devptr);
-int gvirt_page_out_devptr(struct mem_map ** table, void ** devptr);
-int gvirt_page_in(struct mem_map ** table, struct mem_map * rowptr);
-int gvirt_page_out(struct mem_map ** table, struct mem_map * rowptr);
-void gvirt_pageout_all(struct mem_map ** table);
-void gvirt_pagein_all(struct mem_map ** table);
-
-int gvirt_cuda_launch_index(struct kmap * table, int index);
+extern struct mem_map * vmap_table;
 #endif
