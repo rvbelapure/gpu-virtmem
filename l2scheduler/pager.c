@@ -19,6 +19,9 @@
 struct mem_map * gmt_table;
 int * gmt_index;
 
+struct pager_data PagerData[MAX_MEMORY];
+int pindex;
+
 void start_pager()
 {
 	sigset_t set, set1, set2;
@@ -51,6 +54,7 @@ void start_pager()
 
 	mem_map_init(&gmt_table);
 	*gmt_index = 0;
+	pindex = 0;
 	
 	// TODO : Add cleanup later
 /*	struct sigaction act;
@@ -67,10 +71,11 @@ void start_pager()
 	}
 */
 	int i;
-	pthread_create(pager_tid, NULL, pager_thread, NULL);
+	pthread_create(pager_tid[0], NULL, pager_listener, NULL);
+	pthread_create(pager_tid[1], NULL, pager_worker, NULL);
 }
 
-void * pager_thread(void *arg)
+void * pager_listener(void *arg)
 {
 	mkfifo(PAGER_LISTEN_PATH, 0666);
 	int listen_fifo = open(PAGER_LISTEN_PATH, O_RDWR);
@@ -79,9 +84,131 @@ void * pager_thread(void *arg)
         sl.tv_nsec = 1000;
         sl.tv_sec = 0;
 
+	struct pager_data pd;
+
 	int status;
 	while(1)
 	{
 		nanosleep(&sl, NULL);		// Just to make sure it doesn't hog cpu
+		status = read(listen_fifo, &pd, sizeof(struct pager_data));
+		if(status > 0)
+		{
+			PagerData[pindex].reqarr = (int *) malloc(sizeof(pd.len * sizeof(int)));
+			memcpy(PagerData[pindex].reqarr, pd.reqarr, pd.len);
+			PagerData[pindex].len = pd.len;
+			PagerData[pindex].pid = pd.pid;
+			pindex++;
+		}
 	}
+}
+
+void * pager_worker(void * arg)
+{
+        struct timespec sl;
+        sl.tv_nsec = 1000;
+        sl.tv_sec = 0;
+	int status;
+
+	struct pager_data * pd;
+	int len;
+
+	int localindex = 0;
+	while(1)
+	{
+		if(localindex < pindex)
+		{
+			/* 1. calculate total memory requirements of the selected process */
+			unsigned long mem_req = 0, mem_satisfied = 0;
+			for(int i = 0 ; i < PagerData[localindex].len ; i++)
+			mem_req += gmt_table[(PagerData[localindex].reqarr[i])].size;
+			/* 2. Select victimes sorted by pid */
+			choose_victims(pd, &len, mem_req);
+			/* 3. Now, iterate over each victim process in the list */
+			for(int j = 0 ; j < len ; j++)
+			{
+				pid_t victim_pid = pd[j].pid;
+				/* 4. Find index of victim in Scheduler Data Structure */
+				int sched_index = 0;
+				for(int i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+				{
+					if((Scheduler_Data.state[i] == PROC_ACTIVE) && (Scheduler_Data.process_list[i] == victim_pid))
+					{
+						sched_index = i;
+						break;
+					}
+				}
+				/* 5. Mark it as non-schedulable */
+				pthread_mutex_lock(&sched_index_mut);
+				Scheduler_Data.state[sched_index] = PROC_PAGING;
+				pthread_mutex_unlock(&sched_index_mut);
+				union sigval sv;
+				/* 6. Setup everything to send info after sending PAGING signal */
+				char target[100];
+				sprintf(target,"%s%ld", PCLIENT_FIFO, victim_pid);
+				mkfifo(target, 0666);
+				int client_fifo = open(target, O_RDWR);
+
+				/* 7. Send the paging signal to victim */
+				sigqueue(victim_pid, SIGPAGE, sv);
+
+				/* 8. Victim will now try to read the pager_data structure */
+				write(client_fifo, &pd[j], sizeof(struct pager_data));
+
+				/* 9. Now, victim is paging out his pages. We'll get a notification after
+				       the page out process is complete */
+				read(client_fifo, &status, sizeof(int));
+				close(client_fifo);
+
+				/* 10. We now have to send SIGVTALRM to sleep the victim. Do not send SIGALRM.
+				       Must use different than the regular sleep signal so that process goes into
+				       different handler and does not send wakeup signal to scheduler. */
+				sigqueue(victim, SIGVTALRM, sv);
+
+				/* 11. Mark the victim process as schedulable now */
+				pthread_mutex_lock(&sched_index_mut);
+				Scheduler_Data.state[sched_index] = PROC_ACTIVE;
+				pthread_mutex_unlock(&sched_index_mut);
+			}
+
+			/* 12. Send PageInOk notification to the original process */
+			char fifoname[100];
+			sprintf(fifoname, "%s%ld", PCLIENT_FIFO, PagerData[localindex].pid);
+			mkfifo(fifoname, 0666);
+			int client_fifo = open(fifoname, O_RDWR);
+			pthread_t selfid = pthread_self();
+			write(client_fifo, selfid, sizeof(pthread_t));
+
+			/* 13. Wait for client to page in the necessary pages and send back a response */
+			int res;
+			read(client_fifo, &res, sizeof(int));
+			close(client_fifo);
+			/* 14. Send a SIGVTALRM to the process to sleep it */
+			union sigval v;
+			sigqueue(PagerData[localindex].pid, SIGVTALRM, v);
+
+			/* 15. Mark it as schedulable */
+			int sched_data_idx = 0;
+			for(int i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+			{
+				if((Scheduler_Data.state[i] == PROC_ACTIVE) && (Scheduler_Data.process_list[i] == PagerData[localindex].pid))
+				{
+					sched_data_idx = i;
+					break;
+				}
+			}
+
+			pthread_mutex_lock(&sched_index_mut);
+			Scheduler_Data.state[sched_data_idx] = PROC_ACTIVE;
+			pthread_mutex_unlock(&sched_index_mut);
+
+			/* 15. Go to processing next request */
+			localindex++;
+		}
+		else
+			nanosleep(&sl, NULL);
+	}
+}
+
+void choose_victim(struct pager_data *pd, int * len, unsigned long mem_requirement)
+{
 }

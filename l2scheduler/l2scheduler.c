@@ -9,7 +9,7 @@
 
 
 pthread_t thIDs[10];	/* for schedulers */
-pthread_t pager_tid;
+pthread_t pager_tid[2]; /* for pager */
 
 void register_handlers()
 {
@@ -46,6 +46,9 @@ int main()
 	int i;
 	for(i = 0 ; i < sched_thread_count ; i++)
 		pthread_join(thIDs[i],NULL);
+
+	pthread_join(pager_tid[0],NULL);
+	pthread_join(pager_tid[1],NULL);
 
 	return 0;
 }

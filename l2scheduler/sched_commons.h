@@ -66,7 +66,7 @@
 
 
 extern pthread_t thIDs[10];
-extern pthread_t pager_tid;
+extern pthread_t pager_tid[2];
 
 typedef struct _process_credit_data{
 	pid_t pid;

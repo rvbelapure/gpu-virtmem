@@ -6,13 +6,18 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-void start_pager();
-
 struct pager_data
 {
 	int *reqarr;
 	int len;
 	pid_t pid;
 };
+
+
+void start_pager();
+void * pager_listener(void *arg);
+void * pager_worker(void *arg);
+int choose_victim();
+
 
 #endif

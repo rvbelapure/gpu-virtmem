@@ -287,15 +287,13 @@ void gvirt_page_in(struct mem_map ** table, int * reqarr, int len)
 	int server_fifo, client_fifo;
 	pthread_t pager_tid;
 	server_fifo = open(PAGER_LISTEN_PATH, O_WRONLY);
-	client_fifo = open(target, O_RDONLY);
+	client_fifo = open(target, O_RDWR);
 	P(semid);
 	write(server_fifo, &pd, sizeof(pd));
-	close(server_fifo);
 	V(semid);
-
+//	close(server_fifo);
 	/* 4. Wait for pager response */
 	read(client_fifo, &pager_tid, sizeof(pthread_t));
-	close(client_fifo);
 
 	/* 5. Page in everything */
 	for(int i = 0 ; i < len ; i++)
@@ -310,11 +308,9 @@ void gvirt_page_in(struct mem_map ** table, int * reqarr, int len)
 	}
 
 	/* 6. Notify pager that page in is complete */
-	sprintf(target, "%s%ld", PCLIENT_FIFO, pager_tid);
-	client_fifo = open(target, O_WRONLY);
 	int st = 1;
 	write(client_fifo, st, sizeof(st));
-	close(client_fifo);
+//	close(client_fifo);
 
 	/* 7. Pager will send a SIGALRM to this process now so that it sleeps */
 }
@@ -332,7 +328,7 @@ void gvirt_page_out(struct mem_map ** table)
 	struct pager_data pd;
 
 	int client_fifo = open(target, O_RDWR);
-	read(client_fifo, &pd, sizeof(pd));
+	read(client_fifo, &pd, sizeof(struct pager_data));
 
 	/* 2. Page out the requested pages */
 	for(int i = 0 ; i < pd.len ; i++)
@@ -350,9 +346,9 @@ void gvirt_page_out(struct mem_map ** table)
 	/* 3. Notify pager about page out completion */
 	int st = 1;
 	write(client_fifo, &st, sizeof(st));
-	close(client_fifo);
 
-	/* 4. Pager will send a SIGALRM to sleep this process now */
+//	close(client_fifo);  /* XXX : we choose not to close this end so that pager doesn't get SIGPIPE */
+	/* 4. Pager will send a SIGVTALRM to sleep this process now */
 }
 
 /* Launch the kernel object specified by the given index */

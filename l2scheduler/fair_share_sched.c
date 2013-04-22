@@ -117,7 +117,7 @@ void* fs_listen_thread(void *thid)
 	fs_write_mappings(*gpuid, selfid);
 	int i;
 	for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
-		Scheduler_Data.valid[i] = 0;
+		Scheduler_Data.state[i] = PROC_INACTIVE;;
 
 	listen_fifo = open(listen_at, O_RDWR); 
 	int status;
@@ -283,17 +283,22 @@ void* fs_control_thread(void *attr)
 		gettimeofday(&tp, NULL);
 		fprintf(stderr, "CFSCHED control thread starting process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp.tv_sec, tp.tv_usec);
 
-		sigqueue(process_id, signum, data);
-		// TODO : Should process mask of SIGRTMIN be removed before waiting for it ?
-		int sig = sigwaitinfo(&set, NULL);
-		if(sig == (SIGRTMAX - 2))
+		pthread_mutex_lock(&sched_index_mut);
+		if(Scheduler_Data[thid].state == PROC_ACTIVE)
 		{
-			/* The process has now initiated paging mechanism, we should no longer schedule it */
-			Scheduler_Data.state[i] = PROC_PAGING;
+			sigqueue(process_id, signum, data);
+			// TODO : Should process mask of SIGRTMIN be removed before waiting for it ?
+			int sig = sigwaitinfo(&set, NULL);
+			if(sig == (SIGRTMAX - 2))
+			{
+				/* The process has now initiated paging mechanism, we should no longer schedule it */
+				Scheduler_Data.state[i] = PROC_PAGING;
+			}
 		}
+		pthread_mutex_lock(&sched_index_mut);
+
 		gettimeofday(&tp1, NULL); 
 		fprintf(stderr, "CFSCHED control thread rcvd end of interval process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp1.tv_sec, tp1.tv_usec);
-
 		timersub(&tp1, &tp, &Scheduler_Data.execution_time[thid]);
 
 		prev = thid;

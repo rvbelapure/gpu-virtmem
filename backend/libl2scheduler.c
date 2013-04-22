@@ -121,6 +121,57 @@ void sigschedulehandler(int signo)
 	setitimer(ITIMER_REAL, &ti, NULL);
 }
 
+void sigvtalarm_handler(int signo)
+{
+	/* TODO : Should we block SIGSCHED when process is executing
+	 * and unblock it when waiting for sigwait only ? */
+	sigset_t set;
+	struct timeval tp;
+	int signalid;
+	siginfo_t si;
+
+	pid_t sched_pid;
+	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
+	fscanf(fp,"%ld",&sched_pid);
+	fclose(fp);
+	union sigval data;
+	data.sival_int = gpu_binding;
+
+	sigemptyset(&set);
+	sigaddset(&set, SIGSCHED);
+	sigaddset(&set, SIGPAGE);
+
+	gettimeofday(&tp, NULL); 
+	fprintf(stderr, "CFSCHED Signal to sleep to process id: %d with signal id:%d time:%d sec %d usec\n", 
+			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
+
+	/* XXX : Do everything same as sigschedulehandler except that, do not notify the scheduler
+	         as you were woken up by pager and not the scheduler. Scheduler don't want to know that */
+	/* SIGVTALRM received. Should sleep till next occurence of SIGSCHED */
+	signalid = sigwaitinfo(&set, &si);
+	if(signalid == SIGPAGE)
+	{
+		gvirt_page_out(vmap_table);
+		/* Allow the process to run momentarily. We expect SIGALRM from pager.
+		   Do not allow this handler to continue. It might happen that
+		   SIGALRM comes after the interval timer is set below. This will cause misbehavior */
+		return;
+	}
+	/* SIGSCHED received. Now we set up the timer and let the process execute till timer expires.
+	 * On timer expiry, this handler will be called again */
+	gettimeofday(&tp, NULL); 
+	fprintf(stderr, "CFSCHED Signal to wake up process id: %d with signal id:%d time:%d sec %d usec\n", 
+			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
+	
+	union sigval data = si->si_value;
+	tp = *((struct timeval) data.sival_ptr);
+	struct itimerval ti;
+	ti.it_interval.tv_sec = 0;
+	ti.it_interval.tv_usec = 0;
+	ti.it_value = tp;
+	setitimer(ITIMER_REAL, &ti, NULL);
+}
+
 void sigpage_handler(int signo)
 {
 	/* Stop current running timer */
@@ -144,7 +195,7 @@ void sigpage_handler(int signo)
 	/* 3. Pgeout everything */
 	gvirt_page_out(vmap_table);
 
-	/* 4. Will recv SIGALRM from pager to sleep the process */
+	/* 4. Will recv SIGVTALRM from pager to sleep the process */
 }
 
 
@@ -171,6 +222,9 @@ int fs_register_handler(int signum)
 
   act.sa_handler = &sigpage_handler;
   sigaction(SIGPAGE, &act, NULL);
+
+  act.sa_handler = &sigvtalarm_handler;
+  sigaction(SIGVTALRM, &act, NULL);
   return 0;
 }
 
