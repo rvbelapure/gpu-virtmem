@@ -17,11 +17,12 @@
 #include <string.h>
 #include "semaphore_ops.h"
 #include "../virtmem/cuda_vmem.h"
+#include "../l2scheduler/pager.h"
 
 int semid;
 int gpu_binding;
 
-static int P(int semID) 
+int P(int semID) 
 {
 	struct sembuf buff ;
 	buff.sem_num = 0 ;
@@ -36,7 +37,7 @@ static int P(int semID)
 	return -1 ;
 }
 
-static int V(int semID) 
+int V(int semID) 
 {
 	struct sembuf buff ;
 	buff.sem_num = 0 ;
@@ -112,8 +113,8 @@ void sigschedulehandler(int signo)
 	fprintf(stderr, "CFSCHED Signal to wake up process id: %d with signal id:%d time:%d sec %d usec\n", 
 			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
 	
-	union sigval data = si->si_value;
-	tp = *((struct timeval) data.sival_ptr);
+	data = si.si_value;
+	tp = *((struct timeval *) data.sival_ptr);
 	struct itimerval ti;
 	ti.it_interval.tv_sec = 0;
 	ti.it_interval.tv_usec = 0;
@@ -163,8 +164,8 @@ void sigvtalarm_handler(int signo)
 	fprintf(stderr, "CFSCHED Signal to wake up process id: %d with signal id:%d time:%d sec %d usec\n", 
 			(int)getpid(), signalid, tp.tv_sec, tp.tv_usec);
 	
-	union sigval data = si->si_value;
-	tp = *((struct timeval) data.sival_ptr);
+	data = si.si_value;
+	tp = *((struct timeval *) data.sival_ptr);
 	struct itimerval ti;
 	ti.it_interval.tv_sec = 0;
 	ti.it_interval.tv_usec = 0;
@@ -184,7 +185,6 @@ void sigpage_handler(int signo)
 
 	/* 2. Notify Scheduler about the end of timer intervali, and not to schedule it anymore */
 	pid_t sched_pid;
-	union sigval
 	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
 	fscanf(fp,"%ld",&sched_pid);
 	fclose(fp);

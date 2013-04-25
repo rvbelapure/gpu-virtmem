@@ -25,6 +25,7 @@
 #include "../l2scheduler/las_scheduler.h"
 #include "../include/method_id.h"
 #include "../virtmem/cuda_vmem.h"
+#include "../l2scheduler/pager.h"
 
 #include <sys/types.h>
 #include <unistd.h>

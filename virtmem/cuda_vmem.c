@@ -18,18 +18,18 @@
 /* Initialize memory map. */
 void mem_map_init(struct mem_map ** table, int size)
 {
+	int i;
 	fprintf(stderr,"VMEM vmem system initialized\n");
-	for(int i = 0 ; i < size ; i++)
+	for(i = 0 ; i < size ; i++)
 	{
-		*table[i]->valid = 0;
-		*table[i]->devptr = NULL;
-		*table[i]->actual_devptr = NULL;
-		*table[i]->swap = NULL;
-		*table[i]->handle = i;
-		*table[i]->size = 0;
-		*table[i]->status = D_NOALLOC;
-		*table[i]->pid = getpid();
-		*table[i]->freq = 0;
+		table[i]->valid = 0;
+		table[i]->actual_devptr = NULL;
+		table[i]->swap = NULL;
+		table[i]->handle = i;
+		table[i]->size = 0;
+		table[i]->status = D_NOALLOC;
+		table[i]->pid = getpid();
+		table[i]->freq = 0;
 	}
 }
 
@@ -51,12 +51,13 @@ int mem_map_creat(struct mem_map ** table, void ** devptr, size_t size, int inde
 	new_node->valid = 1;
 
 	fprintf(stderr,"VMEM new vmem entry, devptr = %p\n",*devptr);
+	return 0;
 }
 
 /* Delete a row in the memory map */
 void mem_map_delete(struct mem_map ** table, int index)
 {
-	struct mem_map *node = table[i];
+	struct mem_map *node = table[index];
 
 	if(node->actual_devptr)
 		cudaFree(node->actual_devptr);
@@ -75,7 +76,8 @@ void mem_map_delete(struct mem_map ** table, int index)
 int mem_map_find_entry(struct mem_map ** table, int *indexes, int len, void * devptr)
 {
 	struct mem_map *node;
-	for(int i = 0 ; i < len ; i++)
+	int i;
+	for(i = 0 ; i < len ; i++)
 	{
 		if((indexes[i] >= 0) && (devptr != NULL) && (devptr == &table[(indexes[i])]->handle))
 			return i;
@@ -107,7 +109,6 @@ void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src,
 				case D_DEFERRED:
 					node->status = D_DEFERRED;
 					break;
-				default:
 			}
 			break;
 		case CUDA_MEMCPY_D2H:
@@ -131,11 +132,8 @@ void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src,
 					memcpy(dest, node->swap, size);
 					node->status = D_DEFERRED;
 					break;
-				default:
-
 			}
 			break;
-		default:
 	}
 }
 
@@ -245,7 +243,8 @@ int gvirt_is_paging_required(struct kmap *ktable, int kindex, struct mem_map ** 
 		reqsize = NULL;
 	}
 
-	for(int i = 0 ; i < len ; i++)
+	int i;
+	for(i = 0 ; i < len ; i++)
 		pagein_request[i] = reqarr[i];
 	*reqsize = len;
 
@@ -267,7 +266,6 @@ void gvirt_page_in(struct mem_map ** table, int * reqarr, int len)
 
 	/* 2. Notify Scheduler about the end of timer intervali, and not to schedule it anymore */
 	pid_t sched_pid;
-	union sigval 
 	FILE *fp = fopen(SCHED_PID_FILE_PATH, "r");
 	fscanf(fp,"%ld",&sched_pid);
 	fclose(fp);
@@ -302,20 +300,21 @@ void gvirt_page_in(struct mem_map ** table, int * reqarr, int len)
 	read(client_fifo, &pager_tid, sizeof(pthread_t));
 
 	/* 5. Page in everything */
-	for(int i = 0 ; i < len ; i++)
+	int i;
+	for(i = 0 ; i < len ; i++)
 	{
 		struct mem_map * node = table[reqarr[i]];
 		if((node->status == D_MEMWAIT) || (node->status == D_DEFERRED))
 		{
 			cudaMalloc(node->actual_devptr,node->size);
-			cudaMemcpy(*(node->actual_devptr), node->swap, node->size, cudaMemcpyHostToDevice);
+			cudaMemcpy(*(char **) node->actual_devptr, node->swap, node->size, cudaMemcpyHostToDevice);
 			node->status = D_READY;
 		}
 	}
 
 	/* 6. Notify pager that page in is complete */
 	int st = 1;
-	write(client_fifo, st, sizeof(st));
+	write(client_fifo, &st, sizeof(int));
 //	close(client_fifo);
 
 	/* 7. Pager will send a SIGALRM to this process now so that it sleeps */
@@ -337,7 +336,8 @@ void gvirt_page_out(struct mem_map ** table)
 	read(client_fifo, &pd, sizeof(struct pager_data));
 
 	/* 2. Page out the requested pages */
-	for(int i = 0 ; i < pd.len ; i++)
+	int i;
+	for(i = 0 ; i < pd.len ; i++)
 	{
 		struct mem_map * node = table[pd.reqarr[i]];
 		if((node->status == D_READY) || (node->status == D_MODIFIED))
@@ -360,7 +360,7 @@ void gvirt_page_out(struct mem_map ** table)
 /* Launch the kernel object specified by the given index */
 void gvirt_cuda_launch_index(struct kmap * ktab, int index, struct mem_map ** mtab)
 {
-	struct kmap_node * launch_node = ktab->kobjects[index];
+	struct kmap_node * launch_node = &ktab->kobjects[index];
 	struct kernel_arg_node * iter;
 
 	/* Make ConfigureCall */
@@ -375,7 +375,7 @@ void gvirt_cuda_launch_index(struct kmap * ktab, int index, struct mem_map ** mt
 			mtab[iter->mem_map_index]->freq++;
 		}
 		else
-			arg = *iter->arg
+			arg = *iter->arg;
 		cudaSetupArgument(&arg,iter->size,iter->offset);
 	}
 	cudaLaunch(launch_node->func);

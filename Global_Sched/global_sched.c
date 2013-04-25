@@ -21,6 +21,14 @@
 #include "../include/method_id.h"
 #include <unistd.h>
 #include <assert.h>
+#include "../virtmem/cuda_vmem.h"
+#include "../l2scheduler/pager.h"
+
+struct mem_map * vmap_table;
+int * vmap_index;
+
+int vmapped_local_arr[MAX_MEMORY];
+int localindex;
 
 extern pthread_key_t tlsKey_DEVICE_ASSIGNED;
 

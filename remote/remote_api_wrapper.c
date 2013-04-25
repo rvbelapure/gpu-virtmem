@@ -24,6 +24,7 @@
 #include "../l2scheduler/fair_share_sched.h"
 #include "../l2scheduler/las_scheduler.h"
 #include "../virtmem/cuda_vmem.h"
+#include "../l2scheduler/pager.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1165,7 +1166,7 @@ int nvbackCudaSetupArgument_srv(cuda_packet_t *packet, conn_t *pConn) {
 	#ifdef PAGER
 
 		int id = mem_map_find_entry((struct mem_map **) packet->vmmap, vmapped_local_arr, localindex, *((char **)arg));
-		kmap_add_arg((struct kmap *) packet->kmap, (char **)arg, packet->args[1].argi, packet->args[2].argi,
+		kmap_add_arg((struct kmap *) packet->kmap, /*(char **) */ arg, packet->args[1].argi, packet->args[2].argi,
 				vmapped_local_arr[id]);
 		packet->ret_ex_val.err = cudaSuccess;
 
@@ -1276,7 +1277,7 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 				if(p->reg_fns[j]->bDim)
 					fprintf(stderr,"LAUNCH blockDim %d\n",p->reg_fns[j]->bDim->x);
 				if(p->reg_fns[j]->wSize)
-					fprintf(stderr,"LAUNCH wSize %d\n",p->reg_fns[j]->wSize);
+					fprintf(stderr,"LAUNCH wSize %d\n",*p->reg_fns[j]->wSize);
 
 /*				p_debug("\n\n CUDALAUNCH !! hostfun = %s, hostFEaddr = %s, device_fun = %s,"
 					"\nthread_limit = %d, tid = %lld, bid = %lld, bdim = %d %d %d, gdim = %d %d %d, wsize = %d\n\n",

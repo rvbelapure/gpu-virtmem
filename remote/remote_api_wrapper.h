@@ -13,6 +13,7 @@
 
 #include "packetheader.h"
 #include "connection.h"
+#include "../l2scheduler/pager.h"
 
 //extern void** __cudaRegisterFatBinary(void *fatCubin);
 

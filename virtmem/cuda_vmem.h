@@ -76,16 +76,16 @@ struct kmap
 	int index;
 };
 
-void mem_map_init(struct mem_map ** table);
-void mem_map_creat(struct mem_map ** table, void ** devptr, size_t size);
-void mem_map_delete(struct mem_map ** table, void **devptr);
+void mem_map_init(struct mem_map ** table, int size);
+int mem_map_creat(struct mem_map ** table, void ** devptr, size_t size, int index);
+void mem_map_delete(struct mem_map ** table, int index);
 int mem_map_find_entry(struct mem_map ** table, int *indexes, int len, void * devptr);
 void mem_map_memcpy(struct mem_map ** table, int index, void * dest, void * src, int size, int type);
 
 
 void kmap_init(struct kmap * table);
 void kmap_add_config(struct kmap *table, dim3 gridDim, dim3 blockDim, size_t sharedMem, cudaStream_t stream);
-void kmap_add_arg(struct kmap *table,void *arg, size_t size, size_t offset, struct mem_map ** vmem_table);
+void kmap_add_arg(struct kmap *table,void **arg, size_t size, size_t offset, int vindex);
 int kmap_add_kernel(struct kmap *table, char * kfun);
 
 int gvirt_is_paging_required(struct kmap *ktable, int kindex, struct mem_map ** mtable, int * pagein_request, int * reqsize);

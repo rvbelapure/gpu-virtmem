@@ -19,5 +19,11 @@ void * pager_listener(void *arg);
 void * pager_worker(void *arg);
 int choose_victim();
 
+extern struct mem_map * vmap_table;
+extern int * vmap_index;
+
+extern int vmapped_local_arr[MAX_MEMORY];
+extern int localindex;
+
 
 #endif

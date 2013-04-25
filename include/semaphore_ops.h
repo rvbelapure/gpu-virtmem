@@ -5,7 +5,7 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
-static int P(int semID); 
-static int V(int semID);
+int P(int semID); 
+int V(int semID);
 int get_semaphore(key_t id);
 #endif
