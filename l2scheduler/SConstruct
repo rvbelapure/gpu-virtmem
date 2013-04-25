@@ -35,7 +35,10 @@ envCFSched = Environment(
   ],
   CCFLAGS='-g -Wall -Wextra')
 			 
-envCFSched.Program('l2scheduler', ['l2scheduler.c',
+envCFSched.Program('l2scheduler-pager', ['l2scheduler.c',
 				'fair_share_sched.c',
 				'las_scheduler.c',
-				'sched_commons.c'])
+				'sched_commons.c',
+				'pager.c',
+				'../backend/libl2scheduler.o',
+				'../virtmem/cuda_vmem.o'])
