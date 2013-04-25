@@ -12,6 +12,7 @@ void fs_register_process(pid_t process_id, int signum, int app_type, int gpuid, 
 void* fs_listen_thread(void *thid);
 void* fs_control_thread(void *thid_arr);
 int fs_cpu_bind(const unsigned short cpu); 
+void fs_calculate_timeslice(int gpuid);
 
 void mysignalhandler1(int n, siginfo_t* info, void* k);
 int already_added(process_credit_data pcd);

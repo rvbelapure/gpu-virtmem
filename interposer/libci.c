@@ -1165,7 +1165,7 @@ cudaError_t cudaSetupArgument(const void *arg, size_t size, size_t offset) {
 }
 
 
-cudaError_t cudaFuncSetCacheConfig(const char *func,
+cudaError_t cudaFuncSetCacheConfig(const void *func,
 		enum cudaFuncCache cacheConfig) {
 	typedef cudaError_t (* pFuncType)(const char *func,
 			enum cudaFuncCache cacheConfig);
@@ -1228,7 +1228,7 @@ cudaError_t cudaLaunch(const char *entry) {
 }
 */
 
-cudaError_t cudaLaunch(const char *entry) {
+cudaError_t cudaLaunch(const void *entry) {
     cudaError_t ret;
     int* CUR_DEV;
     if(!(CUR_DEV=pthread_getspecific(tlsKey2))) {
@@ -1244,7 +1244,7 @@ cudaError_t cudaLaunch(const char *entry) {
 }
 
 cudaError_t cudaFuncGetAttributes(struct cudaFuncAttributes *attr,
-		const char *func) {
+		const void *func) {
 	typedef cudaError_t (* pFuncType)(struct cudaFuncAttributes *attr,
 			const char *func);
 	static pFuncType pFunc = NULL;
@@ -1952,7 +1952,7 @@ cudaError_t cudaMemcpyToSymbol(const char *symbol, const void *src,
 }
 */
 
-cudaError_t cudaMemcpyToSymbol(const char *symbol, const void *src,
+cudaError_t cudaMemcpyToSymbol(const void *symbol, const void *src,
                                size_t count, size_t offset __dv(0), enum cudaMemcpyKind kind
                                __dv(cudaMemcpyHostToDevice)) {
     cudaError_t ret;
@@ -2060,7 +2060,7 @@ cudaError_t cudaMemcpyFromSymbol(void *dst, const char *symbol,
 }
  */
 
-cudaError_t cudaMemcpyFromSymbol(void *dst, const char *symbol,
+cudaError_t cudaMemcpyFromSymbol(void *dst, const void *symbol,
                                  size_t count, size_t offset __dv(0), enum cudaMemcpyKind kind
                                  __dv(cudaMemcpyDeviceToHost)) {
     cudaError_t ret;
@@ -2201,7 +2201,7 @@ cudaError_t cudaMemcpy2DFromArrayAsync(void *dst, size_t dpitch,
 			stream));
 }
 
-cudaError_t cudaMemcpyToSymbolAsync(const char *symbol, const void *src,
+cudaError_t cudaMemcpyToSymbolAsync(const void *symbol, const void *src,
 		size_t count, size_t offset, enum cudaMemcpyKind kind,
 		cudaStream_t stream __dv(0)) {
 	typedef cudaError_t (* pFuncType)(const char *symbol, const void *src,
@@ -2221,7 +2221,7 @@ cudaError_t cudaMemcpyToSymbolAsync(const char *symbol, const void *src,
 	return (pFunc(symbol, src, count, offset, kind, stream));
 }
 
-cudaError_t cudaMemcpyFromSymbolAsync(void *dst, const char *symbol,
+cudaError_t cudaMemcpyFromSymbolAsync(void *dst, const void *symbol,
 		size_t count, size_t offset, enum cudaMemcpyKind kind,
 		cudaStream_t stream __dv(0)) {
 	typedef cudaError_t (* pFuncType)(void *dst, const char *symbol,
@@ -2344,7 +2344,7 @@ cudaError_t cudaMemset3DAsync(struct cudaPitchedPtr pitchedDevPtr,
 	return (pFunc(pitchedDevPtr, value, extent, stream));
 }
 
-cudaError_t cudaGetSymbolAddress(void **devPtr, const char *symbol) {
+cudaError_t cudaGetSymbolAddress(void **devPtr, const void *symbol) {
 	typedef cudaError_t (* pFuncType)(void **devPtr, const char *symbol);
 	static pFuncType pFunc = NULL;
 
@@ -2360,7 +2360,7 @@ cudaError_t cudaGetSymbolAddress(void **devPtr, const char *symbol) {
 	return (pFunc(devPtr, symbol));
 }
 
-cudaError_t cudaGetSymbolSize(size_t *size, const char *symbol) {
+cudaError_t cudaGetSymbolSize(size_t *size, const void *symbol) {
 	typedef cudaError_t (* pFuncType)(size_t *size, const char *symbol);
 	static pFuncType pFunc = NULL;
 
@@ -2626,7 +2626,7 @@ cudaError_t cudaGetTextureAlignmentOffset(size_t *offset,
 	return (pFunc(offset, texref));
 }
 cudaError_t cudaGetTextureReference(
-		const struct textureReference **texref, const char *symbol) {
+		const struct textureReference **texref, const void *symbol) {
 	typedef cudaError_t (* pFuncType)(const struct textureReference **texref,
 			const char *symbol);
 	static pFuncType pFunc = NULL;
@@ -2666,7 +2666,7 @@ cudaError_t cudaBindSurfaceToArray(
 
 }
 cudaError_t cudaGetSurfaceReference(
-		const struct surfaceReference **surfref, const char *symbol) {
+		const struct surfaceReference **surfref, const void *symbol) {
 	typedef cudaError_t (* pFuncType)(const struct surfaceReference **surfref,
 			const char *symbol);
 	static pFuncType pFunc = NULL;

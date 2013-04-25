@@ -17,7 +17,7 @@ struct pager_data
 void start_pager();
 void * pager_listener(void *arg);
 void * pager_worker(void *arg);
-int choose_victim();
+void choose_victims_least_frequetly_used(struct pager_data *pd, int * len, unsigned long mem_requirement);
 
 extern struct mem_map * vmap_table;
 extern int * vmap_index;
