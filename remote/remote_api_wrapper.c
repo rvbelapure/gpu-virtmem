@@ -1221,6 +1221,16 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 	// in the CUDA Runtime API, globals in two modules must not have the same name
 	// I guess the same applies to functions; that's why I am implementing this
 	// as there function names are unique across .cu or .ptx modules
+	
+	#ifdef PAGER
+	int semid;
+	if((semid = semget(ftok(SEMKEYPATH, LAUNCH_SEM_KEY), 1, 0666 | IPC_CREAT | IPC_EXCL )) == -1){
+		perror("semget failed");
+		return -1;
+	}
+	semctl(semid, 0, SETVAL, 1) ;
+	#endif
+
 
 	for (i = 0; i < fatCInfoArr->len; i++) {
 		fatcubin_info_t * p = &g_array_index(fatCInfoArr, fatcubin_info_t, i);
@@ -1235,15 +1245,25 @@ int nvbackCudaLaunch_srv(cuda_packet_t * packet, conn_t * pConn) {
 				   which will make it compliant with virtual memory functions */
 
 				#ifdef PAGER
-
+				
 				int * reqarr, *len;
 				int kmapid = kmap_add_kernel((struct kmap *) packet->kmap,p->reg_fns[j]->hostFun);
+
+				P(semid);
 				int status = gvirt_is_paging_required((struct kmap *) packet->kmap, kmapid,
 						(struct mem_map **) packet->vmmap, reqarr, len);
 				if(status)
 					gvirt_page_in((struct mem_map **) packet->vmmap, reqarr, *len);
 				gvirt_cuda_launch_index((struct kmap *) packet->kmap, kmapid, (struct mem_map **) packet->vmmap);
+				V(semid);
+
 				packet->ret_ex_val.err = cudaSuccess;
+				
+				if(status)
+				{
+					free(reqarr);
+					free(len);
+				}
 
 				#else
 

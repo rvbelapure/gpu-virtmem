@@ -29,6 +29,7 @@ void mem_map_init(struct mem_map ** table, int size)
 		*table[i]->size = 0;
 		*table[i]->status = D_NOALLOC;
 		*table[i]->pid = getpid();
+		*table[i]->freq = 0;
 	}
 }
 
@@ -238,6 +239,11 @@ int gvirt_is_paging_required(struct kmap *ktable, int kindex, struct mem_map ** 
 		pagein_request = (int *) malloc(len * sizeof(int));
 		reqsize = (int *) malloc(sizeof(int));
 	}
+	else
+	{
+		pagein_request = NULL;
+		reqsize = NULL;
+	}
 
 	for(int i = 0 ; i < len ; i++)
 		pagein_request[i] = reqarr[i];
@@ -364,7 +370,10 @@ void gvirt_cuda_launch_index(struct kmap * ktab, int index, struct mem_map ** mt
 	while(iter)
 	{
 		if(iter->mem_map_index >= 0)
+		{
 			arg = mtab[iter->mem_map_index]->actual_devptr;
+			mtab[iter->mem_map_index]->freq++;
+		}
 		else
 			arg = *iter->arg
 		cudaSetupArgument(&arg,iter->size,iter->offset);

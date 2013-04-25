@@ -36,6 +36,7 @@
 #define GMT_SHM_KEY 3
 #define GMT_SHM_INDEX_KEY 4
 #define PAGER_FIFO_SEM_KEY 5	/* key used to get sem for writing in pager fifo */
+#define LAUNCH_SEM_KEY 6
 
 #define ADD_Q 10
 #define REM_Q 11

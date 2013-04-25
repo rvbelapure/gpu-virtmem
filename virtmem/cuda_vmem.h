@@ -34,6 +34,7 @@ struct mem_map
 	size_t size;			// size of the requested memory
 	enum vmem_status status;	// takes one of the values in enum vmem_status
 	pid_t pid;			// pid of the process that own this node
+	int freq;			// For Least frequently used policy. Increment frequency each time it is used.
 };
 
 

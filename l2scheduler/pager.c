@@ -113,23 +113,24 @@ void * pager_worker(void * arg)
 	int len;
 
 	int localindex = 0;
+	int i,j;
 	while(1)
 	{
 		if(localindex < pindex)
 		{
 			/* 1. calculate total memory requirements of the selected process */
 			unsigned long mem_req = 0, mem_satisfied = 0;
-			for(int i = 0 ; i < PagerData[localindex].len ; i++)
+			for(i = 0 ; i < PagerData[localindex].len ; i++)
 			mem_req += gmt_table[(PagerData[localindex].reqarr[i])].size;
 			/* 2. Select victimes sorted by pid */
-			choose_victims(pd, &len, mem_req);
+			choose_victims_least_frequetly_used(pd, &len, mem_req);
 			/* 3. Now, iterate over each victim process in the list */
-			for(int j = 0 ; j < len ; j++)
+			for(j = 0 ; j < len ; j++)
 			{
 				pid_t victim_pid = pd[j].pid;
 				/* 4. Find index of victim in Scheduler Data Structure */
 				int sched_index = 0;
-				for(int i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+				for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
 				{
 					if((Scheduler_Data.state[i] == PROC_ACTIVE) && (Scheduler_Data.process_list[i] == victim_pid))
 					{
@@ -201,7 +202,12 @@ void * pager_worker(void * arg)
 			Scheduler_Data.state[sched_data_idx] = PROC_ACTIVE;
 			pthread_mutex_unlock(&sched_index_mut);
 
-			/* 15. Go to processing next request */
+			/* 15. Free up some memory */
+			for(j = 0 ; j < MAX_CONTROLLER_COUNT ; j++)
+				free(pd[i].reqarr);
+			free(pd);
+
+			/* 16. Go to processing next request */
 			localindex++;
 		}
 		else
@@ -209,6 +215,56 @@ void * pager_worker(void * arg)
 	}
 }
 
-void choose_victim(struct pager_data *pd, int * len, unsigned long mem_requirement)
+void choose_victims_least_frequetly_used(struct pager_data *pd, int * len, unsigned long mem_requirement)
 {
+	unsigned int last_smallest = 0, satisfied = 0;
+	pd = (struct pager_data *) malloc(MAX_CONTROLLER_COUNT * sizeof(struct pager_data));
+	int pd_len = 0;
+
+	int i,j;
+	for(j = 0 ; j < MAX_CONTROLLER_COUNT ; j++)
+	{
+		pd[i].reqarr = (int *) malloc(MAX_MEMORY * sizeof(int));
+		pd[i].len = 0;
+	}
+
+	while(satisfied < mem_requirement)
+	{
+		/* Find smallest, greater than last smallest */
+		int max = *gmt_index, minindex = 0, min = -1;
+		for(i = 0 ; i < max ; i++)
+		{
+			if((gmt_table[i].valid) && (min == -1))
+			{
+				min = gmt_table[i].size;
+				minindex = i;
+				continue;
+			}
+
+			if((gmt_table[i].valid) && (gmt_table[i].size <= min) && (gmt_table[i].size >= last_smallest) 
+				&& ((gmt_table[i].status == D_INIT) || (gmt_table[i].status == D_READY) 
+					|| (gmt_table[i].status == D_MODIFIED)))
+			{
+				min = gmt_table[i].size;
+				minindex = i;
+			}
+		}
+		/* we got smallest element. Search if the process already exists, otherwise go for next index */
+		int chosen_id = -1;
+		for(i = 0 ; i < pd_len ; i++)
+		{
+			if(pd[i].pid == gmt_table[minindex].pid)
+				chosen_id = i;
+		}
+
+		if(chosen_id == -1)
+		{
+			chosen_id = pd_len++;
+		}
+
+		pd[chosen_id].pid = gmt_table[minindex].pid;
+		pd[chosen_id].reqarr[(pd[chosen_id].len++)] = minindex;
+		satisfied += min;
+	}
+	*len = pd_len;
 }
