@@ -220,7 +220,7 @@ void* fs_control_thread(void *attr)
 	sigemptyset(&set);
 	sigaddset(&set, SIGRTMIN);
 	sigaddset(&set, (SIGRTMAX - 2));
-	sigprocmask(SIG_BLOCK, &set);
+	sigprocmask(SIG_BLOCK, &set, NULL);
 
 	printf("CFSCHED Inside control thread\n");
 	sleep(5);
@@ -284,7 +284,7 @@ void* fs_control_thread(void *attr)
 		fprintf(stderr, "CFSCHED control thread starting process id: %d, signum: %d, share_unit:%lu time:%d sec %d usec\n", process_id, signum, share_unit, tp.tv_sec, tp.tv_usec);
 
 		pthread_mutex_lock(&sched_index_mut);
-		if(Scheduler_Data[thid].state == PROC_ACTIVE)
+		if(Scheduler_Data.state[thid] == PROC_ACTIVE)
 		{
 			sigqueue(process_id, signum, data);
 			// TODO : Should process mask of SIGRTMIN be removed before waiting for it ?
@@ -363,7 +363,7 @@ void fs_calculate_timeslice(int gpuid)
 	{
 		if((Scheduler_Data.gpu_binding[i] == gpuid) && (Scheduler_Data.state[i] == PROC_ACTIVE)) 
 		{
-			unsigned float base_share = (float) EPOCH_LENGTH / (float) total_shares;
+			float base_share = (float) EPOCH_LENGTH / (float) total_shares;
 			Scheduler_Data.allocated_time[i].tv_sec = 0;
 			Scheduler_Data.allocated_time[i].tv_usec = base_share * 1000;
 		}
@@ -372,7 +372,7 @@ void fs_calculate_timeslice(int gpuid)
 	pthread_mutex_unlock(&sched_index_mut);
 }
 
-
+/*
 void signal_block_all()
 {
   int i;
@@ -385,7 +385,7 @@ void signal_block_all()
  
   sigprocmask(SIG_BLOCK, &set, NULL);
 }
-
+*/
 
 int fs_start_scheduler()
 {

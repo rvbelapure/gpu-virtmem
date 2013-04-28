@@ -22,6 +22,8 @@ int * gmt_index;
 struct pager_data PagerData[MAX_MEMORY];
 int pindex;
 
+struct mem_map * vmap_table;		// NOT USED here
+
 void start_pager()
 {
 	sigset_t set, set1, set2;
@@ -52,7 +54,7 @@ void start_pager()
 	gmt_table = (struct mem_map *) shmat(shmid, NULL, SHM_R | SHM_W);
 	gmt_index = (int *) shmat(shmindex, NULL, SHM_R | SHM_W);
 
-	mem_map_init(&gmt_table);
+	mem_map_init(&gmt_table, MAX_MEMORY);
 	*gmt_index = 0;
 	pindex = 0;
 	
@@ -71,8 +73,8 @@ void start_pager()
 	}
 */
 	int i;
-	pthread_create(pager_tid[0], NULL, pager_listener, NULL);
-	pthread_create(pager_tid[1], NULL, pager_worker, NULL);
+	pthread_create(&pager_tid[0], NULL, pager_listener, NULL);
+	pthread_create(&pager_tid[1], NULL, pager_worker, NULL);
 }
 
 void * pager_listener(void *arg)
@@ -163,7 +165,7 @@ void * pager_worker(void * arg)
 				/* 10. We now have to send SIGVTALRM to sleep the victim. Do not send SIGALRM.
 				       Must use different than the regular sleep signal so that process goes into
 				       different handler and does not send wakeup signal to scheduler. */
-				sigqueue(victim, SIGVTALRM, sv);
+				sigqueue(victim_pid, SIGVTALRM, sv);
 
 				/* 11. Mark the victim process as schedulable now */
 				pthread_mutex_lock(&sched_index_mut);
@@ -177,7 +179,7 @@ void * pager_worker(void * arg)
 			mkfifo(fifoname, 0666);
 			int client_fifo = open(fifoname, O_RDWR);
 			pthread_t selfid = pthread_self();
-			write(client_fifo, selfid, sizeof(pthread_t));
+			write(client_fifo, &selfid, sizeof(pthread_t));
 
 			/* 13. Wait for client to page in the necessary pages and send back a response */
 			int res;
@@ -189,7 +191,7 @@ void * pager_worker(void * arg)
 
 			/* 15. Mark it as schedulable */
 			int sched_data_idx = 0;
-			for(int i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
+			for(i = 0 ; i < MAX_CONTROLLER_COUNT ; i++)
 			{
 				if((Scheduler_Data.state[i] == PROC_ACTIVE) && (Scheduler_Data.process_list[i] == PagerData[localindex].pid))
 				{
@@ -217,15 +219,15 @@ void * pager_worker(void * arg)
 
 void choose_victims_least_frequetly_used(struct pager_data *pd, int * len, unsigned long mem_requirement)
 {
-	unsigned int last_smallest = 0, satisfied = 0;
+	long last_smallest = 0, satisfied = 0;
 	pd = (struct pager_data *) malloc(MAX_CONTROLLER_COUNT * sizeof(struct pager_data));
 	int pd_len = 0;
 
 	int i,j;
 	for(j = 0 ; j < MAX_CONTROLLER_COUNT ; j++)
 	{
-		pd[i].reqarr = (int *) malloc(MAX_MEMORY * sizeof(int));
-		pd[i].len = 0;
+		pd[j].reqarr = (int *) malloc(MAX_MEMORY * sizeof(int));
+		pd[j].len = 0;
 	}
 
 	while(satisfied < mem_requirement)

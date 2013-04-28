@@ -92,6 +92,7 @@ typedef struct _scheduler_datastructure{
 	int gpu_binding[MAX_CONTROLLER_COUNT];
 	int priority[MAX_CONTROLLER_COUNT];
 	int sends_l2_feedback[MAX_CONTROLLER_COUNT];
+	int valid[MAX_CONTROLLER_COUNT];			// kept only for LAS
 }scheduler_data;
 
 
